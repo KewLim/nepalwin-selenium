@@ -1,0 +1,85 @@
+
+==== Esewa_bank_Shankar Yadav_20250612 (1 record) | Total Amount: Rs 0.00 | ====
+
+Record #1
+Order ID: 8603
+Phone Number: Umesh Sharma
+Amount: 0.00
+Time: 2025-09-02 16:28:03
+
+>> Total Amount for Esewa_bank_Shankar Yadav_20250612: Rs 0.00
+
+==== Laxmi_bank_Baijianath_20250407 (11 records) | Total Amount: Rs 0.00 | ====
+
+Record #1
+Order ID: 8600
+Phone Number: Sabi1122
+Amount: 0.00
+Time: 2025-09-02 20:30:52
+
+Record #2
+Order ID: 8596
+Phone Number: Dipendra415
+Amount: 0.00
+Time: 2025-09-02 20:30:52
+
+Record #3
+Order ID: 8593
+Phone Number: Umesh Sharma
+Amount: 0.00
+Time: 2025-09-02 20:25:15
+
+Record #4
+Order ID: 8585
+Phone Number: Bokaboka
+Amount: 0.00
+Time: 2025-09-02 20:25:15
+
+Record #5
+Order ID: 8582
+Phone Number: Bokaboka
+Amount: 0.00
+Time: 2025-09-02 20:25:15
+
+Record #6
+Order ID: 8577
+Phone Number: Bokaboka
+Amount: 0.00
+Time: 2025-09-02 20:25:15
+
+Record #7
+Order ID: 8576
+Phone Number: Sagarbaniya98
+Amount: 0.00
+Time: 2025-09-02 20:25:15
+
+Record #8
+Order ID: 8555
+Phone Number: manish11
+Amount: 0.00
+Time: 2025-09-02 09:04:57
+
+Record #9
+Order ID: 8552
+Phone Number: Sagarthapa
+Amount: 0.00
+Time: 2025-09-02 08:40:28
+
+Record #10
+Order ID: 8543
+Phone Number: anandlama001
+Amount: 0.00
+Time: 2025-09-02 06:13:17
+
+Record #11
+Order ID: 8540
+Phone Number: Sabi1122
+Amount: 0.00
+Time: 2025-09-02 00:17:49
+
+>> Total Amount for Laxmi_bank_Baijianath_20250407: Rs 0.00
+
+==== GRAND TOTAL for All Gateways: Rs 0.00 | Total Records: 12 ====
+
+(depo) pg Esewa_bank_Shankar Yadav_20250612 02/09/2025 | 
+(depo) pg Laxmi_bank_Baijianath_20250407 02/09/2025 | 

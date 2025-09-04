@@ -1,0 +1,17 @@
+
+==== SKPAY (18 records) | Total Amount: Rs 50,650.00 | Total Fee: Rs 1627.50 ====
+
+Record #1
+Order ID: LTJPW7605
+Phone Number: 917500271567
+Amount: 1,500.00
+Time: 2025-08-13 20:01:13
+
+
+
+==== GRAND TOTAL for All Gateways: Rs 63,123.00 | Total Records: 24 ====
+
+(wd) pg SKPAY 13/08/2025 | Total Fee: Rs 1627.50
+(wd) pg YTPAY 13/08/2025 | Total Fee: Rs 173.19
+(wd) pg OSPAY 13/08/2025 | Total Fee: Rs 171.00
+(wd) pg VADERPAY 13/08/2025 | Total Fee: Rs 78.00
