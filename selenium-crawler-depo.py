@@ -127,7 +127,7 @@ def extract_transaction_data_with_date_filter(driver, start_date, end_date, wait
                 continue
             
             # Extract date from column 2 (format: '2025-08-14 16:35:02')
-            full_date_str = cols[2].text.strip()
+            full_date_str = cols[1].text.strip()
             if not full_date_str:
                 print(f"[WARNING] No date in row {idx + 1}, skipping")
                 continue
