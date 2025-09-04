@@ -486,16 +486,21 @@ def add_transaction_details(record):
 
 
     # Click 'out' radio button only for withdrawal transactions
-    if record.get("Transaction Type", "").upper() == "WITHDRAWAL":
+    transaction_type = record.get("Transaction Type", "")
+    # print(f"[DEBUG] Record transaction type: '{transaction_type}' (upper: '{transaction_type.upper()}')")
+    # print(f"[DEBUG] Is withdrawal check: {transaction_type.upper() == 'WITHDRAWAL'}")
+    
+    if transaction_type.upper() == "WITHDRAWAL":
+        print("[INFO] WITHDRAWAL detected - clicking 'out' radio button")
         wait = WebDriverWait(driver, 15)
         out_radio = wait.until(
             EC.element_to_be_clickable((By.CSS_SELECTOR, 'input[type="radio"][value="out"]'))
         )
         
         smart_click(out_radio)
-        print("[INFO] Clicked 'out' radio button for withdrawal transaction")
+        print("[INFO] Successfully clicked 'out' radio button for withdrawal transaction")
     else:
-        print("[INFO] Skipping 'out' radio button for non-withdrawal transaction")
+        print(f"[INFO] Not a withdrawal (type: '{transaction_type}') - skipping 'out' radio button")
 
     # ===== Order ID =====
     order_id_input = WebDriverWait(driver, 20).until(
@@ -686,7 +691,7 @@ def parse_and_execute(filename):
     }
 
     # Temporary variables for one record
-    order_id = phone = amount = time_str = transaction_type = None
+    order_id = phone = amount = time_str = transaction_type = bank_tax = None
     dt = hour_str = minute_str = None
 
     for raw_line in lines:
@@ -746,6 +751,8 @@ def parse_and_execute(filename):
             phone = line.split(":", 1)[1].strip()
         elif line.startswith("Amount:"):
             amount = line.split(":", 1)[1].strip()
+        elif line.startswith("Bank Charges:"):
+            bank_tax = line.split(":", 1)[1].strip()
         elif line.startswith("Time:"):
             time_str = line.split(":", 1)[1].strip()
             try:
@@ -753,7 +760,7 @@ def parse_and_execute(filename):
                 hour_str = f"{dt.hour:02d}"
                 minute_str = f"{dt.minute:02d}"
 
-                # ✅ Only append once all fields are known
+                # ✅ Only append once all fields are known (bank_tax can be None/missing)
                 if all([order_id, phone, amount, time_str, transaction_type]):
                     print(f"[DEBUG] Creating record with Transaction Type: {transaction_type}")
                     current_records.append({
@@ -764,10 +771,11 @@ def parse_and_execute(filename):
                         "Hour": hour_str,
                         "Minute": minute_str,
                         "Datetime": dt,
-                        "Transaction Type": transaction_type
+                        "Transaction Type": transaction_type,
+                        "Bank Tax": bank_tax if bank_tax is not None else "-"
                     })
                     # Reset vars for next record
-                    order_id = phone = amount = time_str = transaction_type = None
+                    order_id = phone = amount = time_str = transaction_type = bank_tax = None
                     dt = hour_str = minute_str = None
             except ValueError:
                 print(f"[ERROR] Invalid datetime: {time_str}")

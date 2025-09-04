@@ -289,24 +289,54 @@ def print_grouped_results(gateway_groups):
         deposit_count = sum(len(records) for records in deposit_groups.values())
         withdrawal_count = sum(len(records) for records in withdrawal_groups.values())
         
-        grand_footer = f"\n==== GRAND TOTAL for All Gateways ====\n\nDEPOSITS Records: {deposit_count}\nWITHDRAWALS Records: {withdrawal_count}\n\n"
-        print(f"\033[95m{grand_footer}\033[0m")
-        f.write(grand_footer)
+        # Create grand footer with gateway-specific breakdown
+        f.write("\n")
         
-        # Print individual gateway tax amounts
+        # Add grand total summary at the beginning (green header)
+        grand_total_header = f"==== GRAND TOTAL for All Gateways ====\n\n"
+        print(f"\033[92m{grand_total_header}\033[0m", end="")
+        f.write(grand_total_header)
+        
+        # Print grand total with green numbers
+        print(f"\033[95m  DEPOSITS Records: \033[92m{deposit_count}\033[95m\n\033[0m", end="")
+        print(f"\033[95m  WITHDRAWALS Records: \033[92m{withdrawal_count}\033[95m\n\n\033[0m", end="")
+        f.write(f"  DEPOSITS Records: {deposit_count}\n")
+        f.write(f"  WITHDRAWALS Records: {withdrawal_count}\n\n")
+        
+        # Iterate through each gateway and create summary
         for gateway, records in gateway_groups.items():
-            # total_tax_amount = round(sum(float(record["Tax Fee"]) for record in records), 2)
-            # Extract date from the first record's time (assuming all records are from same date)
+            # Count deposits and withdrawals for this gateway
+            gateway_deposits = len([r for r in records if r.get("Transaction Type", "").upper() in ("DEPOSIT", "MANUAL_DEPOSIT")])
+            gateway_withdrawals = len([r for r in records if r.get("Transaction Type", "").upper() == "WITHDRAWAL"])
+            
+            # Calculate amounts for this gateway
+            deposit_amount = sum(r["Amount"] for r in records if r.get("Transaction Type", "").upper() in ("DEPOSIT", "MANUAL_DEPOSIT"))
+            withdrawal_amount = sum(r["Amount"] for r in records if r.get("Transaction Type", "").upper() == "WITHDRAWAL")
+            
+            # Extract date from the first record's time
             try:
                 if records[0]["Time"] and records[0]["Time"].strip():
-                    transaction_date = datetime.strptime(records[0]["Time"], "%Y-%m-%d %H:%M:%S").strftime("%d/%m/%Y")
+                    transaction_date = datetime.strptime(records[0]["Time"], "%Y-%m-%d %H:%M:%S").strftime("%m/%d/%Y")
                 else:
                     transaction_date = "Unknown"
             except (ValueError, IndexError):
                 transaction_date = "Unknown"
-            gateway_tax_line = f"(depo) pg {gateway} {transaction_date} | \n"
-            print(f"\033[95m{gateway_tax_line}\033[0m")
-            f.write(gateway_tax_line)
+            
+            # Create gateway header (green)
+            gateway_header = f"==== pg {gateway}_{transaction_date} ====\n\n"
+            print(f"\033[92m{gateway_header}\033[0m", end="")
+            f.write(gateway_header)
+            
+            # Create gateway summary (purple text, green numbers)
+            print(f"\033[95m  DEPOSITS Records: \033[92m{gateway_deposits}\033[95m\n\033[0m", end="")
+            print(f"\033[95m  DEPOSITS Amount: \033[92m{deposit_amount:,.2f}\033[95m\n\n\033[0m", end="")
+            print(f"\033[95m  WITHDRAWALS Records: \033[92m{gateway_withdrawals}\033[95m\n\033[0m", end="")
+            print(f"\033[95m  WITHDRAWALS Amount: \033[92m{withdrawal_amount:,.2f}\033[95m\n\n\033[0m", end="")
+            
+            f.write(f"  DEPOSITS Records: {gateway_deposits}\n")
+            f.write(f"  DEPOSITS Amount: {deposit_amount:,.2f}\n\n")
+            f.write(f"  WITHDRAWALS Records: {gateway_withdrawals}\n")
+            f.write(f"  WITHDRAWALS Amount: {withdrawal_amount:,.2f}\n\n")
 
 
 
