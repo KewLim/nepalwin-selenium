@@ -97,15 +97,15 @@ driver.get("https://www.rocketgo.asia/login")
 
 wait = WebDriverWait(driver, 40)
 merchant_input = wait.until(EC.presence_of_element_located((By.NAME, "merchant_code")))
-merchant_input.send_keys("luckytaj")
+merchant_input.send_keys("nepalwin")
 
 wait = WebDriverWait(driver, 40)
 username_input = wait.until(EC.presence_of_element_located((By.NAME, "username")))
-username_input.send_keys("Admin_Json")
+username_input.send_keys("kewlim888_nepalwin")
 
 wait = WebDriverWait(driver, 40)
 password_input = wait.until(EC.presence_of_element_located((By.NAME, "password")))
-password_input.send_keys("json8888"+ Keys.ENTER)
+password_input.send_keys("aaaa1111"+ Keys.ENTER)
 
 
 time.sleep(2)

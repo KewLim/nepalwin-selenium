@@ -154,7 +154,7 @@ def extract_transaction_data_with_date_filter(driver, start_date, end_date, wait
                 txn_type = cols[6].text.strip() if len(cols) > 6 else ""
                 print(f"[DEBUG] Row {idx + 1}: Found transaction type '{txn_type}'")
                 
-                if txn_type.upper() not in ("DEPOSIT", "MANUAL_DEPOSIT", "ADJUSTMENTADD", "WITHDRAWAL"):
+                if txn_type.upper() not in ("DEPOSIT", "MANUAL_DEPOSIT", "WITHDRAWAL", "ADJUSTMENTADD", "ADJUSTMENTDEDUCT", "CASH_IN", "CASH_OUT"):
                     print(f"[DEBUG] Row {idx + 1}: Skipping '{txn_type}' - not in allowed list")
                     continue
                 
@@ -163,9 +163,9 @@ def extract_transaction_data_with_date_filter(driver, start_date, end_date, wait
 
                 
                 # Parse amount - different column based on transaction type
-                if txn_type.upper() == "WITHDRAWAL":
+                if txn_type.upper() in ("WITHDRAWAL", "ADJUSTMENTDEDUCT", "CASH_OUT"):
                     amount_text = cols[8].text.strip().replace("Rs", "").replace(",", "").strip()
-                else:  # DEPOSIT or MANUAL_DEPOSIT
+                else:  # DEPOSIT, MANUAL_DEPOSIT, ADJUSTMENTADD, CASH_IN
                     amount_text = cols[7].text.strip().replace("Rs", "").replace(",", "").strip()
                 try:
                     amount = float(amount_text) if amount_text else 0.0
@@ -218,10 +218,10 @@ def print_grouped_results(gateway_groups):
             for record in records:
                 txn_type = record.get("Transaction Type", "").upper()
                 print(f"[DEBUG] Record transaction type: '{txn_type}' from record: {record.get('Transaction Type', 'MISSING')}")
-                if txn_type in ("DEPOSIT", "MANUAL_DEPOSIT", "ADJUSTMENTADD"):
+                if txn_type in ("DEPOSIT", "MANUAL_DEPOSIT", "ADJUSTMENTADD", "CASH_IN"):
                     deposit_groups[gateway].append(record)
                     print(f"[DEBUG] Added to deposits: {txn_type}")
-                elif txn_type == "WITHDRAWAL":
+                elif txn_type in ("WITHDRAWAL", "ADJUSTMENTDEDUCT", "CASH_OUT"):
                     withdrawal_groups[gateway].append(record)
                     print(f"[DEBUG] Added to withdrawals: {txn_type}")
                 else:
@@ -293,7 +293,7 @@ def print_grouped_results(gateway_groups):
         f.write("\n")
         
         # Add grand total summary at the beginning (green header)
-        grand_total_header = f"==== GRAND TOTAL for All Gateways ====\n\n"
+        grand_total_header = f"=========================== GRAND TOTAL for All Gateways ===========================\n\n"
         print(f"\033[92m{grand_total_header}\033[0m", end="")
         f.write(grand_total_header)
         
@@ -306,12 +306,12 @@ def print_grouped_results(gateway_groups):
         # Iterate through each gateway and create summary
         for gateway, records in gateway_groups.items():
             # Count deposits and withdrawals for this gateway
-            gateway_deposits = len([r for r in records if r.get("Transaction Type", "").upper() in ("DEPOSIT", "MANUAL_DEPOSIT", "ADJUSTMENTADD")])
-            gateway_withdrawals = len([r for r in records if r.get("Transaction Type", "").upper() == "WITHDRAWAL"])
+            gateway_deposits = len([r for r in records if r.get("Transaction Type", "").upper() in ("DEPOSIT", "MANUAL_DEPOSIT", "ADJUSTMENTADD", "CASH_IN")])
+            gateway_withdrawals = len([r for r in records if r.get("Transaction Type", "").upper() in ("WITHDRAWAL", "ADJUSTMENTDEDUCT", "CASH_OUT")])
             
             # Calculate amounts for this gateway
-            deposit_amount = sum(r["Amount"] for r in records if r.get("Transaction Type", "").upper() in ("DEPOSIT", "MANUAL_DEPOSIT", "ADJUSTMENTADD"))
-            withdrawal_amount = sum(r["Amount"] for r in records if r.get("Transaction Type", "").upper() == "WITHDRAWAL")
+            deposit_amount = sum(r["Amount"] for r in records if r.get("Transaction Type", "").upper() in ("DEPOSIT", "MANUAL_DEPOSIT", "ADJUSTMENTADD", "CASH_IN"))
+            withdrawal_amount = sum(r["Amount"] for r in records if r.get("Transaction Type", "").upper() in ("WITHDRAWAL", "ADJUSTMENTDEDUCT", "CASH_OUT"))
             
             # Extract date from the first record's time
             try:

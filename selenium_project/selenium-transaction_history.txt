@@ -4,36 +4,35 @@
                               WITHDRAWALS
 ================================================================================
 
-==== Laxmi_bank_Baijianath_20250407 (4 records) | Total Amount: Rs 38,509.00 ====
+==== Esewa_bank_Shankar Yadav_20250612 (4 records) | Total Amount: Rs 4,606.00 ====
 
 Record #1
-Order ID: 8766
-Transaction Type: WITHDRAWAL
-Phone Number: Deepak bayak
-Amount: 3,009.00
+Order ID: 9248
+Transaction Type: ADJUSTMENTDEDUCT
+Phone Number: -
+Amount: 0.00
 Bank Charges: -
-Time: 2025-09-04 14:11:44
+Time: 2025-09-09 18:14:58
 
->> Total Amount for Laxmi_bank_Baijianath_20250407: Rs 38,509.00
 
-==== GRAND TOTAL for All Gateways ====
+=========================== GRAND TOTAL for All Gateways ===========================
 
-  DEPOSITS Records: 36
-  WITHDRAWALS Records: 4
+  DEPOSITS Records: 31
+  WITHDRAWALS Records: 7
 
-==== pg Laxmi_bank_Baijianath_20250407_09/04/2025 ====
-
-  DEPOSITS Records: 32
-  DEPOSITS Amount: 41,822.00
-
-  WITHDRAWALS Records: 4
-  WITHDRAWALS Amount: 38,509.00
-
-==== pg Esewa_bank_Shankar Yadav_20250612_09/04/2025 ====
+==== pg Esewa_bank_Shankar Yadav_20250612_09/09/2025 ====
 
   DEPOSITS Records: 4
-  DEPOSITS Amount: 1,400.00
+  DEPOSITS Amount: 2,100.00
 
-  WITHDRAWALS Records: 0
-  WITHDRAWALS Amount: 0.00
+  WITHDRAWALS Records: 4
+  WITHDRAWALS Amount: 4,606.00
+
+==== pg Laxmi_bank_Baijianath_20250407_09/09/2025 ====
+
+  DEPOSITS Records: 27
+  DEPOSITS Amount: 18,170.00
+
+  WITHDRAWALS Records: 3
+  WITHDRAWALS Amount: 4,740.00
 

@@ -359,10 +359,10 @@ def enter_gateway_name(gateway_text):
     driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", gateway_input)
     time.sleep(0.3)
 
-    print("Displayed:", gateway_input.is_displayed())
-    print("Enabled:", gateway_input.is_enabled())
-    print("Size:", gateway_input.size)
-    print("Location:", gateway_input.location)
+    # print("Displayed:", gateway_input.is_displayed())
+    # print("Enabled:", gateway_input.is_enabled())
+    # print("Size:", gateway_input.size)
+    # print("Location:", gateway_input.location)
 
     try:
         # Try normal input method first
@@ -484,9 +484,218 @@ def add_transaction_details(record):
     )
     print("[INFO] Target Window element appeared — proceeding...")
 
+    # Check transaction type and execute category/subcategory selection only for ADJUSTMENTADD
+    transaction_type = record.get("Transaction Type", "")
+    
+    if transaction_type.upper() in ("ADJUSTMENTADD", "CASH_IN"):
+        print(f"[INFO] {transaction_type} detected - executing category and subcategory selection")
+        
+        # ======================= Click on 'category' combobox and select 'Advance' =======================
+
+        try:
+            # 1. Wait for and click the GAME div
+            game_div = WebDriverWait(driver, 10).until(
+                EC.element_to_be_clickable((By.CSS_SELECTOR, 'div.item[data-value="GAME"]'))
+            )
+            game_div.click()
+            print("Clicked the GAME element.")
+
+            # 2. Track and work with the GAME div element
+            # print(f"[DEBUG] GAME div element: {game_div}")
+            # print(f"[DEBUG] GAME div data-value: {game_div.get_attribute('data-value')}")
+            # print(f"[DEBUG] GAME div class: {game_div.get_attribute('class')}")
+            # print(f"[DEBUG] GAME div text: {game_div.text}")
+            
+            # # 3. Try to input 'Advance' directly on the GAME element
+            # print("[DEBUG] Attempting to input 'Advance' on GAME div...")
+            # try:
+            #     game_div.clear()
+            #     game_div.send_keys("Advance")
+            #     time.sleep(.5)
+            #     game_div.send_keys(Keys.ENTER)
+            #     print("[DEBUG] Input set to 'Advance' on GAME div.")
+            #     time.sleep(.5)
+            # except Exception as e:
+            #     print(f"[DEBUG] Failed to input on GAME div: {e}")
+            #     # Try using JavaScript to set value
+            #     print("[DEBUG] Trying JavaScript approach...")
+            #     driver.execute_script("""
+            #         arguments[0].textContent = 'Advance';
+            #         arguments[0].dispatchEvent(new Event('input', { bubbles: true }));
+            #     """, game_div)
+            #     print("[DEBUG] Set 'Advance' using JavaScript.")
+
+
+            # ============= Select 'Advance' on dropdown list ============= 
+            print("[DEBUG] Looking for dropdown and Advance option...")
+            try:
+                dropdown = WebDriverWait(driver, 10).until(
+                    EC.visibility_of_element_located((By.XPATH, "//div[@class='ts-dropdown single' and contains(@style,'display: block')]"))
+                )
+                print(f"[DEBUG] Found dropdown: {dropdown}")
+                print(f"[DEBUG] Dropdown style: {dropdown.get_attribute('style')}")
+                
+                advance_option = dropdown.find_element(By.XPATH, ".//div[@data-value='Advance']")
+                print(f"[DEBUG] Found Advance option: {advance_option}")
+                print(f"[DEBUG] Advance option text: {advance_option.text}")
+                print(f"[DEBUG] Advance option data-value: {advance_option.get_attribute('data-value')}")
+                
+                advance_option.click()
+                print("[DEBUG] Successfully clicked Advance option")
+            except Exception as dropdown_error:
+                print(f"[DEBUG] Failed to find/click Advance option: {dropdown_error}")
+                # Try alternative approach
+                print("[DEBUG] Trying alternative selector...")
+                try:
+                    advance_alt = WebDriverWait(driver, 5).until(
+                        EC.element_to_be_clickable((By.XPATH, "//div[@data-value='Advance']"))
+                    )
+                    advance_alt.click()
+                    print("[DEBUG] Successfully clicked Advance with alternative selector")
+                except Exception as alt_error:
+                    print(f"[DEBUG] Alternative approach also failed: {alt_error}")
+                    raise dropdown_error
+
+        except Exception as e:
+            print("Error:", e)
+
+        time.sleep(.5)
+        # ======================= Click on 'Sub Category' combobox and select 'Internal Transfer' =======================
+
+        try:
+            click_external_transfer = lambda driver: WebDriverWait(driver, 10).until(
+                EC.element_to_be_clickable((By.XPATH, "//div[@data-value='3' and text()='External Transfer']"))
+            ).click()
+
+            # usage
+            click_external_transfer(driver)
+
+        except Exception as e:
+            print("Error:", e)
+
+
+        try:
+            # Inline function to wait for dropdown and click "Internal Transfer"
+            click_internal_transfer = lambda driver: WebDriverWait(driver, 10).until(
+                EC.visibility_of_element_located((By.XPATH, "//div[@class='ts-dropdown single' and contains(@style,'display: block')]"))
+            ).find_element(By.XPATH, ".//div[@data-value='4' and text()='Internal Transfer']").click()
+
+            # usage
+            click_internal_transfer(driver)
+
+        except Exception as e:
+            print("Error:", e)
+
+        time.sleep(.5)
+    else:
+        print(f"[INFO] Transaction type '{transaction_type}' - skipping category/subcategory selection")
+
+
+# Check transaction type and execute category/subcategory selection only for ADJUSTMENTDEDUCT
+    transaction_type = record.get("Transaction Type", "")
+    
+    if transaction_type.upper() in ("ADJUSTMENTDEDUCT", "CASH_OUT"):
+        print("[INFO] ADJUSTMENTDEDUCT detected - executing category selection")
+        
+        # ======================= Click on 'category' combobox and select 'Advance' =======================
+
+        wait = WebDriverWait(driver, 15)
+        out_radio = wait.until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, 'input[type="radio"][value="out"]'))
+        )
+        
+        smart_click(out_radio)
+        print("[INFO] Successfully clicked 'out' radio button for withdrawal transaction")
+
+        try:
+            # 1. Wait for and click the GAME div
+            game_div = WebDriverWait(driver, 10).until(
+                EC.element_to_be_clickable((By.CSS_SELECTOR, 'div.item[data-value="GAME"]'))
+            )
+            game_div.click()
+            print("Clicked the GAME element.")
+
+            print("[DEBUG] Looking for dropdown and Advance option...")
+            try:
+                dropdown = WebDriverWait(driver, 10).until(
+                    EC.visibility_of_element_located((By.XPATH, "//div[@class='ts-dropdown single' and contains(@style,'display: block')]"))
+                )
+                print(f"[DEBUG] Found dropdown: {dropdown}")
+                print(f"[DEBUG] Dropdown style: {dropdown.get_attribute('style')}")
+                
+                advance_option = dropdown.find_element(By.XPATH, ".//div[@data-value='Advance']")
+                print(f"[DEBUG] Found Advance option: {advance_option}")
+                print(f"[DEBUG] Advance option text: {advance_option.text}")
+                print(f"[DEBUG] Advance option data-value: {advance_option.get_attribute('data-value')}")
+                
+                advance_option.click()
+                print("[DEBUG] Successfully clicked Advance option")
+            except Exception as dropdown_error:
+                print(f"[DEBUG] Failed to find/click Advance option: {dropdown_error}")
+                # Try alternative approach
+                print("[DEBUG] Trying alternative selector...")
+                try:
+                    advance_alt = WebDriverWait(driver, 5).until(
+                        EC.element_to_be_clickable((By.XPATH, "//div[@data-value='Advance']"))
+                    )
+                    advance_alt.click()
+                    print("[DEBUG] Successfully clicked Advance with alternative selector")
+                except Exception as alt_error:
+                    print(f"[DEBUG] Alternative approach also failed: {alt_error}")
+                    raise dropdown_error
+
+
+        except Exception as e:
+            print("Error:", e)
+
+        time.sleep(2)
+
+# ======================= Click on 'Sub Category' combobox and select 'External Transfer' =======================
+
+        try:
+            # Wait until the element is present
+            element = WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located(
+                    (By.CSS_SELECTOR, 'div.item[data-value="32"][data-ts-item]')
+                )
+            )
+            
+            # Click the element
+            element.click()
+            print("Element clicked successfully!")
+
+        except Exception as e:
+            print(f"Failed to click the element: {e}")
+
+        # try:
+        #     # Wait until the input element is visible
+        #     input_element = WebDriverWait(driver, 10).until(
+        #         EC.visibility_of_element_located(
+        #             (By.CSS_SELECTOR, 'input#tomselect-4-ts-control[role="combobox"]')
+        #         )
+        #     )
+        #     
+        #     # Send multiple BACKSPACE keys to "clear"
+        #     for _ in range(30):  # adjust 30 based on max expected length
+        #         input_element.send_keys(Keys.BACKSPACE)
+        #         time.sleep(0.05)  # small delay to ensure JS catches it
+
+        #     time.sleep(0.5)
+        #     input_element.send_keys("External Transfer")
+        #     time.sleep(1)
+        #     input_element.send_keys(Keys.ENTER)
+        #     time.sleep(1)
+        #     print("Text sent successfully!")
+
+        # except Exception as e:
+        #     print(f"Failed to send keys: {e}")
+
+        # time.sleep(.5)
+
+    else:
+        print(f"[INFO] Transaction type '{transaction_type}' - skipping category/subcategory selection")
 
     # Click 'out' radio button only for withdrawal transactions
-    transaction_type = record.get("Transaction Type", "")
     # print(f"[DEBUG] Record transaction type: '{transaction_type}' (upper: '{transaction_type.upper()}')")
     # print(f"[DEBUG] Is withdrawal check: {transaction_type.upper() == 'WITHDRAWAL'}")
     
@@ -730,9 +939,9 @@ def parse_and_execute(filename):
                 detected_gateway = match.group(1)
                 if detected_gateway in supported_gateways:
                     current_gateway = detected_gateway
-                    if current_gateway not in performed_gateways:
-                        gateway_setup_movement(current_gateway)
-                        performed_gateways.add(current_gateway)
+                    # Always call gateway_setup_movement for each gateway section (deposits/withdrawals)
+                    gateway_setup_movement(current_gateway)
+                    performed_gateways.add(current_gateway)
                 else:
                     print(f"[WARNING] Unsupported gateway '{detected_gateway}', skipping records.")
                     current_gateway = None
