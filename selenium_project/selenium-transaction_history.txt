@@ -1,38 +1,116 @@
+================================================================================
+                              DEPOSITS
+================================================================================
+
+==== Laxmi_bank_Baijianath_20250407 (87 records) | Total Amount: Rs 229,510.00 ====
+
+Record #1
+Order ID: 10114
+Transaction Type: DEPOSIT
+Phone Number: rajutimilsina
+Amount: 30,000.00
+Bank Charges: -
+Balance: 140371.18
+Time: 2025-09-17 19:57:20
+
+Record #2
+Order ID: 10113
+Transaction Type: DEPOSIT
+Phone Number: Sabin6121
+Amount: 500.00
+Bank Charges: -
+Balance: 110371.18
+Time: 2025-09-17 19:54:04
+
+Record #3
+Order ID: 10111
+Transaction Type: DEPOSIT
+Phone Number: Khursedmiya
+Amount: 200.00
+Bank Charges: -
+Balance: 123871.18
+Time: 2025-09-17 19:30:11
+
+Record #4
+Order ID: 10110
+Transaction Type: DEPOSIT
+Phone Number: Nishu111
+Amount: 500.00
+Bank Charges: -
+Balance: 123671.18
+Time: 2025-09-17 19:26:38
+
+Record #5
+Order ID: 10109
+Transaction Type: DEPOSIT
+Phone Number: Pusparaj557
+Amount: 990.00
+Bank Charges: -
+Balance: 123171.18
+Time: 2025-09-17 19:04:32
+
+Record #6
+Order ID: 10108
+Transaction Type: MANUAL_DEPOSIT
+Phone Number: khansaukat351
+Amount: 500.00
+Bank Charges: -
+Balance: 122181.18
+Time: 2025-09-17 19:00:44
+
+Record #7
+Order ID: 10107
+Transaction Type: DEPOSIT
+Phone Number: rajutimilsina
+Amount: 18,000.00
+Bank Charges: -
+Balance: 121681.18
+Time: 2025-09-17 18:56:08
+
+Record #8
+Order ID: 10106
+Transaction Type: DEPOSIT
+Phone Number: rajutimilsina
+Amount: 19,000.00
+Bank Charges: -
+Balance: 103681.18
+Time: 2025-09-17 18:42:21
 
 
 ================================================================================
                               WITHDRAWALS
 ================================================================================
 
-==== Esewa_bank_Shankar Yadav_20250612 (4 records) | Total Amount: Rs 4,606.00 ====
+==== Laxmi_bank_Baijianath_20250407 (24 records) | Total Amount: Rs 216,349.00 ====
 
 Record #1
-Order ID: 9248
-Transaction Type: ADJUSTMENTDEDUCT
-Phone Number: -
-Amount: 0.00
+Order ID: 10112
+Transaction Type: WITHDRAWAL
+Phone Number: Nobin gole
+Amount: 14,000.00
 Bank Charges: -
-Time: 2025-09-09 18:14:58
+Balance: 109871.18
+Time: 2025-09-17 19:34:48
 
 
 =========================== GRAND TOTAL for All Gateways ===========================
 
-  DEPOSITS Records: 31
-  WITHDRAWALS Records: 7
+  DEPOSITS Records: 88
+  WITHDRAWALS Records: 24
 
-==== pg Esewa_bank_Shankar Yadav_20250612_09/09/2025 ====
+==== pg Laxmi_bank_Baijianath_20250407_09/17/2025 ====
 
-  DEPOSITS Records: 4
-  DEPOSITS Amount: 2,100.00
+  DEPOSITS Records: 87
+  DEPOSITS Amount: 229,510.00
 
-  WITHDRAWALS Records: 4
-  WITHDRAWALS Amount: 4,606.00
+  WITHDRAWALS Records: 24
+  WITHDRAWALS Amount: 216,349.00
 
-==== pg Laxmi_bank_Baijianath_20250407_09/09/2025 ====
+==== pg Esewa_bank_Shankar Yadav_20250612_09/17/2025 ====
 
-  DEPOSITS Records: 27
-  DEPOSITS Amount: 18,170.00
+  DEPOSITS Records: 1
+  DEPOSITS Amount: 500.00
 
-  WITHDRAWALS Records: 3
-  WITHDRAWALS Amount: 4,740.00
+  WITHDRAWALS Records: 0
+  WITHDRAWALS Amount: 0.00
 

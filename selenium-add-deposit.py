@@ -15,6 +15,10 @@ import platform
 import re
 from selenium.webdriver import ActionChains
 from selenium.common.exceptions import TimeoutException
+import subprocess
+import threading
+import queue
+from terminal_utils import setup_automation_terminal, cleanup_terminal, print_status
 
 
 
@@ -32,12 +36,12 @@ def wait_for_overlay_to_disappear(driver, max_wait=5):
             # Quick check if overlay exists
             overlays = driver.find_elements(By.CSS_SELECTOR, selector)
             if overlays and overlays[0].is_displayed():
-                print(f"[INFO] {selector} overlay detected, waiting...")
+                enhanced_print(f"[INFO] {selector} overlay detected, waiting...")
                 WebDriverWait(driver, max_wait).until(
                     EC.invisibility_of_element_located((By.CSS_SELECTOR, selector))
                 )
                 overlay_found = True
-                print(f"[INFO] {selector} overlay disappeared")
+                enhanced_print(f"[INFO] {selector} overlay disappeared")
         except:
             continue
     
@@ -73,7 +77,7 @@ def smart_click(element, verify_callback=None):
         error_msg = str(click_error)
         # Only retry if it's an overlay blocking issue
         if "obscures it" in error_msg or "not clickable" in error_msg:
-            print("[INFO] Overlay blocking click, trying JS click...")
+            enhanced_print("[INFO] Overlay blocking click, trying JS click...")
             if wait_for_overlay_to_disappear(driver, max_wait=3):
                 try:
                     driver.execute_script("arguments[0].click();", element)
@@ -82,8 +86,8 @@ def smart_click(element, verify_callback=None):
                         return verify_callback()
                     return True
                 except Exception as js_click_error:
-                    print(f"[INFO] JS click also failed: {js_click_error}")
-                    print("[INFO] Pressing Enter to dismiss modal/overlay...")
+                    enhanced_print(f"[INFO] JS click also failed: {js_click_error}")
+                    enhanced_print("[INFO] Pressing Enter to dismiss modal/overlay...")
                     element.send_keys(Keys.ENTER)
                     time.sleep(0.5)
                     if verify_callback:
@@ -98,7 +102,7 @@ def reliable_click_with_locator(locator, max_attempts=3, delay=1, verify_callbac
     """
     for attempt in range(max_attempts):
         try:
-            print(f"[INFO] Attempting click with locator (attempt {attempt + 1}/{max_attempts})")
+            enhanced_print(f"[INFO] Attempting click with locator (attempt {attempt + 1}/{max_attempts})")
             
             # Wait for any overlays to disappear
             wait_for_overlay_to_disappear(driver, max_wait=3)
@@ -115,35 +119,35 @@ def reliable_click_with_locator(locator, max_attempts=3, delay=1, verify_callbac
             # Try normal click first
             try:
                 element.click()
-                print("[INFO] Normal click successful")
+                enhanced_print("[INFO] Normal click successful")
             except Exception as click_error:
-                print(f"[WARN] Normal click failed: {click_error}")
+                enhanced_print(f"[WARN] Normal click failed: {click_error}")
                 # Fallback to JavaScript click
-                print("[INFO] Trying JavaScript click...")
+                enhanced_print("[INFO] Trying JavaScript click...")
                 driver.execute_script("arguments[0].click();", element)
-                print("[INFO] JavaScript click successful")
+                enhanced_print("[INFO] JavaScript click successful")
             
             time.sleep(0.5)
             
             # If verification callback provided, use it
             if verify_callback and not verify_callback():
                 if attempt < max_attempts - 1:
-                    print(f"[WARN] Click verification failed, retrying in {delay} seconds...")
+                    enhanced_print(f"[WARN] Click verification failed, retrying in {delay} seconds...")
                     time.sleep(delay)
                     continue
                 else:
-                    print("[ERROR] Click verification failed after all attempts")
+                    enhanced_print("[ERROR] Click verification failed after all attempts")
                     return False
             
-            print("[INFO] Click successful")
+            enhanced_print("[INFO] Click successful")
             return True
             
         except Exception as e:
-            print(f"[WARN] Click attempt {attempt + 1} failed: {e}")
+            enhanced_print(f"[WARN] Click attempt {attempt + 1} failed: {e}")
             if attempt < max_attempts - 1:
                 time.sleep(delay)
             else:
-                print(f"[ERROR] All click attempts failed: {e}")
+                enhanced_print(f"[ERROR] All click attempts failed: {e}")
                 raise e
     return False
 
@@ -154,7 +158,7 @@ def reliable_click(element, max_attempts=3, delay=1, verify_callback=None):
     """
     for attempt in range(max_attempts):
         try:
-            print(f"[INFO] Attempting click (attempt {attempt + 1}/{max_attempts})")
+            enhanced_print(f"[INFO] Attempting click (attempt {attempt + 1}/{max_attempts})")
             
             # Wait for any overlays to disappear
             wait_for_overlay_to_disappear(driver, max_wait=3)
@@ -166,41 +170,41 @@ def reliable_click(element, max_attempts=3, delay=1, verify_callback=None):
             # Try normal click first
             try:
                 element.click()
-                print("[INFO] Normal click successful")
+                enhanced_print("[INFO] Normal click successful")
             except Exception as click_error:
-                print(f"[WARN] Normal click failed: {click_error}")
+                enhanced_print(f"[WARN] Normal click failed: {click_error}")
                 # Fallback to JavaScript click
-                print("[INFO] Trying JavaScript click...")
+                enhanced_print("[INFO] Trying JavaScript click...")
                 driver.execute_script("arguments[0].click();", element)
-                print("[INFO] JavaScript click successful")
+                enhanced_print("[INFO] JavaScript click successful")
             
             time.sleep(0.5)
             
             # If verification callback provided, use it
             if verify_callback and not verify_callback():
                 if attempt < max_attempts - 1:
-                    print(f"[WARN] Click verification failed, retrying in {delay} seconds...")
+                    enhanced_print(f"[WARN] Click verification failed, retrying in {delay} seconds...")
                     time.sleep(delay)
                     continue
                 else:
-                    print("[ERROR] Click verification failed after all attempts")
+                    enhanced_print("[ERROR] Click verification failed after all attempts")
                     return False
             
-            print("[INFO] Click successful")
+            enhanced_print("[INFO] Click successful")
             return True
             
         except Exception as e:
             error_msg = str(e)
-            print(f"[WARN] Click attempt {attempt + 1} failed: {e}")
+            enhanced_print(f"[WARN] Click attempt {attempt + 1} failed: {e}")
             
             # Check if it's a stale element error
             if "stale" in error_msg.lower() or "not connected to the DOM" in error_msg:
-                print("[WARN] Stale element detected - element needs to be re-found")
+                enhanced_print("[WARN] Stale element detected - element needs to be re-found")
                 
             if attempt < max_attempts - 1:
                 time.sleep(delay)
             else:
-                print(f"[ERROR] All click attempts failed: {e}")
+                enhanced_print(f"[ERROR] All click attempts failed: {e}")
                 raise e
     return False
 
@@ -243,7 +247,7 @@ def check_player_id_toast(driver, timeout=10):
                 (By.XPATH, "//div[contains(@class, 'toastify') and contains(text(), 'The player id field is required.')]")
             )
         )
-        print("[LOG] Toast appeared: Player ID field is required.")
+        enhanced_print("[LOG] Toast appeared: Player ID field is required.")
         return True
     except TimeoutException:
         return False
@@ -260,10 +264,10 @@ def click_bank_transactions_link(driver, timeout=5):
             )
         )
         link.click()
-        print("[LOG] Clicked Bank Transactions link.")
+        enhanced_print("[LOG] Clicked Bank Transactions link.")
         return True
     except TimeoutException:
-        print("[LOG] Bank Transactions link not found within timeout.")
+        enhanced_print("[LOG] Bank Transactions link not found within timeout.")
         return False
 
 
@@ -285,28 +289,155 @@ options = Options()
 # Setup the driver
 service = Service(GeckoDriverManager().install())
 driver = webdriver.Firefox(service=service, options=options)
+
+# Maximize window
 driver.maximize_window()
 
 
 
+# ======== Status Terminal Setup ========
+status_queue = queue.Queue()
+status_process = None
+
+def create_status_terminal():
+    """Create a separate Windows terminal for status display"""
+    global status_process
+    try:
+        # Create a batch file to keep the terminal open with custom size
+        batch_content = '''@echo off
+mode con: cols=80 lines=25
+title Selenium Status Monitor
+echo ========================================
+echo     SELENIUM DEPOSIT AUTOMATION STATUS
+echo ========================================
+echo.
+echo Waiting for status updates...
+echo.
+python -c "import sys, time; exec(open('status_monitor.py').read())" 2>nul
+if not exist status_monitor.py (
+    python -c "import time; [print(f'[{time.strftime(\"%%H:%%M:%%S\")}] Status monitor running... Press Ctrl+C to close') or time.sleep(2) for _ in iter(int, 1)]"
+)
+pause
+'''
+
+        with open('status_terminal.bat', 'w') as f:
+            f.write(batch_content)
+
+        # Start the terminal with custom size
+        status_process = subprocess.Popen(
+            ['cmd', '/c', 'start', 'status_terminal.bat'],
+            shell=True,
+            creationflags=subprocess.CREATE_NEW_CONSOLE
+        )
+        enhanced_print("[INFO] Status terminal window opened")
+        return True
+    except Exception as e:
+        enhanced_print(f"[WARNING] Could not create status terminal: {e}")
+        return False
+
+def log_to_status_terminal(message):
+    """Log message to the status terminal"""
+    try:
+        # Write to a status file that the terminal monitors (without timestamp)
+        with open('status_log.txt', 'a', encoding='utf-8') as f:
+            f.write(f"{message}\n")
+    except Exception as e:
+        pass  # Fail silently if status logging fails
+
+def enhanced_print(message, status_only=False):
+    """Print to both main console and status terminal"""
+    # Remove emojis from message
+    import re
+    clean_message = re.sub(r'[\U0001F600-\U0001F64F\U0001F300-\U0001F5FF\U0001F680-\U0001F6FF\U0001F700-\U0001F77F\U0001F780-\U0001F7FF\U0001F800-\U0001F8FF\U0001F900-\U0001F9FF\U0001FA00-\U0001FA6F\U0001FA70-\U0001FAFF\U00002702-\U000027B0\U000024C2-\U0001F251]', '', message)
+
+    if not status_only:
+        print(clean_message)
+    log_to_status_terminal(clean_message)
+
+# ======== Website Configuration ========
+website_configs = {
+    "1": {
+        "name": "NepalWin",
+        "merchant_code": "nepalwin",
+        "username": "kewlim888_nepalwin",
+        "password": "aaaa1111"
+    },
+    "2": {
+        "name": "95np",
+        "merchant_code": "95np",
+        "username": "alex_95np",
+        "password": "asdf8888"
+    }
+}
+
+def select_website():
+    """Display menu and get user selection"""
+    print("\n" + "="*50)
+    print("           SELECT WEBSITE")
+    print("="*50)
+
+    for key, config in website_configs.items():
+        print(f"{key}. {config['name']}")
+
+    print("="*50)
+
+    while True:
+        try:
+            choice = input("Enter your choice (1-2): ").strip()
+            if choice in website_configs:
+                selected_config = website_configs[choice]
+                enhanced_print(f"\nSelected: {selected_config['name']}")
+                enhanced_print(f"Merchant: {selected_config['merchant_code']}")
+                enhanced_print(f"Username: {selected_config['username']}")
+                enhanced_print("-"*50)
+                return selected_config
+            else:
+                print("Invalid choice. Please enter 1 or 2.")
+        except KeyboardInterrupt:
+            print("\n\nOperation cancelled by user")
+            exit(0)
+
+# Initialize status logging
+enhanced_print("Starting Selenium Deposit Automation")
+
+# Create status terminal
+if create_status_terminal():
+    enhanced_print("Status monitoring terminal opened")
+else:
+    enhanced_print("Status terminal creation failed - continuing without separate window")
+
+# Setup terminal with custom settings
+setup_automation_terminal("Add Deposit")
+
+# Select website configuration
+config = select_website()
+enhanced_print(f"Selected website: {config['name']}")
+
+# Login with selected configuration
+enhanced_print(f"\nConnecting to RocketGo for {config['name']}...")
 driver.get("https://www.rocketgo.asia/login")
+enhanced_print("Loading login page...")
 
 wait = WebDriverWait(driver, 40)
 merchant_input = wait.until(EC.presence_of_element_located((By.NAME, "merchant_code")))
-merchant_input.send_keys("nepalwin")
+merchant_input.send_keys(config['merchant_code'])
 
 wait = WebDriverWait(driver, 40)
 username_input = wait.until(EC.presence_of_element_located((By.NAME, "username")))
-username_input.send_keys("kewlim888_nepalwin")
+username_input.send_keys(config['username'])
 
 wait = WebDriverWait(driver, 40)
 password_input = wait.until(EC.presence_of_element_located((By.NAME, "password")))
-password_input.send_keys("aaaa1111"+ Keys.ENTER)
+password_input.send_keys(config['password'] + Keys.ENTER)
+
+enhanced_print(f"Login attempted for {config['name']}")
 
 time.sleep(3)
 
+enhanced_print("Navigating to Bank Transactions...")
 click_bank_transactions_link(driver)
 wait_for_overlay_to_disappear(driver, max_wait=5)
+enhanced_print("Bank Transactions page loaded")
 
 
 def remove_bom(line):
@@ -320,11 +451,12 @@ def remove_bom(line):
 
 
 def gateway_setup_movement(gateway_name):
-    print(f"\033[93m[Gateway Setup] Executing setup for {gateway_name}\033[0m")
+    enhanced_print(f"\033[93m[Gateway Setup] Executing setup for {gateway_name}\033[0m")
 
     gateway_map = {
         "Esewa_bank_Shankar Yadav_20250612": "ESEWA SHANKAR YADAV",
-        "Laxmi_bank_Baijianath_20250407": "LAXMI BANK BAIJANATH YADAV"
+        "Laxmi_bank_Baijianath_20250407": "LAXMI BANK BAIJANATH YADAV",
+        "Laxmi_bank_Subash Sunar_20250806": "LAXMI BANK SUBASH SUNAR"
     }
 
     if gateway_name in gateway_map:
@@ -359,16 +491,16 @@ def enter_gateway_name(gateway_text):
     driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", gateway_input)
     time.sleep(0.3)
 
-    # print("Displayed:", gateway_input.is_displayed())
-    # print("Enabled:", gateway_input.is_enabled())
-    # print("Size:", gateway_input.size)
-    # print("Location:", gateway_input.location)
+    # enhanced_print("Displayed:", gateway_input.is_displayed())
+    # enhanced_print("Enabled:", gateway_input.is_enabled())
+    # enhanced_print("Size:", gateway_input.size)
+    # enhanced_print("Location:", gateway_input.location)
 
     try:
         # Try normal input method first
         gateway_input.send_keys(gateway_text)
     except Exception as e:
-        print(f"[WARN] Normal input failed, using JS. Reason: {e}")
+        enhanced_print(f"[WARN] Normal input failed, using JS. Reason: {e}")
         # Fallback to JS-based input
         driver.execute_script("""
             arguments[0].value = arguments[1];
@@ -383,7 +515,7 @@ def enter_gateway_name(gateway_text):
         dropdown_options = driver.find_elements(By.CSS_SELECTOR, ".ts-dropdown .option, .ts-dropdown-content .option, [data-selectable='true'], .dropdown-item")
         
         if len(dropdown_options) == 0:
-            print("[WARN] No dropdown options found, checking for alternative selectors...")
+            enhanced_print("[WARN] No dropdown options found, checking for alternative selectors...")
             # Try alternative selectors for dropdown options
             alternative_selectors = [
                 ".ts-dropdown [data-value]",
@@ -396,26 +528,26 @@ def enter_gateway_name(gateway_text):
             for selector in alternative_selectors:
                 dropdown_options = driver.find_elements(By.CSS_SELECTOR, selector)
                 if len(dropdown_options) > 0:
-                    print(f"[INFO] Found {len(dropdown_options)} options with selector: {selector}")
+                    enhanced_print(f"[INFO] Found {len(dropdown_options)} options with selector: {selector}")
                     break
         
         if len(dropdown_options) > 0:
-            print(f"[INFO] Found {len(dropdown_options)} dropdown options")
+            enhanced_print(f"[INFO] Found {len(dropdown_options)} dropdown options")
             # Press Enter to select the first matching option
             gateway_input.send_keys(Keys.ENTER)
-            print(f"[INFO] Gateway '{gateway_text}' entered and selected.")
+            enhanced_print(f"[INFO] Gateway '{gateway_text}' entered and selected.")
         else:
-            print("[WARN] No dropdown options available - the dropdown might be undefined/empty")
-            print("[INFO] Trying to proceed without selection...")
+            enhanced_print("[WARN] No dropdown options available - the dropdown might be undefined/empty")
+            enhanced_print("[INFO] Trying to proceed without selection...")
             # Try pressing Enter anyway in case the input is accepted
             gateway_input.send_keys(Keys.ENTER)
-            print(f"[INFO] Attempted to enter '{gateway_text}' without dropdown options.")
+            enhanced_print(f"[INFO] Attempted to enter '{gateway_text}' without dropdown options.")
             
     except Exception as e:
-        print(f"[WARN] Error checking dropdown options: {e}")
+        enhanced_print(f"[WARN] Error checking dropdown options: {e}")
         # Fallback - try pressing Enter anyway
         gateway_input.send_keys(Keys.ENTER)
-        print(f"[INFO] Fallback: Attempted to enter '{gateway_text}'.")
+        enhanced_print(f"[INFO] Fallback: Attempted to enter '{gateway_text}'.")
     
     time.sleep(0.5)
 
@@ -424,7 +556,7 @@ def enter_gateway_name(gateway_text):
 
 
     # --- Check Table load with multiple selectors ---
-    print("[INFO] Waiting for table to load...")
+    enhanced_print("[INFO] Waiting for table to load...")
     table_selectors = [
         (By.CLASS_NAME, "gridjs-wrapper"),
         (By.CSS_SELECTOR, ".gridjs-wrapper"),
@@ -441,15 +573,15 @@ def enter_gateway_name(gateway_text):
     for selector in table_selectors:
         try:
             wait.until(EC.presence_of_element_located(selector))
-            print(f"[INFO] Table loaded with selector: {selector}")
+            enhanced_print(f"[INFO] Table loaded with selector: {selector}")
             table_loaded = True
             break
         except Exception as e:
-            print(f"[DEBUG] Table selector {selector} failed: {e}")
+            enhanced_print(f"[DEBUG] Table selector {selector} failed: {e}")
             continue
     
     if not table_loaded:
-        print("[WARN] Table loading timeout - proceeding anyway")
+        enhanced_print("[WARN] Table loading timeout - proceeding anyway")
     
     time.sleep(2)  # Additional wait for table content to populate
 
@@ -461,7 +593,9 @@ def enter_gateway_name(gateway_text):
 def add_transaction_details(record):
 
     """Fill Order ID, Phone Number, and Amount into form."""
-    print(f"Processing Record: {record}")
+    enhanced_print(f"Processing Record: Order ID \033[92m{record.get('Order ID', 'Unknown')}\033[0m")
+    enhanced_print(f"   Amount: {record.get('Amount', 'Unknown')}")
+    enhanced_print(f"   Phone: {record.get('Phone Number', 'Unknown')}")
 
     # Wait briefly for page load
     time.sleep(1)
@@ -474,7 +608,7 @@ def add_transaction_details(record):
     
     # Single smart click with modal verification
     smart_click(add_button, verify_callback=lambda: verify_modal_opened(driver))
-    print("[INFO] Add Transaction button clicked")
+    enhanced_print("[INFO] Add Transaction button clicked")
 
     # === Wait for the window UI to appear ===
     WebDriverWait(driver, 20, poll_frequency=0.2).until(
@@ -482,13 +616,13 @@ def add_transaction_details(record):
             By.CSS_SELECTOR, ".flex.justify-between.px-4.py-3.rounded-t-lg.bg-slate-200.dark\\:bg-navy-800.sm\\:px-5"
         ))
     )
-    print("[INFO] Target Window element appeared — proceeding...")
+    enhanced_print("[INFO] Target Window element appeared — proceeding...")
 
     # Check transaction type and execute category/subcategory selection only for ADJUSTMENTADD
     transaction_type = record.get("Transaction Type", "")
     
     if transaction_type.upper() in ("ADJUSTMENTADD", "CASH_IN"):
-        print(f"[INFO] {transaction_type} detected - executing category and subcategory selection")
+        enhanced_print(f"[INFO] {transaction_type} detected - executing category and subcategory selection")
         
         # ======================= Click on 'category' combobox and select 'Advance' =======================
 
@@ -498,66 +632,66 @@ def add_transaction_details(record):
                 EC.element_to_be_clickable((By.CSS_SELECTOR, 'div.item[data-value="GAME"]'))
             )
             game_div.click()
-            print("Clicked the GAME element.")
+            enhanced_print("Clicked the GAME element.")
 
             # 2. Track and work with the GAME div element
-            # print(f"[DEBUG] GAME div element: {game_div}")
-            # print(f"[DEBUG] GAME div data-value: {game_div.get_attribute('data-value')}")
-            # print(f"[DEBUG] GAME div class: {game_div.get_attribute('class')}")
-            # print(f"[DEBUG] GAME div text: {game_div.text}")
+            # enhanced_print(f"[DEBUG] GAME div element: {game_div}")
+            # enhanced_print(f"[DEBUG] GAME div data-value: {game_div.get_attribute('data-value')}")
+            # enhanced_print(f"[DEBUG] GAME div class: {game_div.get_attribute('class')}")
+            # enhanced_print(f"[DEBUG] GAME div text: {game_div.text}")
             
             # # 3. Try to input 'Advance' directly on the GAME element
-            # print("[DEBUG] Attempting to input 'Advance' on GAME div...")
+            # enhanced_print("[DEBUG] Attempting to input 'Advance' on GAME div...")
             # try:
             #     game_div.clear()
             #     game_div.send_keys("Advance")
             #     time.sleep(.5)
             #     game_div.send_keys(Keys.ENTER)
-            #     print("[DEBUG] Input set to 'Advance' on GAME div.")
+            #     enhanced_print("[DEBUG] Input set to 'Advance' on GAME div.")
             #     time.sleep(.5)
             # except Exception as e:
-            #     print(f"[DEBUG] Failed to input on GAME div: {e}")
+            #     enhanced_print(f"[DEBUG] Failed to input on GAME div: {e}")
             #     # Try using JavaScript to set value
-            #     print("[DEBUG] Trying JavaScript approach...")
+            #     enhanced_print("[DEBUG] Trying JavaScript approach...")
             #     driver.execute_script("""
             #         arguments[0].textContent = 'Advance';
             #         arguments[0].dispatchEvent(new Event('input', { bubbles: true }));
             #     """, game_div)
-            #     print("[DEBUG] Set 'Advance' using JavaScript.")
+            #     enhanced_print("[DEBUG] Set 'Advance' using JavaScript.")
 
 
             # ============= Select 'Advance' on dropdown list ============= 
-            print("[DEBUG] Looking for dropdown and Advance option...")
+            enhanced_print("[DEBUG] Looking for dropdown and Advance option...")
             try:
                 dropdown = WebDriverWait(driver, 10).until(
                     EC.visibility_of_element_located((By.XPATH, "//div[@class='ts-dropdown single' and contains(@style,'display: block')]"))
                 )
-                print(f"[DEBUG] Found dropdown: {dropdown}")
-                print(f"[DEBUG] Dropdown style: {dropdown.get_attribute('style')}")
+                enhanced_print(f"[DEBUG] Found dropdown: {dropdown}")
+                enhanced_print(f"[DEBUG] Dropdown style: {dropdown.get_attribute('style')}")
                 
                 advance_option = dropdown.find_element(By.XPATH, ".//div[@data-value='Advance']")
-                print(f"[DEBUG] Found Advance option: {advance_option}")
-                print(f"[DEBUG] Advance option text: {advance_option.text}")
-                print(f"[DEBUG] Advance option data-value: {advance_option.get_attribute('data-value')}")
+                enhanced_print(f"[DEBUG] Found Advance option: {advance_option}")
+                enhanced_print(f"[DEBUG] Advance option text: {advance_option.text}")
+                enhanced_print(f"[DEBUG] Advance option data-value: {advance_option.get_attribute('data-value')}")
                 
                 advance_option.click()
-                print("[DEBUG] Successfully clicked Advance option")
+                enhanced_print("[DEBUG] Successfully clicked Advance option")
             except Exception as dropdown_error:
-                print(f"[DEBUG] Failed to find/click Advance option: {dropdown_error}")
+                enhanced_print(f"[DEBUG] Failed to find/click Advance option: {dropdown_error}")
                 # Try alternative approach
-                print("[DEBUG] Trying alternative selector...")
+                enhanced_print("[DEBUG] Trying alternative selector...")
                 try:
                     advance_alt = WebDriverWait(driver, 5).until(
                         EC.element_to_be_clickable((By.XPATH, "//div[@data-value='Advance']"))
                     )
                     advance_alt.click()
-                    print("[DEBUG] Successfully clicked Advance with alternative selector")
+                    enhanced_print("[DEBUG] Successfully clicked Advance with alternative selector")
                 except Exception as alt_error:
-                    print(f"[DEBUG] Alternative approach also failed: {alt_error}")
+                    enhanced_print(f"[DEBUG] Alternative approach also failed: {alt_error}")
                     raise dropdown_error
 
         except Exception as e:
-            print("Error:", e)
+            enhanced_print("Error:", e)
 
         time.sleep(.5)
         # ======================= Click on 'Sub Category' combobox and select 'Internal Transfer' =======================
@@ -571,7 +705,7 @@ def add_transaction_details(record):
             click_external_transfer(driver)
 
         except Exception as e:
-            print("Error:", e)
+            enhanced_print("Error:", e)
 
 
         try:
@@ -584,18 +718,15 @@ def add_transaction_details(record):
             click_internal_transfer(driver)
 
         except Exception as e:
-            print("Error:", e)
+            enhanced_print("Error:", e)
 
         time.sleep(.5)
     else:
-        print(f"[INFO] Transaction type '{transaction_type}' - skipping category/subcategory selection")
+        enhanced_print(f"[INFO] Transaction type '{transaction_type}' - skipping ADJUSTMENTADD/CASH_IN category/subcategory selection")
 
-
-# Check transaction type and execute category/subcategory selection only for ADJUSTMENTDEDUCT
-    transaction_type = record.get("Transaction Type", "")
-    
+    # Check transaction type and execute category/subcategory selection only for ADJUSTMENTDEDUCT
     if transaction_type.upper() in ("ADJUSTMENTDEDUCT", "CASH_OUT"):
-        print("[INFO] ADJUSTMENTDEDUCT detected - executing category selection")
+        enhanced_print("[INFO] ADJUSTMENTDEDUCT detected - executing category selection")
         
         # ======================= Click on 'category' combobox and select 'Advance' =======================
 
@@ -605,7 +736,7 @@ def add_transaction_details(record):
         )
         
         smart_click(out_radio)
-        print("[INFO] Successfully clicked 'out' radio button for withdrawal transaction")
+        enhanced_print("[INFO] Successfully clicked 'out' radio button for withdrawal transaction")
 
         try:
             # 1. Wait for and click the GAME div
@@ -613,59 +744,43 @@ def add_transaction_details(record):
                 EC.element_to_be_clickable((By.CSS_SELECTOR, 'div.item[data-value="GAME"]'))
             )
             game_div.click()
-            print("Clicked the GAME element.")
+            enhanced_print("Clicked the GAME element.")
 
-            print("[DEBUG] Looking for dropdown and Advance option...")
+            enhanced_print("[DEBUG] Looking for dropdown and Advance option...")
             try:
                 dropdown = WebDriverWait(driver, 10).until(
                     EC.visibility_of_element_located((By.XPATH, "//div[@class='ts-dropdown single' and contains(@style,'display: block')]"))
                 )
-                print(f"[DEBUG] Found dropdown: {dropdown}")
-                print(f"[DEBUG] Dropdown style: {dropdown.get_attribute('style')}")
+                enhanced_print(f"[DEBUG] Found dropdown: {dropdown}")
+                enhanced_print(f"[DEBUG] Dropdown style: {dropdown.get_attribute('style')}")
                 
                 advance_option = dropdown.find_element(By.XPATH, ".//div[@data-value='Advance']")
-                print(f"[DEBUG] Found Advance option: {advance_option}")
-                print(f"[DEBUG] Advance option text: {advance_option.text}")
-                print(f"[DEBUG] Advance option data-value: {advance_option.get_attribute('data-value')}")
+                enhanced_print(f"[DEBUG] Found Advance option: {advance_option}")
+                enhanced_print(f"[DEBUG] Advance option text: {advance_option.text}")
+                enhanced_print(f"[DEBUG] Advance option data-value: {advance_option.get_attribute('data-value')}")
                 
                 advance_option.click()
-                print("[DEBUG] Successfully clicked Advance option")
+                enhanced_print("[DEBUG] Successfully clicked Advance option")
             except Exception as dropdown_error:
-                print(f"[DEBUG] Failed to find/click Advance option: {dropdown_error}")
+                enhanced_print(f"[DEBUG] Failed to find/click Advance option: {dropdown_error}")
                 # Try alternative approach
-                print("[DEBUG] Trying alternative selector...")
+                enhanced_print("[DEBUG] Trying alternative selector...")
                 try:
                     advance_alt = WebDriverWait(driver, 5).until(
                         EC.element_to_be_clickable((By.XPATH, "//div[@data-value='Advance']"))
                     )
                     advance_alt.click()
-                    print("[DEBUG] Successfully clicked Advance with alternative selector")
+                    enhanced_print("[DEBUG] Successfully clicked Advance with alternative selector")
                 except Exception as alt_error:
-                    print(f"[DEBUG] Alternative approach also failed: {alt_error}")
+                    enhanced_print(f"[DEBUG] Alternative approach also failed: {alt_error}")
                     raise dropdown_error
 
 
         except Exception as e:
-            print("Error:", e)
+            enhanced_print("Error:", e)
 
         time.sleep(2)
 
-# ======================= Click on 'Sub Category' combobox and select 'External Transfer' =======================
-
-        try:
-            # Wait until the element is present
-            element = WebDriverWait(driver, 10).until(
-                EC.presence_of_element_located(
-                    (By.CSS_SELECTOR, 'div.item[data-value="32"][data-ts-item]')
-                )
-            )
-            
-            # Click the element
-            element.click()
-            print("Element clicked successfully!")
-
-        except Exception as e:
-            print(f"Failed to click the element: {e}")
 
         # try:
         #     # Wait until the input element is visible
@@ -685,31 +800,31 @@ def add_transaction_details(record):
         #     time.sleep(1)
         #     input_element.send_keys(Keys.ENTER)
         #     time.sleep(1)
-        #     print("Text sent successfully!")
+        #     enhanced_print("Text sent successfully!")
 
         # except Exception as e:
-        #     print(f"Failed to send keys: {e}")
+        #     enhanced_print(f"Failed to send keys: {e}")
 
         # time.sleep(.5)
 
     else:
-        print(f"[INFO] Transaction type '{transaction_type}' - skipping category/subcategory selection")
+        enhanced_print(f"[INFO] Transaction type '{transaction_type}' - skipping ADJUSTMENTDEDUCT/CASH_OUT category selection")
 
     # Click 'out' radio button only for withdrawal transactions
-    # print(f"[DEBUG] Record transaction type: '{transaction_type}' (upper: '{transaction_type.upper()}')")
-    # print(f"[DEBUG] Is withdrawal check: {transaction_type.upper() == 'WITHDRAWAL'}")
+    # enhanced_print(f"[DEBUG] Record transaction type: '{transaction_type}' (upper: '{transaction_type.upper()}')")
+    # enhanced_print(f"[DEBUG] Is withdrawal check: {transaction_type.upper() == 'WITHDRAWAL'}")
     
-    if transaction_type.upper() == "WITHDRAWAL":
-        print("[INFO] WITHDRAWAL detected - clicking 'out' radio button")
+    if transaction_type.upper() in ("WITHDRAWAL", "MANUAL_WITHDRAWAL", "ADJUSTMENTDEDUCT", "CASH_OUT"):
+        enhanced_print(f"[INFO] {transaction_type} detected - clicking 'out' radio button")
         wait = WebDriverWait(driver, 15)
         out_radio = wait.until(
             EC.element_to_be_clickable((By.CSS_SELECTOR, 'input[type="radio"][value="out"]'))
         )
         
         smart_click(out_radio)
-        print("[INFO] Successfully clicked 'out' radio button for withdrawal transaction")
+        enhanced_print(f"[INFO] Successfully clicked 'out' radio button for {transaction_type} transaction")
     else:
-        print(f"[INFO] Not a withdrawal (type: '{transaction_type}') - skipping 'out' radio button")
+        enhanced_print(f"[INFO] Not a withdrawal type (type: '{transaction_type}') - skipping 'out' radio button")
 
     # ===== Order ID =====
     order_id_input = WebDriverWait(driver, 20).until(
@@ -722,17 +837,56 @@ def add_transaction_details(record):
 
     order_id_input.clear()
     order_id_input.send_keys(record["Order ID"])
-    print(f"[INFO] Order ID entered: {record['Order ID']}")
+    enhanced_print(f"[INFO] Order ID entered: {record['Order ID']}")
 
 
-    # ===== Phone Number =====
+    # ===== Phone Number ===== (Only for DEPOSIT, MANUAL_DEPOSIT, WITHDRAWAL, MANUAL_WITHDRAWAL)
 
-    phone_number_input = WebDriverWait(driver, 20).until(
-        EC.presence_of_element_located((By.XPATH, "//input[@placeholder='Player ID']"))
-    )
-    phone_number_input.clear()
-    phone_number_input.send_keys(record["Phone Number"])
-    print(f"[INFO] Order ID entered: {record['Phone Number']}")
+    if transaction_type.upper() in ("DEPOSIT", "MANUAL_DEPOSIT", "WITHDRAWAL", "MANUAL_WITHDRAWAL"):
+        enhanced_print(f"[INFO] {transaction_type} transaction - filling phone number field")
+        
+        phone_number_input = WebDriverWait(driver, 20).until(
+            EC.presence_of_element_located((By.XPATH, "//input[@placeholder='Player ID']"))
+        )
+        
+        # Multiple scrolling approaches to ensure element is interactable
+        try:
+            # Approach 1: Scroll to top first
+            driver.execute_script("window.scrollTo(0, 0);")
+            time.sleep(0.5)
+            
+            # Approach 2: Scroll element into view
+            driver.execute_script("arguments[0].scrollIntoView({block: 'center', inline: 'center'});", phone_number_input)
+            time.sleep(0.5)
+            
+            # Approach 3: Additional scrolling to ensure visibility
+            driver.execute_script("""
+                arguments[0].focus();
+                arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});
+                window.scrollBy(0, -100);
+            """, phone_number_input)
+            time.sleep(1)
+            
+            # Try to clear the field
+            phone_number_input.clear()
+            enhanced_print("[DEBUG] Phone number input cleared successfully")
+            
+        except Exception as clear_error:
+            enhanced_print(f"[DEBUG] Clear failed: {clear_error}, trying JavaScript approach...")
+            # JavaScript fallback for clearing
+            driver.execute_script("arguments[0].value = '';", phone_number_input)
+            enhanced_print("[DEBUG] Phone number input cleared with JavaScript")
+        
+        # Enter the phone number
+        try:
+            phone_number_input.send_keys(record["Phone Number"])
+            enhanced_print(f"[INFO] Phone Number entered: {record['Phone Number']}")
+        except Exception as send_error:
+            enhanced_print(f"[DEBUG] Send keys failed: {send_error}, trying JavaScript...")
+            driver.execute_script("arguments[0].value = arguments[1];", phone_number_input, record["Phone Number"])
+            enhanced_print(f"[INFO] Phone Number entered with JavaScript: {record['Phone Number']}")
+    else:
+        enhanced_print(f"[INFO] {transaction_type} transaction - skipping phone number field")
 
 
 
@@ -743,7 +897,7 @@ def add_transaction_details(record):
     )
     amount_input.clear()
     amount_input.send_keys(str(record["Amount"]).replace(",", ""))
-    print(f"[INFO] Order ID entered: {record['Amount']}")
+    enhanced_print(f"[INFO] Order ID entered: {record['Amount']}")
 
 
 
@@ -754,9 +908,9 @@ def add_transaction_details(record):
         )
         bank_charge_input.clear()
         bank_charge_input.send_keys(str(record["Bank Tax"]).replace(",", ""))
-        print(f"[INFO] Bank Charge entered: {record['Bank Tax']}")
+        enhanced_print(f"[INFO] Bank Charge entered: {record['Bank Tax']}")
     else:
-        print("[INFO] Skipped Bank Charge input (value was '-')")
+        enhanced_print("[INFO] Skipped Bank Charge input (value was '-')")
 
 
 
@@ -768,14 +922,14 @@ def add_transaction_details(record):
     
     # Use smart click with calendar verification
     smart_click(calendar_input, verify_callback=lambda: verify_calendar_opened(driver))
-    print(f"[INFO] Calendar input clicked...")
+    enhanced_print(f"[INFO] Calendar input clicked...")
 
     calendar_popup = WebDriverWait(driver, 10).until(
         EC.presence_of_element_located((By.CLASS_NAME, "flatpickr-calendar"))
     )
 
     if "open" in calendar_popup.get_attribute("class"):
-        print("[INFO] Calendar popup is OPEN")
+        enhanced_print("[INFO] Calendar popup is OPEN")
 
         # Use platform-specific date format
         if platform.system() == "Windows":
@@ -789,13 +943,13 @@ def add_transaction_details(record):
                 driver.execute_script("arguments[0].scrollIntoView(true);", day)
                 # Use smart click for date selection
                 smart_click(day)
-                print(f"[INFO] Clicked date: {target_date}")
+                enhanced_print(f"[INFO] Clicked date: {target_date}")
                 break
         else:
-            print(f"[ERROR] Date '{target_date}' not found in picker.")
+            enhanced_print(f"[ERROR] Date '{target_date}' not found in picker.")
 
     else:
-        print("[WARN] Calendar popup did NOT open")
+        enhanced_print("[WARN] Calendar popup did NOT open")
 
 
     # ===== Hour =====
@@ -828,17 +982,29 @@ def add_transaction_details(record):
     if current_ampm != ampm_target:
         # Use smart click for AM/PM toggle
         smart_click(ampm_toggle)
-        print(f"[INFO] AM/PM toggled to {ampm_target}")
+        enhanced_print(f"[INFO] AM/PM toggled to {ampm_target}")
     else:
-        print(f"[INFO] AM/PM already set to {ampm_target}")
+        enhanced_print(f"[INFO] AM/PM already set to {ampm_target}")
 
     time.sleep(1)
     
-    # Select Player ID field (do nothing with it)
-    player_id_input = WebDriverWait(driver, 20).until(
-        EC.presence_of_element_located((By.XPATH, "//input[@placeholder='Player ID']"))
-    )
-    player_id_input.click()
+    # Select Player ID field (only for transactions that have phone number field)
+    if transaction_type.upper() in ("DEPOSIT", "MANUAL_DEPOSIT", "WITHDRAWAL", "MANUAL_WITHDRAWAL"):
+        try:
+            player_id_input = WebDriverWait(driver, 20).until(
+                EC.presence_of_element_located((By.XPATH, "//input[@placeholder='Player ID']"))
+            )
+            
+            # Add scrolling for Player ID field as well
+            driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", player_id_input)
+            time.sleep(0.3)
+            
+            player_id_input.click()
+            enhanced_print(f"[INFO] Player ID field clicked for {transaction_type}")
+        except Exception as player_click_error:
+            enhanced_print(f"[DEBUG] Player ID click failed: {player_click_error}, continuing...")
+    else:
+        enhanced_print(f"[INFO] {transaction_type} transaction - skipping Player ID field click")
 
     time.sleep(1)
     
@@ -847,33 +1013,33 @@ def add_transaction_details(record):
         # First try to press Enter on the calendar input to confirm the datetime selection
         calendar_input = driver.find_element(By.XPATH, "//input[@placeholder='Choose datetime...']")
         calendar_input.send_keys(Keys.ENTER)
-        print("[INFO] Calendar selection confirmed via Enter on calendar input")
+        enhanced_print("[INFO] Calendar selection confirmed via Enter on calendar input")
     except Exception as e:
-        print(f"[WARN] Could not confirm calendar via input: {e}")
+        enhanced_print(f"[WARN] Could not confirm calendar via input: {e}")
         # Fallback: press Enter on body to confirm calendar
         try:
             driver.find_element(By.TAG_NAME, "body").send_keys(Keys.ENTER)
-            print("[INFO] Calendar selection confirmed via Enter on body")
+            enhanced_print("[INFO] Calendar selection confirmed via Enter on body")
         except Exception as e2:
-            print(f"[WARN] Could not confirm calendar: {e2}")
+            enhanced_print(f"[WARN] Could not confirm calendar: {e2}")
     
     time.sleep(0.5)
     
     # Check for player ID toast after form submission
     if check_player_id_toast(driver):
-        print("\033[91m[WARN]\033[0m Player ID field validation failed - form not submitted")
+        enhanced_print("\033[91m[WARN]\033[0m Player ID field validation failed - form not submitted")
         
         # Try pressing Enter up to 3 times with 2s interval
         for attempt in range(5):
             try:
                 body = driver.find_element(By.TAG_NAME, "body")
                 body.send_keys(Keys.ENTER)
-                print(f"[INFO] Sent ENTER key to dismiss toast (attempt {attempt+1}/3)")
+                enhanced_print(f"[INFO] Sent ENTER key to dismiss toast (attempt {attempt+1}/3)")
                 time.sleep(3)
             except Exception as e:
-                print(f"[ERROR] Could not send ENTER key: {e}")
+                enhanced_print(f"[ERROR] Could not send ENTER key: {e}")
     else:
-        print("[INFO] No player ID toast detected - form submission successful")
+        enhanced_print("[INFO] No player ID toast detected - form submission successful")
     
     time.sleep(.5)
 
@@ -896,7 +1062,7 @@ def parse_and_execute(filename):
     current_transaction_type = "DEPOSIT"  # Default to DEPOSIT
 
     supported_gateways = {
-        "Laxmi_bank_Baijianath_20250407", "Esewa_bank_Shankar Yadav_20250612"
+        "Laxmi_bank_Baijianath_20250407", "Esewa_bank_Shankar Yadav_20250612", "Laxmi_bank_Subash Sunar_20250806"
     }
 
     # Temporary variables for one record
@@ -912,24 +1078,24 @@ def parse_and_execute(filename):
         # Detect WITHDRAWALS section banner
         if "WITHDRAWALS" in line and "=" in line:
             current_transaction_type = "WITHDRAWAL"
-            print(f"[INFO] Detected WITHDRAWALS section - switching to withdrawal mode: '{line}'")
+            enhanced_print(f"[INFO] Detected WITHDRAWALS section - switching to withdrawal mode: '{line}'")
             continue
 
         # Detect DEPOSITS section banner  
         if "DEPOSITS" in line and "=" in line:
             current_transaction_type = "DEPOSIT"
-            print(f"[INFO] Detected DEPOSITS section - switching to deposit mode: '{line}'")
+            enhanced_print(f"[INFO] Detected DEPOSITS section - switching to deposit mode: '{line}'")
             continue
 
         # Stop condition — flush records first
         if line.startswith("==== GRAND TOTAL for All Gateways:"):
-            print("[INFO] Reached GRAND TOTAL line. Stopping processing.")
+            enhanced_print("[INFO] Reached GRAND TOTAL line. Stopping processing.")
             break
 
         # Detect gateway header line
         if line.startswith("====") and "Total Amount" in line:
             if current_records:
-                print(f"[DEBUG] Flushing {len(current_records)} records under gateway '{current_gateway}'")
+                enhanced_print(f"[DEBUG] Flushing {len(current_records)} records under gateway '{current_gateway}'")
                 for record in current_records:
                     add_transaction_details(record)
             current_records = []
@@ -943,7 +1109,7 @@ def parse_and_execute(filename):
                     gateway_setup_movement(current_gateway)
                     performed_gateways.add(current_gateway)
                 else:
-                    print(f"[WARNING] Unsupported gateway '{detected_gateway}', skipping records.")
+                    enhanced_print(f"[WARNING] Unsupported gateway '{detected_gateway}', skipping records.")
                     current_gateway = None
             continue
 
@@ -971,7 +1137,7 @@ def parse_and_execute(filename):
 
                 # ✅ Only append once all fields are known (bank_tax can be None/missing)
                 if all([order_id, phone, amount, time_str, transaction_type]):
-                    print(f"[DEBUG] Creating record with Transaction Type: {transaction_type}")
+                    enhanced_print(f"[DEBUG] Creating record with Transaction Type: {transaction_type}")
                     current_records.append({
                         "Order ID": order_id,
                         "Phone Number": phone,
@@ -987,19 +1153,32 @@ def parse_and_execute(filename):
                     order_id = phone = amount = time_str = transaction_type = bank_tax = None
                     dt = hour_str = minute_str = None
             except ValueError:
-                print(f"[ERROR] Invalid datetime: {time_str}")
+                enhanced_print(f"[ERROR] Invalid datetime: {time_str}")
                 continue
 
     # ✅ Final flush at EOF
     if current_records:
-        print(f"[DEBUG] Final flush: {len(current_records)} records under gateway '{current_gateway}'")
+        enhanced_print(f"[DEBUG] Final flush: {len(current_records)} records under gateway '{current_gateway}'")
         for record in current_records:
             add_transaction_details(record)
 
 
 
 # ===== Function call HERE =====
+enhanced_print("📋 Starting transaction processing from file...")
 parse_and_execute("selenium_project/selenium-transaction_history.txt")
-time.sleep(2)  
+enhanced_print("All transactions processed successfully!")
+enhanced_print("Automation completed. Closing browser...")
+time.sleep(2)
 driver.quit()
+
+# Cleanup
+try:
+    if os.path.exists('status_terminal.bat'):
+        os.remove('status_terminal.bat')
+    enhanced_print("Cleanup completed")
+except:
+    pass
+
+cleanup_terminal()
 

@@ -13,6 +13,7 @@ import os
 from selenium.webdriver.support.ui import Select
 from datetime import datetime
 from collections import defaultdict
+from terminal_utils import setup_automation_terminal, cleanup_terminal, print_status
 
 def signal_handler(signum, frame):
     """Handle shutdown signals gracefully"""
@@ -48,16 +49,73 @@ driver.maximize_window()
 
 
 
-driver.get("https://bo.nepalwin.com/user/login")
+# ======== Website Configuration ========
+website_configs = {
+    "1": {
+        "name": "NepalWin",
+        "url": "https://bo.nepalwin.com/user/login",
+        "username": "kewlim888",
+        "password": "aaaa1111",
+        "username_xpath": "//input[@placeholder='Username:']",
+        "password_xpath": "//input[@placeholder='Password:']"
+    },
+    "2": {
+        "name": "95np",
+        "url": "https://bo.95np.com/user/login/",
+        "username": "tommy8888",
+        "password": "tommy6666",
+        "username_xpath": "//input[@placeholder='Username:']",
+        "password_xpath": "//input[@placeholder='Password:']"
+    }
+}
+
+def select_website():
+    """Display menu and get user selection"""
+    print("\n" + "="*50)
+    print("           SELECT WEBSITE")
+    print("="*50)
+    
+    for key, config in website_configs.items():
+        print(f"{key}. {config['name']}")
+    
+    print("="*50)
+    
+    while True:
+        try:
+            choice = input("Enter your choice (1-2): ").strip()
+            if choice in website_configs:
+                selected_config = website_configs[choice]
+                print(f"\n✅ Selected: {selected_config['name']}")
+                print(f"🌐 URL: {selected_config['url']}")
+                print(f"👤 Username: {selected_config['username']}")
+                print("-"*50)
+                return selected_config
+            else:
+                print("❌ Invalid choice. Please enter 1 or 2.")
+        except KeyboardInterrupt:
+            print("\n\n❌ Operation cancelled by user")
+            exit(0)
+
+# Setup terminal with custom settings
+setup_automation_terminal("Phone Number Crawler")
+
+# Select website configuration
+config = select_website()
+
+# Login with selected configuration
+print(f"\n🚀 Connecting to {config['name']}...")
+driver.get(config['url'])
 
 wait = WebDriverWait(driver, 40)
-merchant_input = wait.until(EC.presence_of_element_located((By.XPATH, "//input[@placeholder='Username:']")))
-merchant_input.send_keys("kewlim888")
+username_input = wait.until(EC.presence_of_element_located((By.XPATH, config['username_xpath'])))
+username_input.send_keys(config['username'])
 
 wait = WebDriverWait(driver, 40)
-merchant_input = wait.until(EC.presence_of_element_located((By.XPATH, "//input[@placeholder='Password:']")))
-merchant_input.send_keys("aaaa1111")
-merchant_input.send_keys(Keys.ENTER)
+password_input = wait.until(EC.presence_of_element_located((By.XPATH, config['password_xpath'])))
+password_input.send_keys(config['password'])
+password_input.send_keys(Keys.ENTER)
+
+print(f"✅ Login attempted for {config['name']}")
 
 time.sleep(2)
 
@@ -393,8 +451,9 @@ def run_optimized_phone_extraction(driver, start_date, end_date):
 
 def main():
     run_optimized_phone_extraction(driver, start_date, end_date)
-    time.sleep(5)  
+    time.sleep(5)
     driver.quit()
+    cleanup_terminal()
 
 if __name__ == "__main__":
     # Set up signal handlers for stopping

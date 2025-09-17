@@ -13,6 +13,7 @@ from datetime import datetime
 from collections import defaultdict
 import re
 from selenium.webdriver import ActionChains
+from terminal_utils import setup_automation_terminal, cleanup_terminal, print_status
 from selenium.common.exceptions import TimeoutException
 
 

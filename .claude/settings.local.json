@@ -17,7 +17,11 @@
       "Read(/C:\\Users\\BDC Computer ll\\Downloads\\nepalwin-selenium-main/**)",
       "Read(/C:\\Users\\BDC Computer ll\\Downloads\\nepalwin-selenium-main/**)",
       "Read(/C:\\Users\\BDC Computer ll\\Downloads\\nepalwin-selenium-main/**)",
-      "Read(/C:\\Users\\BDC Computer ll\\Downloads\\nepalwin-selenium-main/**)"
+      "Read(/C:\\Users\\BDC Computer ll\\Downloads\\nepalwin-selenium-main/**)",
+      "Bash(python:*)",
+      "Bash(find:*)",
+      "Bash(where python)",
+      "Bash(del nul)"
     ],
     "deny": [],
     "ask": []

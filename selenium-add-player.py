@@ -18,6 +18,7 @@ from collections import defaultdict
 import re
 from selenium.webdriver import ActionChains
 from selenium.common.exceptions import TimeoutException
+from terminal_utils import setup_automation_terminal, cleanup_terminal, print_status
 
 def signal_handler(signum, frame):
     """Handle shutdown signals gracefully"""
@@ -93,19 +94,72 @@ driver.maximize_window()
 
 
 
+# ======== Website Configuration ========
+website_configs = {
+    "1": {
+        "name": "NepalWin",
+        "merchant_code": "nepalwin",
+        "username": "kewlim888_nepalwin",
+        "password": "aaaa1111"
+    },
+    "2": {
+        "name": "95np",
+        "merchant_code": "95np",
+        "username": "alex_95np",
+        "password": "asdf8888"
+    }
+}
+
+def select_website():
+    """Display menu and get user selection"""
+    print("\n" + "="*50)
+    print("           SELECT WEBSITE")
+    print("="*50)
+    
+    for key, config in website_configs.items():
+        print(f"{key}. {config['name']}")
+    
+    print("="*50)
+    
+    while True:
+        try:
+            choice = input("Enter your choice (1-2): ").strip()
+            if choice in website_configs:
+                selected_config = website_configs[choice]
+                print(f"\n✅ Selected: {selected_config['name']}")
+                print(f"🏢 Merchant: {selected_config['merchant_code']}")
+                print(f"👤 Username: {selected_config['username']}")
+                print("-"*50)
+                return selected_config
+            else:
+                print("❌ Invalid choice. Please enter 1 or 2.")
+        except KeyboardInterrupt:
+            print("\n\n❌ Operation cancelled by user")
+            exit(0)
+
+# Setup terminal with custom settings
+setup_automation_terminal("Add Player")
+
+# Select website configuration
+config = select_website()
+
+# Login with selected configuration
+print(f"\n🚀 Connecting to RocketGo for {config['name']}...")
 driver.get("https://www.rocketgo.asia/login")
 
 wait = WebDriverWait(driver, 40)
 merchant_input = wait.until(EC.presence_of_element_located((By.NAME, "merchant_code")))
-merchant_input.send_keys("nepalwin")
+merchant_input.send_keys(config['merchant_code'])
 
 wait = WebDriverWait(driver, 40)
 username_input = wait.until(EC.presence_of_element_located((By.NAME, "username")))
-username_input.send_keys("kewlim888_nepalwin")
+username_input.send_keys(config['username'])
 
 wait = WebDriverWait(driver, 40)
 password_input = wait.until(EC.presence_of_element_located((By.NAME, "password")))
-password_input.send_keys("aaaa1111"+ Keys.ENTER)
+password_input.send_keys(config['password'] + Keys.ENTER)
+
+print(f"✅ Login attempted for {config['name']}")
 
 
 time.sleep(2)
@@ -293,8 +347,9 @@ def main():
     for record in records:
         add_player_details(record)
 
-    time.sleep(5)  
+    time.sleep(5)
     driver.quit()
+    cleanup_terminal()
 
 if __name__ == "__main__":
     # Set up signal handlers for stopping

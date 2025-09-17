@@ -12,6 +12,7 @@ from selenium.webdriver.common.keys import Keys
 import os
 from datetime import datetime
 from collections import defaultdict
+from terminal_utils import setup_automation_terminal, cleanup_terminal, print_status
 
 def signal_handler(signum, frame):
     """Handle shutdown signals gracefully"""
