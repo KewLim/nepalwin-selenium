@@ -57,7 +57,6 @@ def cleanup_terminal():
     print("=" * 60)
     print("           AUTOMATION COMPLETED")
     print("=" * 60)
-    input("Press Enter to continue...")
 
 if __name__ == "__main__":
     # Test the terminal utilities

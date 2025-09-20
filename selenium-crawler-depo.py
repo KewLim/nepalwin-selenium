@@ -2,6 +2,9 @@ from selenium import webdriver
 from selenium.webdriver.firefox.service import Service
 from selenium.webdriver.firefox.options import Options
 from webdriver_manager.firefox import GeckoDriverManager
+from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.chrome.options import Options as ChromeOptions
+from webdriver_manager.chrome import ChromeDriverManager
 import time
 import signal
 import sys
@@ -41,10 +44,44 @@ options = Options()
 # Headless mode if needed
 # options.add_argument('--headless')
 
-# Setup the driver
-service = Service(GeckoDriverManager().install())
-driver = webdriver.Firefox(service=service, options=options)
-driver.maximize_window()
+# Setup the driver with error handling
+try:
+    print("🔧 Setting up Firefox driver...")
+    service = Service(GeckoDriverManager().install())
+    driver = webdriver.Firefox(service=service, options=options)
+    driver.maximize_window()
+    print("✅ Firefox driver started successfully")
+except Exception as e:
+    print(f"❌ Firefox driver failed to start: {e}")
+    print("\n🔧 Trying alternative Firefox setup...")
+    try:
+        # Try without GeckoDriverManager
+        options.add_argument('--no-sandbox')
+        options.add_argument('--disable-dev-shm-usage')
+        service = Service()  # Use system geckodriver
+        driver = webdriver.Firefox(service=service, options=options)
+        driver.maximize_window()
+        print("✅ Firefox driver started with alternative setup")
+    except Exception as e2:
+        print(f"❌ Alternative Firefox setup also failed: {e2}")
+        print("\n🔧 Trying Chrome as fallback...")
+        try:
+            chrome_options = ChromeOptions()
+            chrome_options.add_argument('--no-sandbox')
+            chrome_options.add_argument('--disable-dev-shm-usage')
+            chrome_service = ChromeService(ChromeDriverManager().install())
+            driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
+            driver.maximize_window()
+            print("✅ Chrome driver started successfully as fallback")
+        except Exception as e3:
+            print(f"❌ Chrome fallback also failed: {e3}")
+            print("\n💡 Troubleshooting suggestions:")
+            print("1. Make sure Firefox or Chrome is installed and updated")
+            print("2. Try restarting your computer")
+            print("3. Check if any antivirus is blocking webdrivers")
+            print("4. Run as administrator")
+            print("5. Try running: pip install --upgrade selenium webdriver-manager")
+            sys.exit(1)
 
 
 
@@ -184,6 +221,7 @@ def extract_transaction_data_with_date_filter(driver, start_date, end_date, wait
                 print(f"[INFO] Skipping summary row: '{first_col_text}'")
                 continue
             
+            
             # Extract date from column 2 (format: '2025-08-14 16:35:02')
             full_date_str = cols[1].text.strip()
             if not full_date_str:
@@ -212,7 +250,7 @@ def extract_transaction_data_with_date_filter(driver, start_date, end_date, wait
                 txn_type = cols[6].text.strip() if len(cols) > 6 else ""
                 print(f"[DEBUG] Row {idx + 1}: Found transaction type '{txn_type}'")
                 
-                if txn_type.upper() not in ("DEPOSIT", "MANUAL_DEPOSIT", "WITHDRAWAL", "MANUAL_WITHDRAWAL", "ADJUSTMENTADD", "ADJUSTMENTDEDUCT", "CASH_IN", "CASH_OUT"):
+                if txn_type.upper() not in ("DEPOSIT", "PENDING_DEPOSIT", "MANUAL_DEPOSIT", "WITHDRAWAL", "MANUAL_WITHDRAWAL", "ADJUSTMENTADD", "ADJUSTMENTDEDUCT", "CASH_IN", "CASH_OUT"):
                     print(f"[DEBUG] Row {idx + 1}: Skipping '{txn_type}' - not in allowed list")
                     continue
                 
@@ -223,7 +261,7 @@ def extract_transaction_data_with_date_filter(driver, start_date, end_date, wait
                 # Parse amount - different column based on transaction type
                 if txn_type.upper() in ("WITHDRAWAL", "MANUAL_WITHDRAWAL", "ADJUSTMENTDEDUCT", "CASH_OUT"):
                     amount_text = cols[8].text.strip().replace("Rs", "").replace(",", "").strip()
-                else:  # DEPOSIT, MANUAL_DEPOSIT, ADJUSTMENTADD, CASH_IN
+                else:  # DEPOSIT, PENDING_DEPOSIT, MANUAL_DEPOSIT, ADJUSTMENTADD, CASH_IN
                     amount_text = cols[7].text.strip().replace("Rs", "").replace(",", "").strip()
                 try:
                     amount = float(amount_text) if amount_text else 0.0
@@ -277,7 +315,7 @@ def print_grouped_results(gateway_groups):
             for record in records:
                 txn_type = record.get("Transaction Type", "").upper()
                 print(f"[DEBUG] Record transaction type: '{txn_type}' from record: {record.get('Transaction Type', 'MISSING')}")
-                if txn_type in ("DEPOSIT", "MANUAL_DEPOSIT", "ADJUSTMENTADD", "CASH_IN"):
+                if txn_type in ("DEPOSIT", "PENDING_DEPOSIT", "MANUAL_DEPOSIT", "ADJUSTMENTADD", "CASH_IN"):
                     deposit_groups[gateway].append(record)
                     print(f"[DEBUG] Added to deposits: {txn_type}")
                 elif txn_type in ("WITHDRAWAL", "MANUAL_WITHDRAWAL", "ADJUSTMENTDEDUCT", "CASH_OUT"):
@@ -366,11 +404,11 @@ def print_grouped_results(gateway_groups):
         # Iterate through each gateway and create summary
         for gateway, records in gateway_groups.items():
             # Count deposits and withdrawals for this gateway
-            gateway_deposits = len([r for r in records if r.get("Transaction Type", "").upper() in ("DEPOSIT", "MANUAL_DEPOSIT", "ADJUSTMENTADD", "CASH_IN")])
+            gateway_deposits = len([r for r in records if r.get("Transaction Type", "").upper() in ("DEPOSIT", "PENDING_DEPOSIT", "MANUAL_DEPOSIT", "ADJUSTMENTADD", "CASH_IN")])
             gateway_withdrawals = len([r for r in records if r.get("Transaction Type", "").upper() in ("WITHDRAWAL", "MANUAL_WITHDRAWAL", "ADJUSTMENTDEDUCT", "CASH_OUT")])
-            
+
             # Calculate amounts for this gateway
-            deposit_amount = sum(r["Amount"] for r in records if r.get("Transaction Type", "").upper() in ("DEPOSIT", "MANUAL_DEPOSIT", "ADJUSTMENTADD", "CASH_IN"))
+            deposit_amount = sum(r["Amount"] for r in records if r.get("Transaction Type", "").upper() in ("DEPOSIT", "PENDING_DEPOSIT", "MANUAL_DEPOSIT", "ADJUSTMENTADD", "CASH_IN"))
             withdrawal_amount = sum(r["Amount"] for r in records if r.get("Transaction Type", "").upper() in ("WITHDRAWAL", "MANUAL_WITHDRAWAL", "ADJUSTMENTDEDUCT", "CASH_OUT"))
             
             # Extract date from the first record's time
@@ -558,11 +596,41 @@ def run_optimized_transaction_extraction(driver, start_date, end_date):
     else:
         print("\033[93m[WARNING] No records found in the specified date range.\033[0m")
     
+def show_post_crawl_menu():
+    """Show menu after crawling is complete"""
+    print("\n" + "="*70)
+    print("           CRAWLING COMPLETED - SELECT NEXT ACTION")
+    print("="*70)
+    print("1. Run Add Deposit Script (with start Order ID configuration)")
+    print("2. Exit")
+    print("="*70)
+
+    while True:
+        try:
+            choice = input("Enter your choice (1-2): ").strip()
+            if choice == "1":
+                print("\n🚀 Starting Add Deposit Script...")
+                print("="*70)
+                import subprocess
+                subprocess.run(["python", "selenium-add-deposit.py"], check=False)
+                return
+            elif choice == "2":
+                print("\n✅ Exiting...")
+                return
+            else:
+                print("❌ Invalid choice. Please enter 1 or 2.")
+        except KeyboardInterrupt:
+            print("\n\n❌ Operation cancelled by user")
+            return
+
 def main():
     run_optimized_transaction_extraction(driver, start_date, end_date)
     time.sleep(5)
     driver.quit()
     cleanup_terminal()
+
+    # Show post-crawl menu
+    show_post_crawl_menu()
 
 if __name__ == "__main__":
     # Set up signal handlers for stopping

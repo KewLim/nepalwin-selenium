@@ -106,13 +106,12 @@ def debug_page_elements():
         except Exception as e:
             print(f"[ERROR] Current selector failed: {e}")
         
-        print("\n[INFO] Debug complete. Press Enter to close browser...")
-        input()
+        print("\n[INFO] Debug complete. Closing browser...")
+
         
     except Exception as e:
         print(f"[ERROR] Debug failed: {e}")
-        print("\n[INFO] Press Enter to close browser...")
-        input()
+        print("\n[INFO] Closing browser...")
     
     finally:
         driver.quit()

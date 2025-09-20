@@ -21,7 +21,9 @@
       "Bash(python:*)",
       "Bash(find:*)",
       "Bash(where python)",
-      "Bash(del nul)"
+      "Bash(del nul)",
+      "Bash(git pull:*)",
+      "Bash(git merge:*)"
     ],
     "deny": [],
     "ask": []
