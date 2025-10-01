@@ -74,12 +74,12 @@ def select_website():
     print("\n" + "="*50)
     print("           SELECT WEBSITE")
     print("="*50)
-    
+
     for key, config in website_configs.items():
         print(f"{key}. {config['name']}")
-    
+
     print("="*50)
-    
+
     while True:
         try:
             choice = input("Enter your choice (1-2): ").strip()
@@ -96,108 +96,6 @@ def select_website():
             print("\n\n❌ Operation cancelled by user")
             exit(0)
 
-# Setup terminal with custom settings
-setup_automation_terminal("Phone Number Crawler")
-
-# Select website configuration
-config = select_website()
-
-# Login with selected configuration
-print(f"\n🚀 Connecting to {config['name']}...")
-driver.get(config['url'])
-
-wait = WebDriverWait(driver, 40)
-username_input = wait.until(EC.presence_of_element_located((By.XPATH, config['username_xpath'])))
-username_input.send_keys(config['username'])
-
-wait = WebDriverWait(driver, 40)
-password_input = wait.until(EC.presence_of_element_located((By.XPATH, config['password_xpath'])))
-password_input.send_keys(config['password'])
-password_input.send_keys(Keys.ENTER)
-
-print(f"✅ Login attempted for {config['name']}")
-
-time.sleep(2)
-
-# ======== Entered Main Page ========
-
-# Wait until the Transaction header is present and visible
-transaction_header = WebDriverWait(driver, 10).until(
-    EC.visibility_of_element_located((By.XPATH, "//span[@class='ant-page-header-heading-title' and text()='Transaction']"))
-)
-
-print("✅ 'Transaction' header found, proceeding...")
-
-# Wait until the 'Report' menu item is visible and clickable
-report_item = WebDriverWait(driver, 10).until(
-    EC.element_to_be_clickable((By.XPATH, "//span[text()='Report']"))
-)
-
-# Click it
-report_item.click()
-time.sleep(2)
-
-
-# ======== Entered Player Page ========
-
-# Wait until the link is visible and clickable
-link = WebDriverWait(driver, 10).until(
-    EC.element_to_be_clickable((By.LINK_TEXT, "Member Information & Referral Link"))
-)
-
-# Click the link
-link.click()
-print("Clicked 'Member Information & Referral Link' successfully.")
-
-
-# Select date section
-from date_selector import get_date_selection, DateSelector
-
-# Use date selection modal
-start_date, end_date = get_date_selection()
-
-if start_date and end_date:
-    print(f"\033[1;32m[APPROVED]\033[0m Date range selected: {start_date} to {end_date}")
-    print(f"\033[1;33m[INFO]\033[0m Using optimized extraction with early stopping")
-else:
-    print("\033[1;31m[ERROR] No dates selected, exiting...\033[0m")
-    driver.quit()
-    exit(1)
-
-# ======== Entered Main Page ========
-
-# Wait for sidebar to appear
-
-
-
-
-
-# ======== Entered 2.1 Deposit =======
-
-
-# Wait for panel loading
-WebDriverWait(driver, 20).until(
-    EC.invisibility_of_element_located((By.CLASS_NAME, "box box-info"))
-)
-print("[INFO] Panel load complete")
-
-
-time.sleep(2)
-
-# Wait for ajax loader loading
-WebDriverWait(driver, 20).until(
-    EC.invisibility_of_element_located((By.CLASS_NAME, "ajaxLoader"))
-)
-print("\033[94m[INFO] ajaxLoader complete\033[0m")
-
-time.sleep(2)
-
-
-
-
-
-
-# ======= Print Logic Here =======
 
 phone_groups = defaultdict(list)
 
@@ -208,7 +106,7 @@ def extract_phone_data_with_date_filter(driver, start_date, end_date, wait_timeo
     Returns (collected_records, should_stop_scraping)
     """
     print(f"[INFO] Filtering for dates: {start_date} to {end_date}")
-    
+
     # Wait until at least one row exists
     WebDriverWait(driver, wait_timeout).until(
         lambda d: len(d.find_elements(By.CSS_SELECTOR, "table tbody tr")) > 0
@@ -219,7 +117,7 @@ def extract_phone_data_with_date_filter(driver, start_date, end_date, wait_timeo
 
     collected_records = []
     should_stop_scraping = False
-    
+
     print(f"[INFO] Processing {len(rows)} rows with date filtering...")
     time.sleep(1)  # Stability delay
 
@@ -230,14 +128,14 @@ def extract_phone_data_with_date_filter(driver, start_date, end_date, wait_timeo
             if idx >= len(current_rows):
                 print(f"[WARNING] Row {idx + 1} no longer exists. Skipping.")
                 continue
-                
+
             row = current_rows[idx]
             cols = row.find_elements(By.TAG_NAME, 'td')
-            
+
             if len(cols) < 5:  # Reduce minimum column requirement
                 print(f"[WARNING] Row {idx + 1} has only {len(cols)} columns. Skipping.")
                 continue
-            
+
             # Filter out summary rows
             first_col_text = cols[0].text.strip() if len(cols) > 0 else ""
             if "Page Summary" in first_col_text or "Total Summary" in first_col_text:
@@ -249,15 +147,15 @@ def extract_phone_data_with_date_filter(driver, start_date, end_date, wait_timeo
             for col_idx, col in enumerate(cols):
                 col_text = col.text.strip()
                 print(f"[DEBUG] Column {col_idx}: '{col_text}'")
-                
+
             # Extract date from appropriate column (you need to identify which column has dates)
             registration_date_str = cols[0].text.strip() if len(cols) > 0 else ""
             print(f"[DEBUG] Trying to parse date from column 0: '{registration_date_str}'")
-            
+
             if not registration_date_str:
                 print(f"[WARNING] No registration date in row {idx + 1}, skipping")
                 continue
-            
+
             try:
                 # Parse registration date - support multiple formats for Windows compatibility
                 date_formats = [
@@ -270,13 +168,13 @@ def extract_phone_data_with_date_filter(driver, start_date, end_date, wait_timeo
                     "%d.%m.%Y",          # 27.08.2025 (German format)
                     "%Y%m%d"             # 20250827 (compact format)
                 ]
-                
+
                 # Extract date part if datetime string
                 if ' ' in registration_date_str:
                     date_str = registration_date_str.split(" ")[0]  # Extract date part
                 else:
                     date_str = registration_date_str
-                
+
                 row_date = None
                 for date_format in date_formats:
                     try:
@@ -285,32 +183,32 @@ def extract_phone_data_with_date_filter(driver, start_date, end_date, wait_timeo
                         break
                     except ValueError:
                         continue
-                
+
                 if row_date is None:
                     raise ValueError(f"Unable to parse date '{date_str}' with any known format")
-                
+
                 print(f"[DEBUG] Row {idx + 1}: Date {row_date}, Range {start_date} to {end_date}")
-                
+
                 # Date filtering logic
                 if row_date > end_date:
                     print(f"[DEBUG] Row {idx + 1} too new ({row_date}), skipping")
                     continue
-                
+
                 if row_date < start_date:
                     print(f"[INFO] Row {idx + 1} too old ({row_date}), stopping scraping")
                     should_stop_scraping = True
                     break
-                
+
                 # Row is within date range (start_date <= row_date <= end_date)
                 print(f"[INFO] Row {idx + 1} within range ({row_date}), collecting")
-                
+
                 phone_number = cols[3].text.strip() if len(cols) > 3 else ""
                 email = cols[4].text.strip() if len(cols) > 4 else ""
                 login_id = cols[2].text.strip() if len(cols) > 2 else ""
                 full_name = cols[1].text.strip() if len(cols) > 1 else ""
-                
+
                 print(f"[DEBUG] Row {idx + 1}: full_name = '{full_name}', login_id = '{login_id}', phone_number = '{phone_number}'")
-                
+
 
                 if phone_number:
                     record = {
@@ -326,14 +224,14 @@ def extract_phone_data_with_date_filter(driver, start_date, end_date, wait_timeo
             except ValueError as e:
                 print(f"[WARNING] Invalid date format '{registration_date_str}' in row {idx + 1}: {e}")
                 continue
-                
+
         except Exception as e:
             print(f"[ERROR] Failed to process row {idx + 1}: {e}")
             continue
 
     print(f"[INFO] Collected {len(collected_records)} records from this page")
     print(f"[INFO] Should stop scraping: {should_stop_scraping}")
-    
+
     return collected_records, should_stop_scraping
 
 
@@ -390,17 +288,17 @@ def run_optimized_phone_extraction(driver, start_date, end_date):
     all_collected_records = []
     duplicate_count = 0
     stop_scraping = False
-    
+
     print(f"\033[92m[INFO] Starting optimized phone extraction for date range: {start_date} to {end_date}\033[0m")
-    
+
     while not stop_scraping:
         print(f"\033[92m[INFO] Scraping page {page_counter}...\033[0m")
-        
+
         # Extract data from current page with date filtering
         page_records, should_stop = extract_phone_data_with_date_filter(
             driver, start_date, end_date
         )
-        
+
         # Check for duplicates and add to collection
         for record in page_records:
             phone_number = record["Phone Number"]
@@ -410,15 +308,15 @@ def run_optimized_phone_extraction(driver, start_date, end_date):
             else:
                 duplicate_count += 1
                 print(f"\033[93m[WARNING] Duplicate phone number '{phone_number}' found on page {page_counter}. Skipping.\033[0m")
-        
+
         print(f"[INFO] Page {page_counter}: Collected {len(page_records)} new records")
-        
+
         # Check if we should stop scraping
         if should_stop:
             print(f"\033[93m[INFO] Reached date boundary. Stopping extraction at page {page_counter}.\033[0m")
             stop_scraping = True
             break
-        
+
         # Try to go to next page
         print(f"[DEBUG] Attempting to navigate to next page...")
         time.sleep(1)
@@ -428,62 +326,279 @@ def run_optimized_phone_extraction(driver, start_date, end_date):
             break
         else:
             print(f"[SUCCESS] Successfully navigated to page {page_counter + 1}")
-            
+
         page_counter += 1
         time.sleep(1)
-    
+
     # Group records for output
     phone_groups = defaultdict(list)
     for record in all_collected_records:
         phone_groups["All"].append(record)
-    
+
     # Print summary
     total_records = len(all_collected_records)
     print(f"\033[92m[SUMMARY] Extraction completed:\033[0m")
     print(f"  - Pages scraped: {page_counter}")
     print(f"  - Total phone numbers collected: {total_records}")
     print(f"  - Duplicates skipped: {duplicate_count}")
-    
+
     if total_records > 0:
         print_grouped_phone_results(phone_groups)
     else:
         print("\033[93m[WARNING] No phone numbers found in the specified date range.\033[0m")
 
-def show_post_crawl_menu():
-    """Show menu after crawling is complete"""
-    print("\n" + "="*70)
-    print("           CRAWLING COMPLETED - SELECT NEXT ACTION")
-    print("="*70)
-    print("1. Run Deposit Crawler Script")
-    print("2. Exit")
-    print("="*70)
+def crawler_phone_api(website_choice="1", start_date_str=None, end_date_str=None):
+    """
+    API wrapper function for phone number crawling
+    Args:
+        website_choice (str): Website selection ("1" for NepalWin, "2" for 95np)
+        start_date_str (str): Start date in YYYY-MM-DD format (optional, defaults to today)
+        end_date_str (str): End date in YYYY-MM-DD format (optional, defaults to today)
+    Returns:
+        dict: Result with status and message
+    """
+    global driver
 
-    while True:
+    try:
+        # Setup terminal with custom settings
+        setup_automation_terminal("Phone Number Crawler")
+
+        # Get website configuration
+        if website_choice not in website_configs:
+            return {"status": "error", "message": f"Invalid website choice: {website_choice}"}
+
+        config = website_configs[website_choice]
+        print(f"\n✅ Selected: {config['name']}")
+        print(f"🌐 URL: {config['url']}")
+        print(f"👤 Username: {config['username']}")
+        print("-"*50)
+
+        # Login with selected configuration
+        print(f"\n🚀 Connecting to {config['name']}...")
+        driver.get(config['url'])
+
+        wait = WebDriverWait(driver, 40)
+        username_input = wait.until(EC.presence_of_element_located((By.XPATH, config['username_xpath'])))
+        username_input.send_keys(config['username'])
+
+        wait = WebDriverWait(driver, 40)
+        password_input = wait.until(EC.presence_of_element_located((By.XPATH, config['password_xpath'])))
+        password_input.send_keys(config['password'])
+        password_input.send_keys(Keys.ENTER)
+
+        print(f"✅ Login attempted for {config['name']}")
+
+        time.sleep(2)
+
+        # ======== Entered Main Page ========
+
+        # Wait until the Transaction header is present and visible
+        transaction_header = WebDriverWait(driver, 10).until(
+            EC.visibility_of_element_located((By.XPATH, "//span[@class='ant-page-header-heading-title' and text()='Transaction']"))
+        )
+
+        print("✅ 'Transaction' header found, proceeding...")
+
+        # Wait until the 'Report' menu item is visible and clickable
+        report_item = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, "//span[text()='Report']"))
+        )
+
+        # Click it
+        report_item.click()
+        time.sleep(2)
+
+
+        # ======== Entered Player Page ========
+
+        # Wait until the link is visible and clickable
+        link = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.LINK_TEXT, "Member Information & Referral Link"))
+        )
+
+        # Click the link
+        link.click()
+        print("Clicked 'Member Information & Referral Link' successfully.")
+
+
+        # Handle date selection
+        if start_date_str and end_date_str:
+            try:
+                start_date = datetime.strptime(start_date_str, "%Y-%m-%d").date()
+                end_date = datetime.strptime(end_date_str, "%Y-%m-%d").date()
+            except ValueError:
+                return {"status": "error", "message": "Invalid date format. Use YYYY-MM-DD"}
+        else:
+            # Select date section
+            from date_selector import get_date_selection, DateSelector
+
+            # Use date selection modal
+            start_date, end_date = get_date_selection()
+
+            if not start_date or not end_date:
+                return {"status": "error", "message": "No dates selected"}
+
+        print(f"\033[1;32m[APPROVED]\033[0m Date range selected: {start_date} to {end_date}")
+        print(f"\033[1;33m[INFO]\033[0m Using optimized extraction with early stopping")
+
+        # ======== Entered Main Page ========
+
+        # Wait for sidebar to appear
+
+
+
+
+        # ======== Entered 2.1 Deposit =======
+
+
+        # Wait for panel loading
+        WebDriverWait(driver, 20).until(
+            EC.invisibility_of_element_located((By.CLASS_NAME, "box box-info"))
+        )
+        print("[INFO] Panel load complete")
+
+
+        time.sleep(2)
+
+        # Wait for ajax loader loading
+        WebDriverWait(driver, 20).until(
+            EC.invisibility_of_element_located((By.CLASS_NAME, "ajaxLoader"))
+        )
+        print("\033[94m[INFO] ajaxLoader complete\033[0m")
+
+        time.sleep(2)
+
+
+
+
+        # ======= Print Logic Here =======
+
+        # Set up signal handlers for stopping
+        signal.signal(signal.SIGINT, signal_handler)   # Ctrl+C
+        signal.signal(signal.SIGTERM, signal_handler)  # Kill command
+        print("🚦 Press Ctrl+C to stop the automation at any time")
+        print("   (Note: On macOS terminal, use Ctrl+C, not Cmd+C)")
+
+        run_optimized_phone_extraction(driver, start_date, end_date)
+        time.sleep(5)
+        cleanup_terminal()
+
+        return {"status": "success", "message": "Phone number crawling completed successfully"}
+
+    except Exception as e:
+        return {"status": "error", "message": f"Phone crawling failed: {str(e)}"}
+    finally:
         try:
-            choice = input("Enter your choice (1-2): ").strip()
-            if choice == "1":
-                print("\n🚀 Starting Deposit Crawler Script...")
-                print("="*70)
-                import subprocess
-                subprocess.run(["python", "selenium-crawler-depo.py"], check=False)
-                return
-            elif choice == "2":
-                print("\n✅ Exiting...")
-                return
-            else:
-                print("❌ Invalid choice. Please enter 1 or 2.")
-        except KeyboardInterrupt:
-            print("\n\n❌ Operation cancelled by user")
-            return
+            driver.quit()
+        except:
+            pass
 
 def main():
+    # Setup terminal with custom settings
+    setup_automation_terminal("Phone Number Crawler")
+
+    # Select website configuration
+    config = select_website()
+
+    # Login with selected configuration
+    print(f"\n🚀 Connecting to {config['name']}...")
+    driver.get(config['url'])
+
+    wait = WebDriverWait(driver, 40)
+    username_input = wait.until(EC.presence_of_element_located((By.XPATH, config['username_xpath'])))
+    username_input.send_keys(config['username'])
+
+    wait = WebDriverWait(driver, 40)
+    password_input = wait.until(EC.presence_of_element_located((By.XPATH, config['password_xpath'])))
+    password_input.send_keys(config['password'])
+    password_input.send_keys(Keys.ENTER)
+
+    print(f"✅ Login attempted for {config['name']}")
+
+    time.sleep(2)
+
+    # ======== Entered Main Page ========
+
+    # Wait until the Transaction header is present and visible
+    transaction_header = WebDriverWait(driver, 10).until(
+        EC.visibility_of_element_located((By.XPATH, "//span[@class='ant-page-header-heading-title' and text()='Transaction']"))
+    )
+
+    print("✅ 'Transaction' header found, proceeding...")
+
+    # Wait until the 'Report' menu item is visible and clickable
+    report_item = WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.XPATH, "//span[text()='Report']"))
+    )
+
+    # Click it
+    report_item.click()
+    time.sleep(2)
+
+
+    # ======== Entered Player Page ========
+
+    # Wait until the link is visible and clickable
+    link = WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.LINK_TEXT, "Member Information & Referral Link"))
+    )
+
+    # Click the link
+    link.click()
+    print("Clicked 'Member Information & Referral Link' successfully.")
+
+
+    # Select date section
+    from date_selector import get_date_selection, DateSelector
+
+    # Use date selection modal
+    start_date, end_date = get_date_selection()
+
+    if start_date and end_date:
+        print(f"\033[1;32m[APPROVED]\033[0m Date range selected: {start_date} to {end_date}")
+        print(f"\033[1;33m[INFO]\033[0m Using optimized extraction with early stopping")
+    else:
+        print("\033[1;31m[ERROR] No dates selected, exiting...\033[0m")
+        driver.quit()
+        exit(1)
+
+    # ======== Entered Main Page ========
+
+    # Wait for sidebar to appear
+
+
+
+
+
+    # ======== Entered 2.1 Deposit =======
+
+
+    # Wait for panel loading
+    WebDriverWait(driver, 20).until(
+        EC.invisibility_of_element_located((By.CLASS_NAME, "box box-info"))
+    )
+    print("[INFO] Panel load complete")
+
+
+    time.sleep(2)
+
+    # Wait for ajax loader loading
+    WebDriverWait(driver, 20).until(
+        EC.invisibility_of_element_located((By.CLASS_NAME, "ajaxLoader"))
+    )
+    print("\033[94m[INFO] ajaxLoader complete\033[0m")
+
+    time.sleep(2)
+
+
+
+
+    # ======= Print Logic Here =======
+
     run_optimized_phone_extraction(driver, start_date, end_date)
     time.sleep(5)
     driver.quit()
     cleanup_terminal()
-
-    # Show post-crawl menu
-    show_post_crawl_menu()
 
 if __name__ == "__main__":
     # Set up signal handlers for stopping

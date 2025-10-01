@@ -255,38 +255,21 @@ def check_player_id_toast(driver, timeout=10):
     except TimeoutException:
         return False
     
-def check_transaction_complete_toast(driver, timeout=30):
+def check_transaction_complete_toast(driver, timeout=3):
     """
     Waits up to `timeout` seconds to see if the 'Transaction added successfully.' toast appears.
-    If toast doesn't appear, presses Enter every 1 second until found or timeout.
+    Prints log if found, returns True/False.
     """
-    import time
-    from selenium.webdriver.common.keys import Keys
-
-    start_time = time.time()
-
-    while time.time() - start_time < timeout:
-        try:
-            # Check for toast with a short timeout
-            toast = WebDriverWait(driver, 1).until(
-                EC.presence_of_element_located(
-                    (By.XPATH, "//div[contains(@class, 'toastify') and contains(text(), 'Transaction added successfully.')]")
-                )
+    try:
+        toast = WebDriverWait(driver, timeout).until(
+            EC.presence_of_element_located(
+                (By.XPATH, "//div[contains(@class, 'toastify') and contains(text(), 'Transaction added successfully.')]")
             )
-            enhanced_print("[LOG] Toast appeared: Transaction added successfully.")
-            return True
-        except TimeoutException:
-            # Press Enter and wait 1 second before next attempt
-            try:
-                driver.find_element(By.TAG_NAME, 'body').send_keys(Keys.ENTER)
-                enhanced_print("[LOG] Pressed Enter, waiting for toast...")
-                time.sleep(1)
-            except Exception as e:
-                enhanced_print(f"[WARNING] Could not press Enter: {e}")
-                time.sleep(1)
-
-    enhanced_print(f"[WARNING] Toast not found after {timeout} seconds of pressing Enter")
-    return False
+        )
+        enhanced_print("[LOG] Toast appeared: Transaction added successfully.")
+        return True
+    except TimeoutException:
+        return False
 
 
 
@@ -503,25 +486,10 @@ def get_start_order_ids():
         print("-" * len(gateway))
 
         # Ask if user wants to skip this entire gateway
-        import sys
-        sys.stdout.flush()  # Ensure prompt is displayed
-
-        try:
-            skip_gateway = input(f"\033[1;32m   Proceed entire gateway? (ENTER/n): \033[0m").strip().lower()
-            print(f"[DEBUG] User input: '{skip_gateway}' (length: {len(skip_gateway)})")
-            print(f"[DEBUG] Input bytes: {[ord(c) for c in skip_gateway]}")
-
-            if skip_gateway in ['n', 'no']:
-                print(f"     ⏭️  Skipping {gateway} entirely")
-                continue
-            elif skip_gateway == '':
-                print(f"     ✅  Proceeding with {gateway}")
-            else:
-                print(f"     ❓  Unknown input '{skip_gateway}', proceeding with {gateway}")
-
-        except (KeyboardInterrupt, EOFError):
-            print("\n[INFO] Input interrupted, exiting...")
-            sys.exit(0)
+        skip_gateway = input(f"\033[1;32m   Proceed entire gateway? (ENTER/n): \033[0m").strip().lower()
+        if skip_gateway in ['n', 'no']:
+            print(f"     ⏭️  Skipping {gateway} entirely")
+            continue
         # If empty input (just Enter), continue processing this gateway
 
         # Get deposit start ID
@@ -846,7 +814,7 @@ def add_transaction_details(record):
     enhanced_print(f"   Phone: {record.get('Phone Number', 'Unknown')}")
 
     # Wait briefly for page load
-    time.sleep(2.5)
+    time.sleep(1)
     
     # Find Add button quickly
     wait = WebDriverWait(driver, 20)
@@ -854,22 +822,9 @@ def add_transaction_details(record):
         By.XPATH, "//button[contains(text(), 'Add New Bank Transaction')]"
     )))
     
-    # Single click on Add Transaction button
-    try:
-        # Check if overlay is blocking and wait for it to disappear
-        wait_for_overlay_to_disappear(driver, max_wait=2)
-
-        add_button.click()
-        enhanced_print("[INFO] Add Transaction button clicked")
-
-    except Exception as e:
-        enhanced_print(f"[WARNING] Click failed: {e}")
-        # Try JavaScript click as fallback
-        try:
-            driver.execute_script("arguments[0].click();", add_button)
-            enhanced_print("[INFO] Used JavaScript click as fallback")
-        except Exception as js_e:
-            enhanced_print(f"[ERROR] JavaScript click also failed: {js_e}")
+    # Single smart click with modal verification
+    smart_click(add_button, verify_callback=lambda: verify_modal_opened(driver))
+    enhanced_print("[INFO] Add Transaction button clicked")
 
     # === Wait for the window UI to appear ===
     WebDriverWait(driver, 20, poll_frequency=0.2).until(

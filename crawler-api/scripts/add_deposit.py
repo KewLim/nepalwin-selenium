@@ -32,7 +32,7 @@ def wait_for_overlay_to_disappear(driver, max_wait=5):
         ".app-preloader",
         "div.app-preloader"
     ]
-    
+
     overlay_found = False
     for selector in overlay_selectors:
         try:
@@ -47,7 +47,7 @@ def wait_for_overlay_to_disappear(driver, max_wait=5):
                 enhanced_print(f"[INFO] {selector} overlay disappeared")
         except:
             continue
-    
+
     if overlay_found:
         time.sleep(0.3)  # Brief wait for DOM stability
         return True
@@ -61,7 +61,7 @@ def smart_click(element, verify_callback=None):
     try:
         # Try normal click first
         element.click()
-        
+
         # Quick verification if callback provided
         if verify_callback:
             time.sleep(0.3)
@@ -75,7 +75,7 @@ def smart_click(element, verify_callback=None):
                     return verify_callback()
                 return False
         return True
-        
+
     except Exception as click_error:
         error_msg = str(click_error)
         # Only retry if it's an overlay blocking issue
@@ -106,19 +106,19 @@ def reliable_click_with_locator(locator, max_attempts=3, delay=1, verify_callbac
     for attempt in range(max_attempts):
         try:
             enhanced_print(f"[INFO] Attempting click with locator (attempt {attempt + 1}/{max_attempts})")
-            
+
             # Wait for any overlays to disappear
             wait_for_overlay_to_disappear(driver, max_wait=3)
-            
+
             # Re-find element to avoid stale reference
             element = WebDriverWait(driver, 20).until(
                 EC.element_to_be_clickable(locator)
             )
-            
+
             # Scroll element into view
             driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", element)
             time.sleep(0.3)
-            
+
             # Try normal click first
             try:
                 element.click()
@@ -129,9 +129,9 @@ def reliable_click_with_locator(locator, max_attempts=3, delay=1, verify_callbac
                 enhanced_print("[INFO] Trying JavaScript click...")
                 driver.execute_script("arguments[0].click();", element)
                 enhanced_print("[INFO] JavaScript click successful")
-            
+
             time.sleep(0.5)
-            
+
             # If verification callback provided, use it
             if verify_callback and not verify_callback():
                 if attempt < max_attempts - 1:
@@ -141,10 +141,10 @@ def reliable_click_with_locator(locator, max_attempts=3, delay=1, verify_callbac
                 else:
                     enhanced_print("[ERROR] Click verification failed after all attempts")
                     return False
-            
+
             enhanced_print("[INFO] Click successful")
             return True
-            
+
         except Exception as e:
             enhanced_print(f"[WARN] Click attempt {attempt + 1} failed: {e}")
             if attempt < max_attempts - 1:
@@ -162,14 +162,14 @@ def reliable_click(element, max_attempts=3, delay=1, verify_callback=None):
     for attempt in range(max_attempts):
         try:
             enhanced_print(f"[INFO] Attempting click (attempt {attempt + 1}/{max_attempts})")
-            
+
             # Wait for any overlays to disappear
             wait_for_overlay_to_disappear(driver, max_wait=3)
-            
+
             # Scroll element into view
             driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", element)
             time.sleep(0.3)
-            
+
             # Try normal click first
             try:
                 element.click()
@@ -180,9 +180,9 @@ def reliable_click(element, max_attempts=3, delay=1, verify_callback=None):
                 enhanced_print("[INFO] Trying JavaScript click...")
                 driver.execute_script("arguments[0].click();", element)
                 enhanced_print("[INFO] JavaScript click successful")
-            
+
             time.sleep(0.5)
-            
+
             # If verification callback provided, use it
             if verify_callback and not verify_callback():
                 if attempt < max_attempts - 1:
@@ -192,18 +192,18 @@ def reliable_click(element, max_attempts=3, delay=1, verify_callback=None):
                 else:
                     enhanced_print("[ERROR] Click verification failed after all attempts")
                     return False
-            
+
             enhanced_print("[INFO] Click successful")
             return True
-            
+
         except Exception as e:
             error_msg = str(e)
             enhanced_print(f"[WARN] Click attempt {attempt + 1} failed: {e}")
-            
+
             # Check if it's a stale element error
             if "stale" in error_msg.lower() or "not connected to the DOM" in error_msg:
                 enhanced_print("[WARN] Stale element detected - element needs to be re-found")
-                
+
             if attempt < max_attempts - 1:
                 time.sleep(delay)
             else:
@@ -254,40 +254,22 @@ def check_player_id_toast(driver, timeout=10):
         return True
     except TimeoutException:
         return False
-    
-def check_transaction_complete_toast(driver, timeout=30):
+
+def check_transaction_complete_toast(driver, timeout=3):
     """
     Waits up to `timeout` seconds to see if the 'Transaction added successfully.' toast appears.
-    If toast doesn't appear, presses Enter every 1 second until found or timeout.
+    Prints log if found, returns True/False.
     """
-    import time
-    from selenium.webdriver.common.keys import Keys
-
-    start_time = time.time()
-
-    while time.time() - start_time < timeout:
-        try:
-            # Check for toast with a short timeout
-            toast = WebDriverWait(driver, 1).until(
-                EC.presence_of_element_located(
-                    (By.XPATH, "//div[contains(@class, 'toastify') and contains(text(), 'Transaction added successfully.')]")
-                )
+    try:
+        toast = WebDriverWait(driver, timeout).until(
+            EC.presence_of_element_located(
+                (By.XPATH, "//div[contains(@class, 'toastify') and contains(text(), 'Transaction added successfully.')]")
             )
-            enhanced_print("[LOG] Toast appeared: Transaction added successfully.")
-            return True
-        except TimeoutException:
-            # Press Enter and wait 1 second before next attempt
-            try:
-                driver.find_element(By.TAG_NAME, 'body').send_keys(Keys.ENTER)
-                enhanced_print("[LOG] Pressed Enter, waiting for toast...")
-                time.sleep(1)
-            except Exception as e:
-                enhanced_print(f"[WARNING] Could not press Enter: {e}")
-                time.sleep(1)
-
-    enhanced_print(f"[WARNING] Toast not found after {timeout} seconds of pressing Enter")
-    return False
-
+        )
+        enhanced_print("[LOG] Toast appeared: Transaction added successfully.")
+        return True
+    except TimeoutException:
+        return False
 
 
 
@@ -319,7 +301,7 @@ def click_bank_transactions_link(driver, timeout=5):
 options = Options()
 # options.set_preference("profile", profile_path)  # Commented out for fresh profile
 # Optional: Use a separate Firefox profile
-# Replace 'selenium-profile' with the name of a Firefox profile you’ve created
+# Replace 'selenium-profile' with the name of a Firefox profile you've created
 # or comment out if you want a fresh profile every time
 # options.profile = "/Users/admin/Library/Application Support/Firefox/Profiles/xxxxxxxx.selenium-profile"
 
@@ -388,46 +370,6 @@ def enhanced_print(message, status_only=False):
     if not status_only:
         print(clean_message)
     log_to_status_terminal(clean_message)
-
-# ======== Setup the driver with error handling ========
-try:
-    enhanced_print("🔧 Setting up Firefox driver...")
-    service = Service(GeckoDriverManager().install())
-    driver = webdriver.Firefox(service=service, options=options)
-    driver.maximize_window()
-    enhanced_print("✅ Firefox driver started successfully")
-except Exception as e:
-    enhanced_print(f"❌ Firefox driver failed to start: {e}")
-    enhanced_print("\n🔧 Trying alternative Firefox setup...")
-    try:
-        # Try without GeckoDriverManager
-        options.add_argument('--no-sandbox')
-        options.add_argument('--disable-dev-shm-usage')
-        service = Service()  # Use system geckodriver
-        driver = webdriver.Firefox(service=service, options=options)
-        driver.maximize_window()
-        enhanced_print("✅ Firefox driver started with alternative setup")
-    except Exception as e2:
-        enhanced_print(f"❌ Alternative Firefox setup also failed: {e2}")
-        enhanced_print("\n🔧 Trying Chrome as fallback...")
-        try:
-            chrome_options = ChromeOptions()
-            chrome_options.add_argument('--no-sandbox')
-            chrome_options.add_argument('--disable-dev-shm-usage')
-            chrome_service = ChromeService(ChromeDriverManager().install())
-            driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
-            driver.maximize_window()
-            enhanced_print("✅ Chrome driver started successfully as fallback")
-        except Exception as e3:
-            enhanced_print(f"❌ Chrome fallback also failed: {e3}")
-            enhanced_print("\n💡 Troubleshooting suggestions:")
-            enhanced_print("1. Make sure Firefox or Chrome is installed and updated")
-            enhanced_print("2. Try restarting your computer")
-            enhanced_print("3. Check if any antivirus is blocking webdrivers")
-            enhanced_print("4. Run as administrator")
-            enhanced_print("5. Try running: pip install --upgrade selenium webdriver-manager")
-            import sys
-            sys.exit(1)
 
 # ======== Website Configuration ========
 website_configs = {
@@ -503,25 +445,10 @@ def get_start_order_ids():
         print("-" * len(gateway))
 
         # Ask if user wants to skip this entire gateway
-        import sys
-        sys.stdout.flush()  # Ensure prompt is displayed
-
-        try:
-            skip_gateway = input(f"\033[1;32m   Proceed entire gateway? (ENTER/n): \033[0m").strip().lower()
-            print(f"[DEBUG] User input: '{skip_gateway}' (length: {len(skip_gateway)})")
-            print(f"[DEBUG] Input bytes: {[ord(c) for c in skip_gateway]}")
-
-            if skip_gateway in ['n', 'no']:
-                print(f"     ⏭️  Skipping {gateway} entirely")
-                continue
-            elif skip_gateway == '':
-                print(f"     ✅  Proceeding with {gateway}")
-            else:
-                print(f"     ❓  Unknown input '{skip_gateway}', proceeding with {gateway}")
-
-        except (KeyboardInterrupt, EOFError):
-            print("\n[INFO] Input interrupted, exiting...")
-            sys.exit(0)
+        skip_gateway = input(f"\033[1;32m   Proceed entire gateway? (ENTER/n): \033[0m").strip().lower()
+        if skip_gateway in ['n', 'no']:
+            print(f"     ⏭️  Skipping {gateway} entirely")
+            continue
         # If empty input (just Enter), continue processing this gateway
 
         # Get deposit start ID
@@ -588,51 +515,6 @@ def get_start_order_ids():
 
     return start_order_ids
 
-# Initialize status logging
-enhanced_print("Starting Selenium Deposit Automation")
-
-# Create status terminal
-if create_status_terminal():
-    enhanced_print("Status monitoring terminal opened")
-else:
-    enhanced_print("Status terminal creation failed - continuing without separate window")
-
-# Setup terminal with custom settings
-setup_automation_terminal("Add Deposit")
-
-# Select website configuration
-config = select_website()
-enhanced_print(f"Selected website: {config['name']}")
-
-# Get start order ID configuration
-start_order_ids = get_start_order_ids()
-
-# Login with selected configuration
-enhanced_print(f"\nConnecting to RocketGo for {config['name']}...")
-driver.get("https://www.rocketgo.asia/login")
-enhanced_print("Loading login page...")
-
-wait = WebDriverWait(driver, 40)
-merchant_input = wait.until(EC.presence_of_element_located((By.NAME, "merchant_code")))
-merchant_input.send_keys(config['merchant_code'])
-
-wait = WebDriverWait(driver, 40)
-username_input = wait.until(EC.presence_of_element_located((By.NAME, "username")))
-username_input.send_keys(config['username'])
-
-wait = WebDriverWait(driver, 40)
-password_input = wait.until(EC.presence_of_element_located((By.NAME, "password")))
-password_input.send_keys(config['password'] + Keys.ENTER)
-
-enhanced_print(f"Login attempted for {config['name']}")
-
-time.sleep(3)
-
-enhanced_print("Navigating to Bank Transactions...")
-click_bank_transactions_link(driver)
-wait_for_overlay_to_disappear(driver, max_wait=5)
-enhanced_print("Bank Transactions page loaded")
-
 
 def remove_bom(line):
     BOM = '\ufeff'
@@ -696,7 +578,6 @@ def get_current_balance():
 
 
 
-
 def gateway_setup_movement(gateway_name):
     enhanced_print(f"\033[93m[Gateway Setup] Executing setup for {gateway_name}\033[0m")
 
@@ -722,7 +603,7 @@ def enter_gateway_name(gateway_text):
     time.sleep(0.5)
     driver.execute_script("window.scrollTo(0, 0);")
     time.sleep(1)  # Optional: wait for any sticky headers to settle
-    
+
     # Click dropdown container to open it
     container = WebDriverWait(driver, 20).until(
         EC.element_to_be_clickable((By.CSS_SELECTOR, "div.ts-control"))
@@ -761,7 +642,7 @@ def enter_gateway_name(gateway_text):
     try:
         # Check for dropdown options
         dropdown_options = driver.find_elements(By.CSS_SELECTOR, ".ts-dropdown .option, .ts-dropdown-content .option, [data-selectable='true'], .dropdown-item")
-        
+
         if len(dropdown_options) == 0:
             enhanced_print("[WARN] No dropdown options found, checking for alternative selectors...")
             # Try alternative selectors for dropdown options
@@ -772,13 +653,13 @@ def enter_gateway_name(gateway_text):
                 "[role='option']",
                 ".ts-dropdown > div"
             ]
-            
+
             for selector in alternative_selectors:
                 dropdown_options = driver.find_elements(By.CSS_SELECTOR, selector)
                 if len(dropdown_options) > 0:
                     enhanced_print(f"[INFO] Found {len(dropdown_options)} options with selector: {selector}")
                     break
-        
+
         if len(dropdown_options) > 0:
             enhanced_print(f"[INFO] Found {len(dropdown_options)} dropdown options")
             # Press Enter to select the first matching option
@@ -790,15 +671,14 @@ def enter_gateway_name(gateway_text):
             # Try pressing Enter anyway in case the input is accepted
             gateway_input.send_keys(Keys.ENTER)
             enhanced_print(f"[INFO] Attempted to enter '{gateway_text}' without dropdown options.")
-            
+
     except Exception as e:
         enhanced_print(f"[WARN] Error checking dropdown options: {e}")
         # Fallback - try pressing Enter anyway
         gateway_input.send_keys(Keys.ENTER)
         enhanced_print(f"[INFO] Fallback: Attempted to enter '{gateway_text}'.")
-    
-    time.sleep(0.5)
 
+    time.sleep(0.5)
 
 
 
@@ -814,10 +694,10 @@ def enter_gateway_name(gateway_text):
         (By.CSS_SELECTOR, ".data-table"),
         (By.CSS_SELECTOR, ".grid-table")
     ]
-    
+
     table_loaded = False
     wait = WebDriverWait(driver, 45)  # Increased timeout
-    
+
     for selector in table_selectors:
         try:
             wait.until(EC.presence_of_element_located(selector))
@@ -827,10 +707,10 @@ def enter_gateway_name(gateway_text):
         except Exception as e:
             enhanced_print(f"[DEBUG] Table selector {selector} failed: {e}")
             continue
-    
+
     if not table_loaded:
         enhanced_print("[WARN] Table loading timeout - proceeding anyway")
-    
+
     time.sleep(2)  # Additional wait for table content to populate
 
 
@@ -846,30 +726,17 @@ def add_transaction_details(record):
     enhanced_print(f"   Phone: {record.get('Phone Number', 'Unknown')}")
 
     # Wait briefly for page load
-    time.sleep(2.5)
-    
+    time.sleep(1)
+
     # Find Add button quickly
     wait = WebDriverWait(driver, 20)
     add_button = wait.until(EC.element_to_be_clickable((
         By.XPATH, "//button[contains(text(), 'Add New Bank Transaction')]"
     )))
-    
-    # Single click on Add Transaction button
-    try:
-        # Check if overlay is blocking and wait for it to disappear
-        wait_for_overlay_to_disappear(driver, max_wait=2)
 
-        add_button.click()
-        enhanced_print("[INFO] Add Transaction button clicked")
-
-    except Exception as e:
-        enhanced_print(f"[WARNING] Click failed: {e}")
-        # Try JavaScript click as fallback
-        try:
-            driver.execute_script("arguments[0].click();", add_button)
-            enhanced_print("[INFO] Used JavaScript click as fallback")
-        except Exception as js_e:
-            enhanced_print(f"[ERROR] JavaScript click also failed: {js_e}")
+    # Single smart click with modal verification
+    smart_click(add_button, verify_callback=lambda: verify_modal_opened(driver))
+    enhanced_print("[INFO] Add Transaction button clicked")
 
     # === Wait for the window UI to appear ===
     WebDriverWait(driver, 20, poll_frequency=0.2).until(
@@ -881,10 +748,10 @@ def add_transaction_details(record):
 
     # Check transaction type and execute category/subcategory selection only for ADJUSTMENTADD
     transaction_type = record.get("Transaction Type", "")
-    
+
     if transaction_type.upper() in ("ADJUSTMENTADD", "PENDING_DEPOSIT", "CASH_IN"):
         enhanced_print(f"[INFO] {transaction_type} detected - executing category and subcategory selection")
-        
+
         # ======================= Click on 'category' combobox and select 'Advance' =======================
 
         try:
@@ -900,7 +767,7 @@ def add_transaction_details(record):
             # enhanced_print(f"[DEBUG] GAME div data-value: {game_div.get_attribute('data-value')}")
             # enhanced_print(f"[DEBUG] GAME div class: {game_div.get_attribute('class')}")
             # enhanced_print(f"[DEBUG] GAME div text: {game_div.text}")
-            
+
             # # 3. Try to input 'Advance' directly on the GAME element
             # enhanced_print("[DEBUG] Attempting to input 'Advance' on GAME div...")
             # try:
@@ -921,7 +788,7 @@ def add_transaction_details(record):
             #     enhanced_print("[DEBUG] Set 'Advance' using JavaScript.")
 
 
-            # ============= Select 'Advance' on dropdown list ============= 
+            # ============= Select 'Advance' on dropdown list =============
             enhanced_print("[DEBUG] Looking for dropdown and Advance option...")
             try:
                 dropdown = WebDriverWait(driver, 10).until(
@@ -929,12 +796,12 @@ def add_transaction_details(record):
                 )
                 enhanced_print(f"[DEBUG] Found dropdown: {dropdown}")
                 enhanced_print(f"[DEBUG] Dropdown style: {dropdown.get_attribute('style')}")
-                
+
                 advance_option = dropdown.find_element(By.XPATH, ".//div[@data-value='Advance']")
                 enhanced_print(f"[DEBUG] Found Advance option: {advance_option}")
                 enhanced_print(f"[DEBUG] Advance option text: {advance_option.text}")
                 enhanced_print(f"[DEBUG] Advance option data-value: {advance_option.get_attribute('data-value')}")
-                
+
                 advance_option.click()
                 enhanced_print("[DEBUG] Successfully clicked Advance option")
             except Exception as dropdown_error:
@@ -988,14 +855,14 @@ def add_transaction_details(record):
     # Check transaction type and execute category/subcategory selection only for ADJUSTMENTDEDUCT
     if transaction_type.upper() in ("ADJUSTMENTDEDUCT", "CASH_OUT"):
         enhanced_print("[INFO] ADJUSTMENTDEDUCT detected - executing category selection")
-        
+
         # ======================= Click on 'category' combobox and select 'Advance' =======================
 
         wait = WebDriverWait(driver, 15)
         out_radio = wait.until(
             EC.element_to_be_clickable((By.CSS_SELECTOR, 'input[type="radio"][value="out"]'))
         )
-        
+
         smart_click(out_radio)
         enhanced_print("[INFO] Successfully clicked 'out' radio button for withdrawal transaction")
 
@@ -1014,12 +881,12 @@ def add_transaction_details(record):
                 )
                 enhanced_print(f"[DEBUG] Found dropdown: {dropdown}")
                 enhanced_print(f"[DEBUG] Dropdown style: {dropdown.get_attribute('style')}")
-                
+
                 advance_option = dropdown.find_element(By.XPATH, ".//div[@data-value='Advance']")
                 enhanced_print(f"[DEBUG] Found Advance option: {advance_option}")
                 enhanced_print(f"[DEBUG] Advance option text: {advance_option.text}")
                 enhanced_print(f"[DEBUG] Advance option data-value: {advance_option.get_attribute('data-value')}")
-                
+
                 advance_option.click()
                 enhanced_print("[DEBUG] Successfully clicked Advance option")
             except Exception as dropdown_error:
@@ -1050,7 +917,7 @@ def add_transaction_details(record):
         #             (By.CSS_SELECTOR, 'input#tomselect-4-ts-control[role="combobox"]')
         #         )
         #     )
-        #     
+        #
         #     # Send multiple BACKSPACE keys to "clear"
         #     for _ in range(30):  # adjust 30 based on max expected length
         #         input_element.send_keys(Keys.BACKSPACE)
@@ -1074,14 +941,14 @@ def add_transaction_details(record):
     # Click 'out' radio button only for withdrawal transactions
     # enhanced_print(f"[DEBUG] Record transaction type: '{transaction_type}' (upper: '{transaction_type.upper()}')")
     # enhanced_print(f"[DEBUG] Is withdrawal check: {transaction_type.upper() == 'WITHDRAWAL'}")
-    
+
     if transaction_type.upper() in ("WITHDRAWAL", "MANUAL_WITHDRAWAL", "ADJUSTMENTDEDUCT", "CASH_OUT"):
         enhanced_print(f"[INFO] {transaction_type} detected - clicking 'out' radio button")
         wait = WebDriverWait(driver, 15)
         out_radio = wait.until(
             EC.element_to_be_clickable((By.CSS_SELECTOR, 'input[type="radio"][value="out"]'))
         )
-        
+
         smart_click(out_radio)
         enhanced_print(f"[INFO] Successfully clicked 'out' radio button for {transaction_type} transaction")
     else:
@@ -1105,21 +972,21 @@ def add_transaction_details(record):
 
     if transaction_type.upper() in ("DEPOSIT", "PENDING_DEPOSIT", "MANUAL_DEPOSIT", "WITHDRAWAL", "MANUAL_WITHDRAWAL"):
         enhanced_print(f"[INFO] {transaction_type} transaction - filling phone number field")
-        
+
         phone_number_input = WebDriverWait(driver, 20).until(
             EC.presence_of_element_located((By.XPATH, "//input[@placeholder='Player ID']"))
         )
-        
+
         # Multiple scrolling approaches to ensure element is interactable
         try:
             # Approach 1: Scroll to top first
             driver.execute_script("window.scrollTo(0, 0);")
             time.sleep(0.5)
-            
+
             # Approach 2: Scroll element into view
             driver.execute_script("arguments[0].scrollIntoView({block: 'center', inline: 'center'});", phone_number_input)
             time.sleep(0.5)
-            
+
             # Approach 3: Additional scrolling to ensure visibility
             driver.execute_script("""
                 arguments[0].focus();
@@ -1127,17 +994,17 @@ def add_transaction_details(record):
                 window.scrollBy(0, -100);
             """, phone_number_input)
             time.sleep(1)
-            
+
             # Try to clear the field
             phone_number_input.clear()
             enhanced_print("[DEBUG] Phone number input cleared successfully")
-            
+
         except Exception as clear_error:
             enhanced_print(f"[DEBUG] Clear failed: {clear_error}, trying JavaScript approach...")
             # JavaScript fallback for clearing
             driver.execute_script("arguments[0].value = '';", phone_number_input)
             enhanced_print("[DEBUG] Phone number input cleared with JavaScript")
-        
+
         # Enter the phone number
         try:
             phone_number_input.send_keys(record["Phone Number"])
@@ -1226,7 +1093,7 @@ def add_transaction_details(record):
     calendar_input = WebDriverWait(driver, 20).until(
         EC.presence_of_element_located((By.XPATH, "//input[@placeholder='Choose datetime...']"))
     )
-    
+
     # Use smart click with calendar verification
     smart_click(calendar_input, verify_callback=lambda: verify_calendar_opened(driver))
     enhanced_print(f"[INFO] Calendar input clicked...")
@@ -1294,7 +1161,7 @@ def add_transaction_details(record):
         enhanced_print(f"[INFO] AM/PM already set to {ampm_target}")
 
     time.sleep(1)
-    
+
     # Select Player ID field (only for transactions that have phone number field)
     if transaction_type.upper() in ("DEPOSIT", "PENDING_DEPOSIT", "MANUAL_DEPOSIT", "WITHDRAWAL", "MANUAL_WITHDRAWAL"):
         try:
@@ -1314,7 +1181,7 @@ def add_transaction_details(record):
         enhanced_print(f"[INFO] {transaction_type} transaction - skipping Player ID field click")
 
     time.sleep(1)
-    
+
     # Confirm calendar selection by pressing Enter on the calendar input or body
     try:
         # First try to press Enter on the calendar input to confirm the datetime selection
@@ -1329,9 +1196,9 @@ def add_transaction_details(record):
             enhanced_print("[INFO] Calendar selection confirmed via Enter on body")
         except Exception as e2:
             enhanced_print(f"[WARN] Could not confirm calendar: {e2}")
-    
+
     time.sleep(0.5)
-    
+
     # --- Usage flow after form submission ---
 
     # Check for transaction successful toast first
@@ -1358,7 +1225,6 @@ def add_transaction_details(record):
             enhanced_print("[INFO] No player ID toast detected - form submission successful")
 
     time.sleep(.5)
-
 
 
 
@@ -1400,7 +1266,7 @@ def parse_and_execute(filename, start_order_ids=None):
             enhanced_print(f"[INFO] Detected WITHDRAWALS section - switching to withdrawal mode: '{line}'")
             continue
 
-        # Detect DEPOSITS section banner  
+        # Detect DEPOSITS section banner
         if "DEPOSITS" in line and "=" in line:
             current_transaction_type = "DEPOSIT"
             enhanced_print(f"[INFO] Detected DEPOSITS section - switching to deposit mode: '{line}'")
@@ -1553,21 +1419,227 @@ def print_gateway_balance_summary(gateway_balances):
     enhanced_print("\033[1;35m                    END OF BALANCE SUMMARY\033[0m")
     enhanced_print("\033[1;35m" + "="*80 + "\033[0m")
 
-# ===== Function call HERE =====
-enhanced_print("📋 Starting transaction processing from file...")
-parse_and_execute("selenium_project/selenium-transaction_history.txt", start_order_ids)
-enhanced_print("All transactions processed successfully!")
-enhanced_print("Automation completed. Closing browser...")
-time.sleep(2)
-driver.quit()
+def add_deposit_api(website_choice="1", start_order_ids_config=None):
+    """
+    API wrapper function for adding deposits
+    Args:
+        website_choice (str): Website selection ("1" for NepalWin, "2" for 95np)
+        start_order_ids_config (dict): Start order ID configuration for gateways
+    Returns:
+        dict: Result with status and message
+    """
+    global driver
 
-# Cleanup
-try:
-    if os.path.exists('status_terminal.bat'):
-        os.remove('status_terminal.bat')
-    enhanced_print("Cleanup completed")
-except:
-    pass
+    try:
+        # ======== Setup the driver with error handling ========
+        try:
+            enhanced_print("🔧 Setting up Firefox driver...")
+            service = Service(GeckoDriverManager().install())
+            driver = webdriver.Firefox(service=service, options=options)
+            driver.maximize_window()
+            enhanced_print("✅ Firefox driver started successfully")
+        except Exception as e:
+            enhanced_print(f"❌ Firefox driver failed to start: {e}")
+            enhanced_print("\n🔧 Trying alternative Firefox setup...")
+            try:
+                # Try without GeckoDriverManager
+                options.add_argument('--no-sandbox')
+                options.add_argument('--disable-dev-shm-usage')
+                service = Service()  # Use system geckodriver
+                driver = webdriver.Firefox(service=service, options=options)
+                driver.maximize_window()
+                enhanced_print("✅ Firefox driver started with alternative setup")
+            except Exception as e2:
+                enhanced_print(f"❌ Alternative Firefox setup also failed: {e2}")
+                enhanced_print("\n🔧 Trying Chrome as fallback...")
+                try:
+                    chrome_options = ChromeOptions()
+                    chrome_options.add_argument('--no-sandbox')
+                    chrome_options.add_argument('--disable-dev-shm-usage')
+                    chrome_service = ChromeService(ChromeDriverManager().install())
+                    driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
+                    driver.maximize_window()
+                    enhanced_print("✅ Chrome driver started successfully as fallback")
+                except Exception as e3:
+                    return {"status": "error", "message": f"Driver setup failed: {e3}"}
 
-cleanup_terminal()
+        # Initialize status logging
+        enhanced_print("Starting Selenium Deposit Automation")
 
+        # Create status terminal
+        if create_status_terminal():
+            enhanced_print("Status monitoring terminal opened")
+        else:
+            enhanced_print("Status terminal creation failed - continuing without separate window")
+
+        # Setup terminal with custom settings
+        setup_automation_terminal("Add Deposit")
+
+        # Get website configuration
+        if website_choice not in website_configs:
+            return {"status": "error", "message": f"Invalid website choice: {website_choice}"}
+
+        config = website_configs[website_choice]
+        enhanced_print(f"Selected website: {config['name']}")
+
+        # Use provided start order IDs or empty dict
+        start_order_ids = start_order_ids_config or {}
+
+        # Login with selected configuration
+        enhanced_print(f"\nConnecting to RocketGo for {config['name']}...")
+        driver.get("https://www.rocketgo.asia/login")
+        enhanced_print("Loading login page...")
+
+        wait = WebDriverWait(driver, 40)
+        merchant_input = wait.until(EC.presence_of_element_located((By.NAME, "merchant_code")))
+        merchant_input.send_keys(config['merchant_code'])
+
+        wait = WebDriverWait(driver, 40)
+        username_input = wait.until(EC.presence_of_element_located((By.NAME, "username")))
+        username_input.send_keys(config['username'])
+
+        wait = WebDriverWait(driver, 40)
+        password_input = wait.until(EC.presence_of_element_located((By.NAME, "password")))
+        password_input.send_keys(config['password'] + Keys.ENTER)
+
+        enhanced_print(f"Login attempted for {config['name']}")
+
+        time.sleep(3)
+
+        enhanced_print("Navigating to Bank Transactions...")
+        click_bank_transactions_link(driver)
+        wait_for_overlay_to_disappear(driver, max_wait=5)
+        enhanced_print("Bank Transactions page loaded")
+
+        # ===== Function call HERE =====
+        enhanced_print("📋 Starting transaction processing from file...")
+        parse_and_execute("selenium_project/selenium-transaction_history.txt", start_order_ids)
+        enhanced_print("All transactions processed successfully!")
+        enhanced_print("Automation completed. Closing browser...")
+
+        time.sleep(2)
+        cleanup_terminal()
+
+        return {"status": "success", "message": "Deposit addition completed successfully"}
+
+    except Exception as e:
+        return {"status": "error", "message": f"Deposit addition failed: {str(e)}"}
+    finally:
+        try:
+            driver.quit()
+        except:
+            pass
+        # Cleanup
+        try:
+            if os.path.exists('status_terminal.bat'):
+                os.remove('status_terminal.bat')
+            enhanced_print("Cleanup completed")
+        except:
+            pass
+
+def main():
+    # ======== Setup the driver with error handling ========
+    try:
+        enhanced_print("🔧 Setting up Firefox driver...")
+        service = Service(GeckoDriverManager().install())
+        driver = webdriver.Firefox(service=service, options=options)
+        driver.maximize_window()
+        enhanced_print("✅ Firefox driver started successfully")
+    except Exception as e:
+        enhanced_print(f"❌ Firefox driver failed to start: {e}")
+        enhanced_print("\n🔧 Trying alternative Firefox setup...")
+        try:
+            # Try without GeckoDriverManager
+            options.add_argument('--no-sandbox')
+            options.add_argument('--disable-dev-shm-usage')
+            service = Service()  # Use system geckodriver
+            driver = webdriver.Firefox(service=service, options=options)
+            driver.maximize_window()
+            enhanced_print("✅ Firefox driver started with alternative setup")
+        except Exception as e2:
+            enhanced_print(f"❌ Alternative Firefox setup also failed: {e2}")
+            enhanced_print("\n🔧 Trying Chrome as fallback...")
+            try:
+                chrome_options = ChromeOptions()
+                chrome_options.add_argument('--no-sandbox')
+                chrome_options.add_argument('--disable-dev-shm-usage')
+                chrome_service = ChromeService(ChromeDriverManager().install())
+                driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
+                driver.maximize_window()
+                enhanced_print("✅ Chrome driver started successfully as fallback")
+            except Exception as e3:
+                enhanced_print(f"❌ Chrome fallback also failed: {e3}")
+                enhanced_print("\n💡 Troubleshooting suggestions:")
+                enhanced_print("1. Make sure Firefox or Chrome is installed and updated")
+                enhanced_print("2. Try restarting your computer")
+                enhanced_print("3. Check if any antivirus is blocking webdrivers")
+                enhanced_print("4. Run as administrator")
+                enhanced_print("5. Try running: pip install --upgrade selenium webdriver-manager")
+                import sys
+                sys.exit(1)
+
+    # Initialize status logging
+    enhanced_print("Starting Selenium Deposit Automation")
+
+    # Create status terminal
+    if create_status_terminal():
+        enhanced_print("Status monitoring terminal opened")
+    else:
+        enhanced_print("Status terminal creation failed - continuing without separate window")
+
+    # Setup terminal with custom settings
+    setup_automation_terminal("Add Deposit")
+
+    # Select website configuration
+    config = select_website()
+    enhanced_print(f"Selected website: {config['name']}")
+
+    # Get start order ID configuration
+    start_order_ids = get_start_order_ids()
+
+    # Login with selected configuration
+    enhanced_print(f"\nConnecting to RocketGo for {config['name']}...")
+    driver.get("https://www.rocketgo.asia/login")
+    enhanced_print("Loading login page...")
+
+    wait = WebDriverWait(driver, 40)
+    merchant_input = wait.until(EC.presence_of_element_located((By.NAME, "merchant_code")))
+    merchant_input.send_keys(config['merchant_code'])
+
+    wait = WebDriverWait(driver, 40)
+    username_input = wait.until(EC.presence_of_element_located((By.NAME, "username")))
+    username_input.send_keys(config['username'])
+
+    wait = WebDriverWait(driver, 40)
+    password_input = wait.until(EC.presence_of_element_located((By.NAME, "password")))
+    password_input.send_keys(config['password'] + Keys.ENTER)
+
+    enhanced_print(f"Login attempted for {config['name']}")
+
+    time.sleep(3)
+
+    enhanced_print("Navigating to Bank Transactions...")
+    click_bank_transactions_link(driver)
+    wait_for_overlay_to_disappear(driver, max_wait=5)
+    enhanced_print("Bank Transactions page loaded")
+
+    # ===== Function call HERE =====
+    enhanced_print("📋 Starting transaction processing from file...")
+    parse_and_execute("selenium_project/selenium-transaction_history.txt", start_order_ids)
+    enhanced_print("All transactions processed successfully!")
+    enhanced_print("Automation completed. Closing browser...")
+    time.sleep(2)
+    driver.quit()
+
+    # Cleanup
+    try:
+        if os.path.exists('status_terminal.bat'):
+            os.remove('status_terminal.bat')
+        enhanced_print("Cleanup completed")
+    except:
+        pass
+
+    cleanup_terminal()
+
+if __name__ == "__main__":
+    main()

@@ -23,7 +23,17 @@
       "Bash(where python)",
       "Bash(del nul)",
       "Bash(git pull:*)",
-      "Bash(git merge:*)"
+      "Bash(git merge:*)",
+      "Bash(tree:*)",
+      "Bash(dir:*)",
+      "Bash(mv:*)",
+      "Bash(mkdir:*)",
+      "Bash(copy:*)",
+      "Bash(py --version)",
+      "Bash(pip --version)",
+      "Bash(where firefox)",
+      "Bash(where chrome)",
+      "Bash(reg query:*)"
     ],
     "deny": [],
     "ask": []

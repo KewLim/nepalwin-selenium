@@ -58,7 +58,7 @@ def click_bank_transactions_link(driver, timeout=5):
     except TimeoutException:
         print("[LOG] Bank Transactions link not found within timeout.")
         return False
-    
+
 
 def check_player_id_toast(driver, timeout=10):
     """
@@ -79,7 +79,6 @@ def check_player_id_toast(driver, timeout=10):
 
 
 
-
 # Windows Firefox profile path (comment out if you want a fresh profile)
 # profile_path = "C:\\Users\\BDC Computer ll\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\your-profile-name"
 # firefox_profile = webdriver.FirefoxProfile(profile_path)
@@ -87,11 +86,7 @@ def check_player_id_toast(driver, timeout=10):
 options = Options()
 # options.set_preference("profile", profile_path)  # Commented out for fresh profile
 
-
-service = Service(GeckoDriverManager().install())
-driver = webdriver.Firefox(service=service, options=options)
-driver.maximize_window()
-
+# Driver will be initialized after function definitions
 
 
 # ======== Website Configuration ========
@@ -115,12 +110,12 @@ def select_website():
     print("\n" + "="*50)
     print("           SELECT WEBSITE")
     print("="*50)
-    
+
     for key, config in website_configs.items():
         print(f"{key}. {config['name']}")
-    
+
     print("="*50)
-    
+
     while True:
         try:
             choice = input("Enter your choice (1-2): ").strip()
@@ -136,71 +131,6 @@ def select_website():
         except KeyboardInterrupt:
             print("\n\n❌ Operation cancelled by user")
             exit(0)
-
-# Setup terminal with custom settings
-setup_automation_terminal("Add Player")
-
-# Select website configuration
-config = select_website()
-
-# Login with selected configuration
-print(f"\n🚀 Connecting to RocketGo for {config['name']}...")
-driver.get("https://www.rocketgo.asia/login")
-
-wait = WebDriverWait(driver, 40)
-merchant_input = wait.until(EC.presence_of_element_located((By.NAME, "merchant_code")))
-merchant_input.send_keys(config['merchant_code'])
-
-wait = WebDriverWait(driver, 40)
-username_input = wait.until(EC.presence_of_element_located((By.NAME, "username")))
-username_input.send_keys(config['username'])
-
-wait = WebDriverWait(driver, 40)
-password_input = wait.until(EC.presence_of_element_located((By.NAME, "password")))
-password_input.send_keys(config['password'] + Keys.ENTER)
-
-print(f"✅ Login attempted for {config['name']}")
-
-
-time.sleep(2)
-click_bank_transactions_link(driver)
-wait_for_overlay_to_disappear(driver, max_wait=5)
-
-try:
-    WebDriverWait(driver, 20, poll_frequency=0.2).until_not(
-        EC.presence_of_element_located(
-            (By.CSS_SELECTOR, "div.app-preloader")
-        )
-    )
-    print("[INFO] Preloader disappeared.")
-except TimeoutException:
-    print("[WARN] Preloader still visible. Trying to proceed anyway...")
-
-    time.sleep(1)
-
-
-
-
-try:
-    # Wait for the 'Players Management' link to be clickable
-    players_link = WebDriverWait(driver, 20, poll_frequency=0.2).until(
-        EC.element_to_be_clickable((By.LINK_TEXT, "Players Management"))
-    )
-    time.sleep(5)
-    players_link.click()
-    print("[INFO] Clicked on 'Players Management' link.")
-except TimeoutException:
-    print("[ERROR] Timed out waiting for 'Players Management' link.")
-
-
-# --- Check Table load ---
-wait = WebDriverWait(driver, 30)
-table_presence = wait.until(EC.presence_of_element_located((By.CLASS_NAME, "gridjs-tr")))
-print("[INFO] Table loaded")
-
-
-
-
 
 
 def load_phone_records_from_file():
@@ -285,13 +215,13 @@ def add_player_details(record):
 
     # ===== Remarks (Full Name) =====
     print(f"[DEBUG] Full Name from record: '{record['Full Name']}'")
-    
+
     number_id_input = WebDriverWait(driver, 20).until(
         EC.presence_of_element_located((By.XPATH, "//textarea[@placeholder='Remarks']"))
     )
     number_id_input.clear()
     number_id_input.send_keys(record["Full Name"])
-    
+
     # Verify what was actually entered
     entered_value = number_id_input.get_attribute("value")
     print(f"[DEBUG] Value entered in Remarks field: '{entered_value}'")
@@ -300,7 +230,7 @@ def add_player_details(record):
 
 
     time.sleep(1)
-    
+
     # Submit the form using Enter key
     try:
         # Find the last input field (affiliate ID) and press Enter
@@ -309,16 +239,16 @@ def add_player_details(record):
         print("[INFO] Form submitted via Enter key")
     except Exception as e:
         print(f"[ERROR] Could not submit form with Enter key: {e}")
-    
+
     # time.sleep(2)
 
 
     # Check for player ID toast after form submission
-    
+
     if check_player_id_toast(driver):
         print("\033[92m[APPROVED]\033[0m Player ID form done submitted")
-        
-        
+
+
     else:
         print("\033[91m[WARN]\033Player ID not added - form submission failed")
         # Try pressing Enter up to 5 times with 2s interval
@@ -330,45 +260,183 @@ def add_player_details(record):
                 time.sleep(3)
             except Exception as e:
                 print(f"[ERROR] Could not send ENTER key: {e}")
-    
+
 
 
     time.sleep(3)
-    
+
     # time.sleep(6)
 
 
 
 
+def add_player_api(website_choice="1"):
+    """
+    API wrapper function for adding players
+    Args:
+        website_choice (str): Website selection ("1" for NepalWin, "2" for 95np)
+    Returns:
+        dict: Result with status and message
+    """
+    global driver
 
-def show_post_player_menu():
-    """Show menu after player addition is complete"""
-    print("\n" + "="*70)
-    print("           PLAYER ADDITION COMPLETED - SELECT NEXT ACTION")
-    print("="*70)
-    print("1. Run Add Deposit Script")
-    print("2. Exit")
-    print("="*70)
+    try:
+        service = Service(GeckoDriverManager().install())
+        driver = webdriver.Firefox(service=service, options=options)
+        driver.maximize_window()
 
-    while True:
+        # Get website configuration
+        if website_choice not in website_configs:
+            return {"status": "error", "message": f"Invalid website choice: {website_choice}"}
+
+        config = website_configs[website_choice]
+        print(f"\n✅ Selected: {config['name']}")
+        print(f"🏢 Merchant: {config['merchant_code']}")
+        print(f"👤 Username: {config['username']}")
+        print("-"*50)
+
+        # Setup terminal with custom settings
+        setup_automation_terminal("Add Player")
+
+        # Login with selected configuration
+        print(f"\n🚀 Connecting to RocketGo for {config['name']}...")
+        driver.get("https://www.rocketgo.asia/login")
+
+        wait = WebDriverWait(driver, 40)
+        merchant_input = wait.until(EC.presence_of_element_located((By.NAME, "merchant_code")))
+        merchant_input.send_keys(config['merchant_code'])
+
+        wait = WebDriverWait(driver, 40)
+        username_input = wait.until(EC.presence_of_element_located((By.NAME, "username")))
+        username_input.send_keys(config['username'])
+
+        wait = WebDriverWait(driver, 40)
+        password_input = wait.until(EC.presence_of_element_located((By.NAME, "password")))
+        password_input.send_keys(config['password'] + Keys.ENTER)
+
+        print(f"✅ Login attempted for {config['name']}")
+
+
+        time.sleep(2)
+        click_bank_transactions_link(driver)
+        wait_for_overlay_to_disappear(driver, max_wait=5)
+
         try:
-            choice = input("Enter your choice (1-2): ").strip()
-            if choice == "1":
-                print("\n🚀 Starting Add Deposit Script...")
-                print("="*70)
-                import subprocess
-                subprocess.run(["python", "selenium-add-deposit.py"], check=False)
-                return
-            elif choice == "2":
-                print("\n✅ Exiting...")
-                return
-            else:
-                print("❌ Invalid choice. Please enter 1 or 2.")
-        except KeyboardInterrupt:
-            print("\n\n❌ Operation cancelled by user")
-            return
+            WebDriverWait(driver, 20, poll_frequency=0.2).until_not(
+                EC.presence_of_element_located(
+                    (By.CSS_SELECTOR, "div.app-preloader")
+                )
+            )
+            print("[INFO] Preloader disappeared.")
+        except TimeoutException:
+            print("[WARN] Preloader still visible. Trying to proceed anyway...")
+
+            time.sleep(1)
+
+
+
+
+        try:
+            # Wait for the 'Players Management' link to be clickable
+            players_link = WebDriverWait(driver, 20, poll_frequency=0.2).until(
+                EC.element_to_be_clickable((By.LINK_TEXT, "Players Management"))
+            )
+            time.sleep(5)
+            players_link.click()
+            print("[INFO] Clicked on 'Players Management' link.")
+        except TimeoutException:
+            print("[ERROR] Timed out waiting for 'Players Management' link.")
+
+
+        # --- Check Table load ---
+        wait = WebDriverWait(driver, 30)
+        table_presence = wait.until(EC.presence_of_element_located((By.CLASS_NAME, "gridjs-tr")))
+        print("[INFO] Table loaded")
+
+        records = load_phone_records_from_file()
+
+        for record in records:
+            add_player_details(record)
+
+        time.sleep(5)
+        cleanup_terminal()
+
+        return {"status": "success", "message": "Player addition completed successfully"}
+
+    except Exception as e:
+        return {"status": "error", "message": f"Player addition failed: {str(e)}"}
+    finally:
+        try:
+            driver.quit()
+        except:
+            pass
 
 def main():
+    service = Service(GeckoDriverManager().install())
+    driver = webdriver.Firefox(service=service, options=options)
+    driver.maximize_window()
+
+    # Setup terminal with custom settings
+    setup_automation_terminal("Add Player")
+
+    # Select website configuration
+    config = select_website()
+
+    # Login with selected configuration
+    print(f"\n🚀 Connecting to RocketGo for {config['name']}...")
+    driver.get("https://www.rocketgo.asia/login")
+
+    wait = WebDriverWait(driver, 40)
+    merchant_input = wait.until(EC.presence_of_element_located((By.NAME, "merchant_code")))
+    merchant_input.send_keys(config['merchant_code'])
+
+    wait = WebDriverWait(driver, 40)
+    username_input = wait.until(EC.presence_of_element_located((By.NAME, "username")))
+    username_input.send_keys(config['username'])
+
+    wait = WebDriverWait(driver, 40)
+    password_input = wait.until(EC.presence_of_element_located((By.NAME, "password")))
+    password_input.send_keys(config['password'] + Keys.ENTER)
+
+    print(f"✅ Login attempted for {config['name']}")
+
+
+    time.sleep(2)
+    click_bank_transactions_link(driver)
+    wait_for_overlay_to_disappear(driver, max_wait=5)
+
+    try:
+        WebDriverWait(driver, 20, poll_frequency=0.2).until_not(
+            EC.presence_of_element_located(
+                (By.CSS_SELECTOR, "div.app-preloader")
+            )
+        )
+        print("[INFO] Preloader disappeared.")
+    except TimeoutException:
+        print("[WARN] Preloader still visible. Trying to proceed anyway...")
+
+        time.sleep(1)
+
+
+
+
+    try:
+        # Wait for the 'Players Management' link to be clickable
+        players_link = WebDriverWait(driver, 20, poll_frequency=0.2).until(
+            EC.element_to_be_clickable((By.LINK_TEXT, "Players Management"))
+        )
+        time.sleep(5)
+        players_link.click()
+        print("[INFO] Clicked on 'Players Management' link.")
+    except TimeoutException:
+        print("[ERROR] Timed out waiting for 'Players Management' link.")
+
+
+    # --- Check Table load ---
+    wait = WebDriverWait(driver, 30)
+    table_presence = wait.until(EC.presence_of_element_located((By.CLASS_NAME, "gridjs-tr")))
+    print("[INFO] Table loaded")
+
     records = load_phone_records_from_file()
 
     for record in records:
@@ -377,9 +445,6 @@ def main():
     time.sleep(5)
     driver.quit()
     cleanup_terminal()
-
-    # Show post-player menu
-    show_post_player_menu()
 
 if __name__ == "__main__":
     # Set up signal handlers for stopping

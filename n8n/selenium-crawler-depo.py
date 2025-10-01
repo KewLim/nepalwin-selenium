@@ -602,13 +602,12 @@ def show_post_crawl_menu():
     print("           CRAWLING COMPLETED - SELECT NEXT ACTION")
     print("="*70)
     print("1. Run Add Deposit Script (with start Order ID configuration)")
-    print("2. Run Add Player Script")
-    print("3. Exit")
+    print("2. Exit")
     print("="*70)
 
     while True:
         try:
-            choice = input("Enter your choice (1-3): ").strip()
+            choice = input("Enter your choice (1-2): ").strip()
             if choice == "1":
                 print("\n🚀 Starting Add Deposit Script...")
                 print("="*70)
@@ -616,16 +615,10 @@ def show_post_crawl_menu():
                 subprocess.run(["python", "selenium-add-deposit.py"], check=False)
                 return
             elif choice == "2":
-                print("\n🚀 Starting Add Player Script...")
-                print("="*70)
-                import subprocess
-                subprocess.run(["python", "selenium-add-player.py"], check=False)
-                return
-            elif choice == "3":
                 print("\n✅ Exiting...")
                 return
             else:
-                print("❌ Invalid choice. Please enter 1-3.")
+                print("❌ Invalid choice. Please enter 1 or 2.")
         except KeyboardInterrupt:
             print("\n\n❌ Operation cancelled by user")
             return
