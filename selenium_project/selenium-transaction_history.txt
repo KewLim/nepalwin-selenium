@@ -2,1047 +2,2210 @@
                               DEPOSITS
 ================================================================================
 
-==== Laxmi_bank_Pawan kumar khatri_20250921 (92 records) | Total Amount: Rs 80,625.00 ====
+==== Kumari Bank BAIJANATH YADAV_20251019 (116 records) | Total Amount: Rs 255,062.47 ====
 
 Record #1
-Order ID: 11933
+Order ID: 14534
 Transaction Type: CASH_IN
 Phone Number: -
-Amount: 900.00
+Amount: 490.00
 Bank Charges: -
-Balance: 122288.58
-Time: 2025-09-30 19:50:46
+Balance: 194912.47
+Time: 2025-10-20 16:08:00
 
 Record #2
-Order ID: 11932
-Transaction Type: DEPOSIT
-Phone Number: Puskarrokaya
+Order ID: 14533
+Transaction Type: MANUAL_DEPOSIT
+Phone Number: Saroj Tamang
 Amount: 500.00
 Bank Charges: -
-Balance: 121388.58
-Time: 2025-09-30 19:46:56
+Balance: 194422.47
+Time: 2025-10-20 16:06:48
 
 Record #3
-Order ID: 11931
-Transaction Type: CASH_IN
+Order ID: 14532
+Transaction Type: PENDING_DEPOSIT
 Phone Number: -
 Amount: 2,000.00
 Bank Charges: -
-Balance: 120888.58
-Time: 2025-09-30 19:42:31
+Balance: 193922.47
+Time: 2025-10-20 15:45:31
 
 Record #4
-Order ID: 11930
-Transaction Type: DEPOSIT
-Phone Number: Dinesh Dhakal
-Amount: 200.00
+Order ID: 14531
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 1,000.00
 Bank Charges: -
-Balance: 118888.58
-Time: 2025-09-30 19:38:27
+Balance: 191922.47
+Time: 2025-10-20 15:45:01
 
 Record #5
-Order ID: 11928
-Transaction Type: CASH_IN
-Phone Number: -
+Order ID: 14529
+Transaction Type: DEPOSIT
+Phone Number: Sunil121
 Amount: 1,000.00
 Bank Charges: -
-Balance: 118688.58
-Time: 2025-09-30 19:35:20
+Balance: 196422.47
+Time: 2025-10-20 15:13:39
 
 Record #6
-Order ID: 11927
-Transaction Type: CASH_IN
-Phone Number: -
-Amount: 3,000.00
+Order ID: 14527
+Transaction Type: DEPOSIT
+Phone Number: Rokeydon
+Amount: 500.00
 Bank Charges: -
-Balance: 117688.58
-Time: 2025-09-30 19:30:40
+Balance: 198432.47
+Time: 2025-10-20 15:00:52
 
 Record #7
-Order ID: 11926
-Transaction Type: CASH_IN
-Phone Number: -
-Amount: 1,000.00
+Order ID: 14526
+Transaction Type: DEPOSIT
+Phone Number: Ramesh99
+Amount: 200.00
 Bank Charges: -
-Balance: 114688.58
-Time: 2025-09-30 19:30:37
+Balance: 197932.47
+Time: 2025-10-20 14:44:33
 
 Record #8
-Order ID: 11924
-Transaction Type: CASH_IN
-Phone Number: -
-Amount: 1,100.00
+Order ID: 14525
+Transaction Type: DEPOSIT
+Phone Number: Anita Shrestha
+Amount: 2,000.00
 Bank Charges: -
-Balance: 118688.58
-Time: 2025-09-30 19:30:09
+Balance: 197732.47
+Time: 2025-10-20 14:38:21
 
 Record #9
-Order ID: 11923
-Transaction Type: CASH_IN
-Phone Number: -
-Amount: 455.00
-Bank Charges: -
-Balance: 117588.58
-Time: 2025-09-30 19:29:58
-
-Record #10
-Order ID: 11921
-Transaction Type: MANUAL_DEPOSIT
-Phone Number: Ankit shah
-Amount: 300.00
-Bank Charges: -
-Balance: 117133.58
-Time: 2025-09-30 19:15:40
-
-Record #11
-Order ID: 11920
-Transaction Type: DEPOSIT
-Phone Number: Gendra tharu25
-Amount: 1,000.00
-Bank Charges: -
-Balance: 116833.58
-Time: 2025-09-30 19:12:51
-
-Record #12
-Order ID: 11918
+Order ID: 14522
 Transaction Type: CASH_IN
 Phone Number: -
 Amount: 200.00
 Bank Charges: -
-Balance: 119843.58
-Time: 2025-09-30 19:01:11
+Balance: 195732.47
+Time: 2025-10-20 14:33:47
 
-Record #13
-Order ID: 11916
-Transaction Type: DEPOSIT
-Phone Number: Gendra tharu25
-Amount: 1,000.00
-Bank Charges: -
-Balance: 120753.58
-Time: 2025-09-30 18:35:53
-
-Record #14
-Order ID: 11915
+Record #10
+Order ID: 14520
 Transaction Type: CASH_IN
 Phone Number: -
-Amount: 300.00
+Amount: 200.00
 Bank Charges: -
-Balance: 119753.58
-Time: 2025-09-30 18:35:10
+Balance: 195532.47
+Time: 2025-10-20 14:07:26
 
-Record #15
-Order ID: 11913
-Transaction Type: CASH_IN
-Phone Number: -
-Amount: 500.00
-Bank Charges: -
-Balance: 122461.58
-Time: 2025-09-30 18:22:54
-
-Record #16
-Order ID: 11912
-Transaction Type: CASH_IN
-Phone Number: -
-Amount: 2,000.00
-Bank Charges: -
-Balance: 121961.58
-Time: 2025-09-30 18:17:05
-
-Record #17
-Order ID: 11911
-Transaction Type: CASH_IN
-Phone Number: -
-Amount: 300.00
-Bank Charges: -
-Balance: 119961.58
-Time: 2025-09-30 18:04:02
-
-Record #18
-Order ID: 11910
-Transaction Type: CASH_IN
-Phone Number: -
-Amount: 2,000.00
-Bank Charges: -
-Balance: 119661.58
-Time: 2025-09-30 18:03:54
-
-Record #19
-Order ID: 11909
-Transaction Type: CASH_IN
-Phone Number: -
-Amount: 500.00
-Bank Charges: -
-Balance: 117661.58
-Time: 2025-09-30 17:59:43
-
-Record #20
-Order ID: 11908
+Record #11
+Order ID: 14515
 Transaction Type: CASH_IN
 Phone Number: -
 Amount: 3,000.00
 Bank Charges: -
-Balance: 117161.58
-Time: 2025-09-30 17:56:37
+Balance: 196842.47
+Time: 2025-10-20 13:11:37
 
-Record #21
-Order ID: 11906
-Transaction Type: CASH_IN
-Phone Number: -
-Amount: 200.00
-Bank Charges: -
-Balance: 114161.58
-Time: 2025-09-30 17:51:54
-
-Record #22
-Order ID: 11905
+Record #12
+Order ID: 14514
 Transaction Type: CASH_IN
 Phone Number: -
 Amount: 2,000.00
 Bank Charges: -
-Balance: 113961.58
-Time: 2025-09-30 17:50:55
+Balance: 193842.47
+Time: 2025-10-20 13:06:59
 
-Record #23
-Order ID: 11903
+Record #13
+Order ID: 14511
+Transaction Type: MANUAL_DEPOSIT
+Phone Number: Dipesh Danuwar
+Amount: 2,500.00
+Bank Charges: -
+Balance: 192852.47
+Time: 2025-10-20 13:00:28
+
+Record #14
+Order ID: 14507
+Transaction Type: DEPOSIT
+Phone Number: Rokeydon
+Amount: 450.00
+Bank Charges: -
+Balance: 1350
+Time: 2025-10-20 12:51:46
+
+Record #15
+Order ID: 14506
+Transaction Type: MANUAL_DEPOSIT
+Phone Number: khatri2490
+Amount: 500.00
+Bank Charges: -
+Balance: 900
+Time: 2025-10-20 12:43:15
+
+Record #16
+Order ID: 14505
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 400.00
+Bank Charges: -
+Balance: 400
+Time: 2025-10-20 12:40:47
+
+Record #17
+Order ID: 14504
+Transaction Type: DEPOSIT
+Phone Number: Gendra tharu25
+Amount: 900.00
+Bank Charges: -
+Balance: 189002.47
+Time: 2025-10-20 12:36:46
+
+Record #18
+Order ID: 14503
+Transaction Type: DEPOSIT
+Phone Number: Rokeydon
+Amount: 500.00
+Bank Charges: -
+Balance: 188102.47
+Time: 2025-10-20 12:36:22
+
+Record #19
+Order ID: 14500
+Transaction Type: DEPOSIT
+Phone Number: sammar bahadur magar
+Amount: 200.00
+Bank Charges: -
+Balance: 188612.47
+Time: 2025-10-20 12:20:38
+
+Record #20
+Order ID: 14497
 Transaction Type: CASH_IN
 Phone Number: -
 Amount: 1,000.00
 Bank Charges: -
-Balance: 126969.58
-Time: 2025-09-30 17:45:02
+Balance: 189412.47
+Time: 2025-10-20 12:03:40
+
+Record #21
+Order ID: 14495
+Transaction Type: DEPOSIT
+Phone Number: Dipak sing thing
+Amount: 1,000.00
+Bank Charges: -
+Balance: 188412.47
+Time: 2025-10-20 12:00:45
+
+Record #22
+Order ID: 14494
+Transaction Type: DEPOSIT
+Phone Number: 9818686321
+Amount: 1,000.00
+Bank Charges: -
+Balance: 187412.47
+Time: 2025-10-20 12:00:03
+
+Record #23
+Order ID: 14493
+Transaction Type: DEPOSIT
+Phone Number: Nakul3180
+Amount: 5,000.00
+Bank Charges: -
+Balance: 186412.47
+Time: 2025-10-20 11:35:33
 
 Record #24
-Order ID: 11902
-Transaction Type: DEPOSIT
-Phone Number: Ashim shah
-Amount: 200.00
-Bank Charges: -
-Balance: 125969.58
-Time: 2025-09-30 17:38:56
-
-Record #25
-Order ID: 11900
+Order ID: 14492
 Transaction Type: CASH_IN
 Phone Number: -
-Amount: 200.00
+Amount: 500.00
 Bank Charges: -
-Balance: 125769.58
-Time: 2025-09-30 17:18:26
+Balance: 181412.47
+Time: 2025-10-20 11:32:16
+
+Record #25
+Order ID: 14491
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 500.00
+Bank Charges: -
+Balance: 180912.47
+Time: 2025-10-20 11:29:36
 
 Record #26
-Order ID: 11897
-Transaction Type: DEPOSIT
-Phone Number: Suman chapagain
-Amount: 890.00
-Bank Charges: -
-Balance: 126459.58
-Time: 2025-09-30 17:16:37
-
-Record #27
-Order ID: 11896
+Order ID: 14490
 Transaction Type: CASH_IN
 Phone Number: -
 Amount: 2,000.00
 Bank Charges: -
-Balance: 125569.58
-Time: 2025-09-30 17:06:44
+Balance: 180412.47
+Time: 2025-10-20 11:23:53
+
+Record #27
+Order ID: 14489
+Transaction Type: DEPOSIT
+Phone Number: Mkhadka12
+Amount: 700.00
+Bank Charges: -
+Balance: 178412.47
+Time: 2025-10-20 11:22:25
 
 Record #28
-Order ID: 11895
-Transaction Type: CASH_IN
-Phone Number: -
-Amount: 250.00
-Bank Charges: -
-Balance: 123569.58
-Time: 2025-09-30 16:56:30
-
-Record #29
-Order ID: 11894
+Order ID: 14488
 Transaction Type: DEPOSIT
 Phone Number: Sagarthapa
 Amount: 1,000.00
 Bank Charges: -
-Balance: 123319.58
-Time: 2025-09-30 16:44:51
+Balance: 177712.47
+Time: 2025-10-20 10:51:23
+
+Record #29
+Order ID: 14486
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 1,000.00
+Bank Charges: -
+Balance: 180722.47
+Time: 2025-10-20 10:42:01
 
 Record #30
-Order ID: 11893
+Order ID: 14485
 Transaction Type: DEPOSIT
-Phone Number: ram@1122
-Amount: 500.00
-Bank Charges: -
-Balance: 122319.58
-Time: 2025-09-30 16:39:51
-
-Record #31
-Order ID: 11892
-Transaction Type: CASH_IN
-Phone Number: -
-Amount: 500.00
-Bank Charges: -
-Balance: 121819.58
-Time: 2025-09-30 16:34:41
-
-Record #32
-Order ID: 11891
-Transaction Type: DEPOSIT
-Phone Number: RAJKYADAV
-Amount: 630.00
-Bank Charges: -
-Balance: 121319.58
-Time: 2025-09-30 16:26:32
-
-Record #33
-Order ID: 11890
-Transaction Type: CASH_IN
-Phone Number: -
-Amount: 1,000.00
-Bank Charges: -
-Balance: 120689.58
-Time: 2025-09-30 16:09:50
-
-Record #34
-Order ID: 11889
-Transaction Type: DEPOSIT
-Phone Number: Bhim bdr malla
+Phone Number: Ramesh99
 Amount: 300.00
 Bank Charges: -
-Balance: 119689.58
-Time: 2025-09-30 16:01:42
+Balance: 179722.47
+Time: 2025-10-20 10:38:15
 
-Record #35
-Order ID: 11888
-Transaction Type: DEPOSIT
-Phone Number: Saurab88
-Amount: 1,000.00
-Bank Charges: -
-Balance: 119389.58
-Time: 2025-09-30 15:54:26
-
-Record #36
-Order ID: 11886
+Record #31
+Order ID: 14484
 Transaction Type: CASH_IN
 Phone Number: -
 Amount: 500.00
 Bank Charges: -
-Balance: 119389.58
-Time: 2025-09-30 15:42:10
+Balance: 179422.47
+Time: 2025-10-20 10:23:25
 
-Record #37
-Order ID: 11885
-Transaction Type: MANUAL_DEPOSIT
-Phone Number: Kingsonme
-Amount: 1,300.00
-Bank Charges: -
-Balance: 118889.58
-Time: 2025-09-30 15:40:20
-
-Record #38
-Order ID: 11884
-Transaction Type: DEPOSIT
-Phone Number: Ashim shah
-Amount: 400.00
-Bank Charges: -
-Balance: 117589.58
-Time: 2025-09-30 15:40:12
-
-Record #39
-Order ID: 11883
-Transaction Type: CASH_IN
-Phone Number: -
-Amount: 270.00
-Bank Charges: -
-Balance: 117189.58
-Time: 2025-09-30 15:17:50
-
-Record #40
-Order ID: 11882
-Transaction Type: DEPOSIT
-Phone Number: Nishu111
-Amount: 2,000.00
-Bank Charges: -
-Balance: 116919.58
-Time: 2025-09-30 14:44:22
-
-Record #41
-Order ID: 11881
-Transaction Type: MANUAL_DEPOSIT
-Phone Number: Sujan shah
-Amount: 900.00
-Bank Charges: -
-Balance: 114919.58
-Time: 2025-09-30 14:31:52
-
-Record #42
-Order ID: 11880
-Transaction Type: CASH_IN
-Phone Number: -
-Amount: 250.00
-Bank Charges: -
-Balance: 114019.58
-Time: 2025-09-30 14:30:05
-
-Record #43
-Order ID: 11879
-Transaction Type: CASH_IN
-Phone Number: -
-Amount: 1,000.00
-Bank Charges: -
-Balance: 113769.58
-Time: 2025-09-30 14:20:51
-
-Record #44
-Order ID: 11878
-Transaction Type: DEPOSIT
-Phone Number: Amrul Haque
-Amount: 500.00
-Bank Charges: -
-Balance: 112769.58
-Time: 2025-09-30 14:19:19
-
-Record #45
-Order ID: 11876
-Transaction Type: DEPOSIT
-Phone Number: Puskarrokaya
-Amount: 500.00
-Bank Charges: -
-Balance: 112269.58
-Time: 2025-09-30 14:08:29
-
-Record #46
-Order ID: 11875
-Transaction Type: CASH_IN
-Phone Number: -
-Amount: 5,000.00
-Bank Charges: -
-Balance: 111769.58
-Time: 2025-09-30 13:29:27
-
-Record #47
-Order ID: 11874
+Record #32
+Order ID: 14483
 Transaction Type: PENDING_DEPOSIT
 Phone Number: -
 Amount: 500.00
 Bank Charges: -
-Balance: 106769.58
-Time: 2025-09-30 13:23:49
+Balance: 178922.47
+Time: 2025-10-20 10:11:15
+
+Record #33
+Order ID: 14480
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 1,000.00
+Bank Charges: -
+Balance: 178422.47
+Time: 2025-10-20 10:00:30
+
+Record #34
+Order ID: 14479
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 1,000.00
+Bank Charges: -
+Balance: 177422.47
+Time: 2025-10-20 09:59:10
+
+Record #35
+Order ID: 14478
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 500.00
+Bank Charges: -
+Balance: 176422.47
+Time: 2025-10-20 09:55:23
+
+Record #36
+Order ID: 14477
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 500.00
+Bank Charges: -
+Balance: 175922.47
+Time: 2025-10-20 09:55:15
+
+Record #37
+Order ID: 14475
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 1,000.00
+Bank Charges: -
+Balance: 176432.47
+Time: 2025-10-20 08:56:17
+
+Record #38
+Order ID: 14474
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 200.00
+Bank Charges: -
+Balance: 175432.47
+Time: 2025-10-20 08:50:28
+
+Record #39
+Order ID: 14473
+Transaction Type: DEPOSIT
+Phone Number: Shishir00
+Amount: 200.00
+Bank Charges: -
+Balance: 175232.47
+Time: 2025-10-20 08:47:42
+
+Record #40
+Order ID: 14471
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 200.00
+Bank Charges: -
+Balance: 176037.47
+Time: 2025-10-20 08:16:22
+
+Record #41
+Order ID: 14469
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 700.00
+Bank Charges: -
+Balance: 177237.47
+Time: 2025-10-20 08:03:22
+
+Record #42
+Order ID: 14468
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 300.00
+Bank Charges: -
+Balance: 176537.47
+Time: 2025-10-20 08:01:52
+
+Record #43
+Order ID: 14467
+Transaction Type: DEPOSIT
+Phone Number: Gauri Sahani
+Amount: 4,000.00
+Bank Charges: -
+Balance: 176237.47
+Time: 2025-10-20 07:53:21
+
+Record #44
+Order ID: 14466
+Transaction Type: DEPOSIT
+Phone Number: Amrul Haque
+Amount: 1,000.00
+Bank Charges: -
+Balance: 172237.47
+Time: 2025-10-20 07:53:13
+
+Record #45
+Order ID: 14465
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 500.00
+Bank Charges: -
+Balance: 171237.47
+Time: 2025-10-20 07:53:05
+
+Record #46
+Order ID: 14464
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 1,000.00
+Bank Charges: -
+Balance: 170737.47
+Time: 2025-10-20 07:42:07
+
+Record #47
+Order ID: 14462
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 500.00
+Bank Charges: -
+Balance: 176737.47
+Time: 2025-10-20 06:58:22
 
 Record #48
-Order ID: 11873
-Transaction Type: DEPOSIT
-Phone Number: Mkhadka12
-Amount: 2,500.00
+Order ID: 14461
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 500.00
 Bank Charges: -
-Balance: 106269.58
-Time: 2025-09-30 13:20:25
+Balance: 176237.47
+Time: 2025-10-20 06:56:12
 
 Record #49
-Order ID: 11870
-Transaction Type: DEPOSIT
-Phone Number: Karan006
-Amount: 500.00
+Order ID: 14460
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 200.00
 Bank Charges: -
-Balance: 104269.58
-Time: 2025-09-30 13:18:54
+Balance: 175737.47
+Time: 2025-10-20 06:53:43
 
 Record #50
-Order ID: 11869
-Transaction Type: CASH_IN
-Phone Number: -
-Amount: 1,000.00
-Bank Charges: -
-Balance: 103769.58
-Time: 2025-09-30 13:17:35
-
-Record #51
-Order ID: 11866
-Transaction Type: CASH_IN
-Phone Number: -
-Amount: 1,000.00
-Bank Charges: -
-Balance: 108787.58
-Time: 2025-09-30 12:51:30
-
-Record #52
-Order ID: 11865
+Order ID: 14458
 Transaction Type: CASH_IN
 Phone Number: -
 Amount: 500.00
 Bank Charges: -
-Balance: 107787.58
-Time: 2025-09-30 12:43:43
+Balance: 175537.47
+Time: 2025-10-20 06:41:31
+
+Record #51
+Order ID: 14457
+Transaction Type: DEPOSIT
+Phone Number: Rokeydon
+Amount: 650.00
+Bank Charges: -
+Balance: 175037.47
+Time: 2025-10-20 06:23:14
+
+Record #52
+Order ID: 14456
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 600.00
+Bank Charges: -
+Balance: 174387.47
+Time: 2025-10-20 05:30:23
 
 Record #53
-Order ID: 11864
+Order ID: 14455
+Transaction Type: DEPOSIT
+Phone Number: Gauri Sahani
+Amount: 600.00
+Bank Charges: -
+Balance: 173787.47
+Time: 2025-10-20 05:30:07
+
+Record #54
+Order ID: 14454
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 500.00
+Bank Charges: -
+Balance: 173187.47
+Time: 2025-10-20 04:21:45
+
+Record #55
+Order ID: 14453
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 500.00
+Bank Charges: -
+Balance: 172687.47
+Time: 2025-10-20 03:05:07
+
+Record #56
+Order ID: 14452
+Transaction Type: PENDING_DEPOSIT
+Phone Number: -
+Amount: 40.00
+Bank Charges: -
+Balance: 172187.47
+Time: 2025-10-20 03:04:14
+
+Record #57
+Order ID: 14451
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 1,000.00
+Bank Charges: -
+Balance: 172147.47
+Time: 2025-10-20 02:10:51
+
+Record #58
+Order ID: 14450
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 200.00
+Bank Charges: -
+Balance: 171147.47
+Time: 2025-10-20 02:09:35
+
+Record #59
+Order ID: 14448
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 5,000.00
+Bank Charges: -
+Balance: 170947.47
+Time: 2025-10-20 02:09:14
+
+Record #60
+Order ID: 14446
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 5,000.00
+Bank Charges: -
+Balance: 166952.47
+Time: 2025-10-20 01:18:30
+
+Record #61
+Order ID: 14445
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 5,000.00
+Bank Charges: -
+Balance: 161952.47
+Time: 2025-10-20 01:14:52
+
+Record #62
+Order ID: 14444
+Transaction Type: DEPOSIT
+Phone Number: Yubraj lama
+Amount: 500.00
+Bank Charges: -
+Balance: 156952.47
+Time: 2025-10-20 01:14:27
+
+Record #63
+Order ID: 14443
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 5,000.00
+Bank Charges: -
+Balance: 156452.47
+Time: 2025-10-20 01:13:34
+
+Record #64
+Order ID: 14442
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 500.00
+Bank Charges: -
+Balance: 151452.47
+Time: 2025-10-20 00:50:12
+
+Record #65
+Order ID: 14441
+Transaction Type: DEPOSIT
+Phone Number: Ramesh99
+Amount: 200.00
+Bank Charges: -
+Balance: 150952.47
+Time: 2025-10-20 00:48:55
+
+Record #66
+Order ID: 14440
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 5,000.00
+Bank Charges: -
+Balance: 150752.47
+Time: 2025-10-20 00:46:34
+
+Record #67
+Order ID: 14439
+Transaction Type: DEPOSIT
+Phone Number: Rokeydon
+Amount: 500.00
+Bank Charges: -
+Balance: 145752.47
+Time: 2025-10-19 23:35:11
+
+Record #68
+Order ID: 14438
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 200.00
+Bank Charges: -
+Balance: 145252.47
+Time: 2025-10-19 23:26:40
+
+Record #69
+Order ID: 14436
+Transaction Type: DEPOSIT
+Phone Number: Santosh ghimire
+Amount: 500.00
+Bank Charges: -
+Balance: 151062.47
+Time: 2025-10-19 23:17:19
+
+Record #70
+Order ID: 14435
+Transaction Type: DEPOSIT
+Phone Number: Santosh ghimire
+Amount: 200.00
+Bank Charges: -
+Balance: 150562.47
+Time: 2025-10-19 23:13:01
+
+Record #71
+Order ID: 14433
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 500.00
+Bank Charges: -
+Balance: 151372.47
+Time: 2025-10-19 23:06:00
+
+Record #72
+Order ID: 14431
+Transaction Type: DEPOSIT
+Phone Number: Santosh ghimire
+Amount: 200.00
+Bank Charges: -
+Balance: 150872.47
+Time: 2025-10-19 22:49:15
+
+Record #73
+Order ID: 14430
+Transaction Type: DEPOSIT
+Phone Number: shivalama
+Amount: 200.00
+Bank Charges: -
+Balance: 150672.47
+Time: 2025-10-19 22:45:38
+
+Record #74
+Order ID: 14429
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 360.00
+Bank Charges: -
+Balance: 150472.47
+Time: 2025-10-19 22:40:47
+
+Record #75
+Order ID: 14427
+Transaction Type: DEPOSIT
+Phone Number: Rokeydon
+Amount: 500.00
+Bank Charges: -
+Balance: 151622.47
+Time: 2025-10-19 22:38:00
+
+Record #76
+Order ID: 14426
+Transaction Type: DEPOSIT
+Phone Number: Brijeshtiwary
+Amount: 1,000.00
+Bank Charges: -
+Balance: 151122.47
+Time: 2025-10-19 22:35:36
+
+Record #77
+Order ID: 14425
+Transaction Type: DEPOSIT
+Phone Number: Ramesh99
+Amount: 200.00
+Bank Charges: -
+Balance: 150122.47
+Time: 2025-10-19 22:33:56
+
+Record #78
+Order ID: 14424
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 300.00
+Bank Charges: -
+Balance: 149922.47
+Time: 2025-10-19 22:30:34
+
+Record #79
+Order ID: 14422
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 500.00
+Bank Charges: -
+Balance: 150622.47
+Time: 2025-10-19 22:23:07
+
+Record #80
+Order ID: 14420
+Transaction Type: DEPOSIT
+Phone Number: sudip dallakoti
+Amount: 1,000.00
+Bank Charges: -
+Balance: 155122.47
+Time: 2025-10-19 22:18:03
+
+Record #81
+Order ID: 14419
+Transaction Type: DEPOSIT
+Phone Number: Anand8888
+Amount: 201.00
+Bank Charges: -
+Balance: 154122.47
+Time: 2025-10-19 22:17:41
+
+Record #82
+Order ID: 14417
+Transaction Type: DEPOSIT
+Phone Number: Anand8888
+Amount: 500.00
+Bank Charges: -
+Balance: 155931.47
+Time: 2025-10-19 22:06:13
+
+Record #83
+Order ID: 14416
+Transaction Type: DEPOSIT
+Phone Number: Hira bhujel
+Amount: 1,000.00
+Bank Charges: -
+Balance: 155431.47
+Time: 2025-10-19 21:58:53
+
+Record #84
+Order ID: 14415
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 500.00
+Bank Charges: -
+Balance: 154431.47
+Time: 2025-10-19 21:57:33
+
+Record #85
+Order ID: 14414
+Transaction Type: MANUAL_DEPOSIT
+Phone Number: Nishu111
+Amount: 1,000.00
+Bank Charges: -
+Balance: 153931.47
+Time: 2025-10-19 21:54:29
+
+Record #86
+Order ID: 14413
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 500.00
+Bank Charges: -
+Balance: 152931.47
+Time: 2025-10-19 21:49:02
+
+Record #87
+Order ID: 14411
+Transaction Type: DEPOSIT
+Phone Number: Rokeydon
+Amount: 450.00
+Bank Charges: -
+Balance: 153441.47
+Time: 2025-10-19 21:37:19
+
+Record #88
+Order ID: 14410
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 747.00
+Bank Charges: -
+Balance: 152991.47
+Time: 2025-10-19 21:32:54
+
+Record #89
+Order ID: 14409
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 1,500.00
+Bank Charges: -
+Balance: 152244.47
+Time: 2025-10-19 21:26:11
+
+Record #90
+Order ID: 14408
+Transaction Type: MANUAL_DEPOSIT
+Phone Number: Nishu111
+Amount: 1,000.00
+Bank Charges: -
+Balance: 150744.47
+Time: 2025-10-19 21:22:32
+
+Record #91
+Order ID: 14407
+Transaction Type: DEPOSIT
+Phone Number: Anita Shrestha
+Amount: 2,000.00
+Bank Charges: -
+Balance: 149744.47
+Time: 2025-10-19 21:19:33
+
+Record #92
+Order ID: 14406
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 1,000.00
+Bank Charges: -
+Balance: 147744.47
+Time: 2025-10-19 21:14:53
+
+Record #93
+Order ID: 14405
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 200.00
+Bank Charges: -
+Balance: 146744.47
+Time: 2025-10-19 21:06:35
+
+Record #94
+Order ID: 14404
+Transaction Type: DEPOSIT
+Phone Number: Rokeydon
+Amount: 500.00
+Bank Charges: -
+Balance: 146544.47
+Time: 2025-10-19 21:04:56
+
+Record #95
+Order ID: 14402
+Transaction Type: DEPOSIT
+Phone Number: Gauri Sahani
+Amount: 2,500.00
+Bank Charges: -
+Balance: 156444.47
+Time: 2025-10-19 21:02:07
+
+Record #96
+Order ID: 14401
+Transaction Type: MANUAL_DEPOSIT
+Phone Number: Ashish shah
+Amount: 500.00
+Bank Charges: -
+Balance: 153944.47
+Time: 2025-10-19 20:58:47
+
+Record #97
+Order ID: 14400
 Transaction Type: CASH_IN
 Phone Number: -
 Amount: 980.00
 Bank Charges: -
-Balance: 107287.58
-Time: 2025-09-30 12:43:15
+Balance: 153444.47
+Time: 2025-10-19 20:57:52
 
-Record #54
-Order ID: 11863
+Record #98
+Order ID: 14399
 Transaction Type: DEPOSIT
-Phone Number: Badson33
+Phone Number: Gauri Sahani
+Amount: 1,000.00
+Bank Charges: -
+Balance: 152464.47
+Time: 2025-10-19 20:55:50
+
+Record #99
+Order ID: 14398
+Transaction Type: DEPOSIT
+Phone Number: Anand8888
 Amount: 200.00
 Bank Charges: -
-Balance: 106307.58
-Time: 2025-09-30 12:40:19
+Balance: 151464.47
+Time: 2025-10-19 20:55:32
 
-Record #55
-Order ID: 11862
+Record #100
+Order ID: 14397
+Transaction Type: DEPOSIT
+Phone Number: Ramesh99
+Amount: 200.00
+Bank Charges: -
+Balance: 151264.47
+Time: 2025-10-19 20:48:58
+
+Record #101
+Order ID: 14395
+Transaction Type: DEPOSIT
+Phone Number: Shishir00
+Amount: 260.00
+Bank Charges: -
+Balance: 152074.47
+Time: 2025-10-19 20:36:42
+
+Record #102
+Order ID: 14394
+Transaction Type: DEPOSIT
+Phone Number: Gauri Sahani
+Amount: 1,000.00
+Bank Charges: -
+Balance: 151814.47
+Time: 2025-10-19 20:25:02
+
+Record #103
+Order ID: 14393
 Transaction Type: CASH_IN
 Phone Number: -
 Amount: 500.00
 Bank Charges: -
-Balance: 106107.58
-Time: 2025-09-30 12:29:15
+Balance: 150814.47
+Time: 2025-10-19 20:03:04
 
-Record #56
-Order ID: 11861
+Record #104
+Order ID: 14391
+Transaction Type: DEPOSIT
+Phone Number: Sanjiv ghale
+Amount: 500.00
+Bank Charges: -
+Balance: 150314.47
+Time: 2025-10-19 19:57:58
+
+Record #105
+Order ID: 14390
+Transaction Type: DEPOSIT
+Phone Number: Amrul Haque
+Amount: 1,000.00
+Bank Charges: -
+Balance: 149814.47
+Time: 2025-10-19 19:44:00
+
+Record #106
+Order ID: 14388
+Transaction Type: DEPOSIT
+Phone Number: Himal bista
+Amount: 1,000.00
+Bank Charges: -
+Balance: 150324.47
+Time: 2025-10-19 19:25:46
+
+Record #107
+Order ID: 14387
+Transaction Type: DEPOSIT
+Phone Number: Gauri Sahani
+Amount: 5,000.00
+Bank Charges: -
+Balance: 149324.47
+Time: 2025-10-19 19:23:09
+
+Record #108
+Order ID: 14386
+Transaction Type: DEPOSIT
+Phone Number: malla123
+Amount: 2,000.00
+Bank Charges: -
+Balance: 144324.47
+Time: 2025-10-19 19:22:15
+
+Record #109
+Order ID: 14385
+Transaction Type: DEPOSIT
+Phone Number: Sachin rai
+Amount: 200.00
+Bank Charges: -
+Balance: 142324.47
+Time: 2025-10-19 19:19:19
+
+Record #110
+Order ID: 14383
+Transaction Type: DEPOSIT
+Phone Number: Sagarthapa
+Amount: 1,000.00
+Bank Charges: -
+Balance: 142124.47
+Time: 2025-10-19 19:07:38
+
+Record #111
+Order ID: 14381
 Transaction Type: CASH_IN
 Phone Number: -
 Amount: 1,000.00
 Bank Charges: -
-Balance: 105607.58
-Time: 2025-09-30 12:28:00
+Balance: 141124.47
+Time: 2025-10-19 18:52:06
 
-Record #57
-Order ID: 11860
-Transaction Type: DEPOSIT
-Phone Number: Mkhadka12
-Amount: 1,500.00
-Bank Charges: -
-Balance: 104607.58
-Time: 2025-09-30 12:23:58
-
-Record #58
-Order ID: 11858
+Record #112
+Order ID: 14380
 Transaction Type: CASH_IN
 Phone Number: -
-Amount: 700.00
+Amount: 200.00
 Bank Charges: -
-Balance: 104117.58
-Time: 2025-09-30 10:53:45
+Balance: 140124.47
+Time: 2025-10-19 18:27:50
 
-Record #59
-Order ID: 11857
+Record #113
+Order ID: 14379
 Transaction Type: CASH_IN
 Phone Number: -
 Amount: 500.00
 Bank Charges: -
-Balance: 103417.58
-Time: 2025-09-30 10:52:56
+Balance: 139924.47
+Time: 2025-10-19 18:24:07
 
-Record #60
-Order ID: 11856
+Record #114
+Order ID: 14376
+Transaction Type: MANUAL_DEPOSIT
+Phone Number: AASHISH6679
+Amount: 200.00
+Bank Charges: -
+Balance: 139624.47
+Time: 2025-10-19 18:22:36
+
+Record #115
+Order ID: 14374
 Transaction Type: CASH_IN
 Phone Number: -
-Amount: 1,000.00
+Amount: 139,534.47
 Bank Charges: -
-Balance: 102917.58
-Time: 2025-09-30 10:13:07
+Balance: 140434.47
+Time: 2025-10-19 18:16:37
 
-Record #61
-Order ID: 11855
-Transaction Type: DEPOSIT
+Record #116
+Order ID: 14373
+Transaction Type: MANUAL_DEPOSIT
 Phone Number: Nishu111
-Amount: 1,600.00
+Amount: 900.00
 Bank Charges: -
-Balance: 101917.58
-Time: 2025-09-30 09:21:34
+Balance: 900
+Time: 2025-10-19 18:14:10
 
-Record #62
-Order ID: 11853
+>> Total Amount for Kumari Bank BAIJANATH YADAV_20251019: Rs 255,062.47
+
+==== Laxmi_bank_Pawan kumar khatri_20250921 (74 records) | Total Amount: Rs 99,690.00 ====
+
+Record #1
+Order ID: 14524
 Transaction Type: CASH_IN
 Phone Number: -
-Amount: 500.00
+Amount: 600.00
 Bank Charges: -
-Balance: 112317.58
-Time: 2025-09-30 09:11:59
+Balance: 308276.77
+Time: 2025-10-20 14:37:20
 
-Record #63
-Order ID: 11852
+Record #2
+Order ID: 14523
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 600.00
+Bank Charges: -
+Balance: 307676.77
+Time: 2025-10-20 14:37:13
+
+Record #3
+Order ID: 14432
 Transaction Type: DEPOSIT
-Phone Number: Maheshhatt123456789
-Amount: 500.00
+Phone Number: MRraju98
+Amount: 200.00
 Bank Charges: -
-Balance: 111817.58
-Time: 2025-09-30 08:41:09
+Balance: 307076.77
+Time: 2025-10-19 23:01:05
 
-Record #64
-Order ID: 11851
+Record #4
+Order ID: 14392
+Transaction Type: DEPOSIT
+Phone Number: Nakul3180
+Amount: 3,000.00
+Bank Charges: -
+Balance: 306876.77
+Time: 2025-10-19 20:01:06
+
+Record #5
+Order ID: 14378
+Transaction Type: ADJUSTMENTADD
+Phone Number: -
+Amount: 200.00
+Bank Charges: -
+Balance: 303876.77
+Time: 2025-10-19 18:23:43
+
+Record #6
+Order ID: 14371
 Transaction Type: DEPOSIT
 Phone Number: Nishu111
 Amount: 2,000.00
 Bank Charges: -
-Balance: 111317.58
-Time: 2025-09-30 08:29:17
+Balance: 303676.77
+Time: 2025-10-19 17:42:49
 
-Record #65
-Order ID: 11850
+Record #7
+Order ID: 14369
+Transaction Type: MANUAL_DEPOSIT
+Phone Number: Anand8888
+Amount: 4,200.00
+Bank Charges: -
+Balance: 301676.77
+Time: 2025-10-19 17:33:13
+
+Record #8
+Order ID: 14367
+Transaction Type: DEPOSIT
+Phone Number: Jit Bahadur1732
+Amount: 5,000.00
+Bank Charges: -
+Balance: 300030.77
+Time: 2025-10-19 17:27:32
+
+Record #9
+Order ID: 14366
 Transaction Type: DEPOSIT
 Phone Number: Nishu111
-Amount: 1,000.00
+Amount: 2,000.00
 Bank Charges: -
-Balance: 109317.58
-Time: 2025-09-30 08:15:49
+Balance: 295030.77
+Time: 2025-10-19 17:12:36
 
-Record #66
-Order ID: 11849
+Record #10
+Order ID: 14365
 Transaction Type: DEPOSIT
-Phone Number: Sagarthapa
-Amount: 1,200.00
-Bank Charges: -
-Balance: 108317.58
-Time: 2025-09-30 07:36:59
-
-Record #67
-Order ID: 11847
-Transaction Type: CASH_IN
-Phone Number: -
-Amount: 500.00
-Bank Charges: -
-Balance: 121727.58
-Time: 2025-09-30 07:03:22
-
-Record #68
-Order ID: 11846
-Transaction Type: CASH_IN
-Phone Number: -
-Amount: 500.00
-Bank Charges: -
-Balance: 121227.58
-Time: 2025-09-30 06:59:16
-
-Record #69
-Order ID: 11845
-Transaction Type: CASH_IN
-Phone Number: -
-Amount: 500.00
-Bank Charges: -
-Balance: 120727.58
-Time: 2025-09-30 06:39:40
-
-Record #70
-Order ID: 11844
-Transaction Type: DEPOSIT
-Phone Number: Gunjaman nepali
-Amount: 400.00
-Bank Charges: -
-Balance: 120227.58
-Time: 2025-09-30 06:34:39
-
-Record #71
-Order ID: 11843
-Transaction Type: CASH_IN
-Phone Number: -
-Amount: 500.00
-Bank Charges: -
-Balance: 119827.58
-Time: 2025-09-30 06:15:59
-
-Record #72
-Order ID: 11842
-Transaction Type: DEPOSIT
-Phone Number: 9851030402
-Amount: 1,200.00
-Bank Charges: -
-Balance: 119327.58
-Time: 2025-09-30 06:09:21
-
-Record #73
-Order ID: 11841
-Transaction Type: CASH_IN
-Phone Number: -
-Amount: 500.00
-Bank Charges: -
-Balance: 118127.58
-Time: 2025-09-30 05:42:19
-
-Record #74
-Order ID: 11840
-Transaction Type: CASH_IN
-Phone Number: -
-Amount: 500.00
-Bank Charges: -
-Balance: 117627.58
-Time: 2025-09-30 05:05:23
-
-Record #75
-Order ID: 11839
-Transaction Type: CASH_IN
-Phone Number: -
-Amount: 500.00
-Bank Charges: -
-Balance: 117127.58
-Time: 2025-09-30 04:51:38
-
-Record #76
-Order ID: 11838
-Transaction Type: CASH_IN
-Phone Number: -
-Amount: 250.00
-Bank Charges: -
-Balance: 116627.58
-Time: 2025-09-30 04:48:56
-
-Record #77
-Order ID: 11837
-Transaction Type: DEPOSIT
-Phone Number: Badson33
+Phone Number: Ramesh99
 Amount: 200.00
 Bank Charges: -
-Balance: 116377.58
-Time: 2025-09-30 04:45:03
+Balance: 293030.77
+Time: 2025-10-19 17:12:07
 
-Record #78
-Order ID: 11836
+Record #11
+Order ID: 14364
+Transaction Type: DEPOSIT
+Phone Number: Bhim bdr malla
+Amount: 500.00
+Bank Charges: -
+Balance: 292830.77
+Time: 2025-10-19 16:52:17
+
+Record #12
+Order ID: 14363
+Transaction Type: DEPOSIT
+Phone Number: Anita Shrestha
+Amount: 1,000.00
+Bank Charges: -
+Balance: 292330.77
+Time: 2025-10-19 16:44:58
+
+Record #13
+Order ID: 14362
 Transaction Type: CASH_IN
 Phone Number: -
 Amount: 1,000.00
 Bank Charges: -
-Balance: 116177.58
-Time: 2025-09-30 04:31:37
+Balance: 291330.77
+Time: 2025-10-19 16:20:03
 
-Record #79
-Order ID: 11835
+Record #14
+Order ID: 14361
 Transaction Type: CASH_IN
 Phone Number: -
-Amount: 500.00
-Bank Charges: -
-Balance: 115177.58
-Time: 2025-09-30 04:12:41
-
-Record #80
-Order ID: 11833
-Transaction Type: CASH_IN
-Phone Number: -
-Amount: 500.00
-Bank Charges: -
-Balance: 115687.58
-Time: 2025-09-30 02:48:51
-
-Record #81
-Order ID: 11832
-Transaction Type: CASH_IN
-Phone Number: -
-Amount: 500.00
-Bank Charges: -
-Balance: 115187.58
-Time: 2025-09-30 02:37:48
-
-Record #82
-Order ID: 11831
-Transaction Type: DEPOSIT
-Phone Number: birat0080
 Amount: 1,000.00
 Bank Charges: -
-Balance: 114687.58
-Time: 2025-09-30 02:24:28
+Balance: 290330.77
+Time: 2025-10-19 16:09:56
 
-Record #83
-Order ID: 11830
+Record #15
+Order ID: 14360
 Transaction Type: DEPOSIT
-Phone Number: Dhakman Tamang
-Amount: 500.00
+Phone Number: Shishir00
+Amount: 200.00
 Bank Charges: -
-Balance: 113687.58
-Time: 2025-09-30 02:20:42
+Balance: 289330.77
+Time: 2025-10-19 16:06:03
 
-Record #84
-Order ID: 11829
+Record #16
+Order ID: 14358
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 1,000.00
+Bank Charges: -
+Balance: 293130.77
+Time: 2025-10-19 15:59:08
+
+Record #17
+Order ID: 14357
+Transaction Type: DEPOSIT
+Phone Number: Mkhadka12
+Amount: 4,000.00
+Bank Charges: -
+Balance: 292130.77
+Time: 2025-10-19 15:45:17
+
+Record #18
+Order ID: 14356
+Transaction Type: MANUAL_DEPOSIT
+Phone Number: Anand8888
+Amount: 200.00
+Bank Charges: -
+Balance: 288130.77
+Time: 2025-10-19 15:38:23
+
+Record #19
+Order ID: 14355
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 1,000.00
+Bank Charges: -
+Balance: 287930.77
+Time: 2025-10-19 15:34:31
+
+Record #20
+Order ID: 14354
+Transaction Type: DEPOSIT
+Phone Number: Jit Bahadur1732
+Amount: 5,000.00
+Bank Charges: -
+Balance: 286930.77
+Time: 2025-10-19 15:27:41
+
+Record #21
+Order ID: 14353
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 1,000.00
+Bank Charges: -
+Balance: 281930.77
+Time: 2025-10-19 15:25:32
+
+Record #22
+Order ID: 14352
+Transaction Type: MANUAL_DEPOSIT
+Phone Number: Anand8888
+Amount: 300.00
+Bank Charges: -
+Balance: 280930.77
+Time: 2025-10-19 15:19:06
+
+Record #23
+Order ID: 14351
+Transaction Type: DEPOSIT
+Phone Number: Mkhadka12
+Amount: 5,000.00
+Bank Charges: -
+Balance: 280630.77
+Time: 2025-10-19 15:15:22
+
+Record #24
+Order ID: 14350
+Transaction Type: MANUAL_DEPOSIT
+Phone Number: Anand8888
+Amount: 1,890.00
+Bank Charges: -
+Balance: 275630.77
+Time: 2025-10-19 15:03:36
+
+Record #25
+Order ID: 14349
+Transaction Type: DEPOSIT
+Phone Number: Jit Bahadur1732
+Amount: 3,000.00
+Bank Charges: -
+Balance: 273740.77
+Time: 2025-10-19 14:46:51
+
+Record #26
+Order ID: 14348
+Transaction Type: DEPOSIT
+Phone Number: BinuBaba22
+Amount: 600.00
+Bank Charges: -
+Balance: 270740.77
+Time: 2025-10-19 14:43:18
+
+Record #27
+Order ID: 14345
+Transaction Type: DEPOSIT
+Phone Number: Mkhadka12
+Amount: 5,000.00
+Bank Charges: -
+Balance: 272140.77
+Time: 2025-10-19 14:23:01
+
+Record #28
+Order ID: 14343
+Transaction Type: DEPOSIT
+Phone Number: Mkhadka12
+Amount: 3,000.00
+Bank Charges: -
+Balance: 276140.77
+Time: 2025-10-19 14:01:41
+
+Record #29
+Order ID: 14340
+Transaction Type: DEPOSIT
+Phone Number: Mkhadka12
+Amount: 2,500.00
+Bank Charges: -
+Balance: 276140.77
+Time: 2025-10-19 13:44:10
+
+Record #30
+Order ID: 14339
+Transaction Type: DEPOSIT
+Phone Number: Nezha2005
+Amount: 210.00
+Bank Charges: -
+Balance: 273640.77
+Time: 2025-10-19 13:28:55
+
+Record #31
+Order ID: 14338
+Transaction Type: DEPOSIT
+Phone Number: Missqueenme
+Amount: 1,200.00
+Bank Charges: -
+Balance: 273430.77
+Time: 2025-10-19 13:09:32
+
+Record #32
+Order ID: 14337
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 1,000.00
+Bank Charges: -
+Balance: 272230.77
+Time: 2025-10-19 13:06:03
+
+Record #33
+Order ID: 14336
+Transaction Type: MANUAL_DEPOSIT
+Phone Number: Peshal123
+Amount: 5,000.00
+Bank Charges: -
+Balance: 271230.77
+Time: 2025-10-19 12:58:12
+
+Record #34
+Order ID: 14335
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 1,000.00
+Bank Charges: -
+Balance: 266230.77
+Time: 2025-10-19 12:55:14
+
+Record #35
+Order ID: 14334
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 1,000.00
+Bank Charges: -
+Balance: 265230.77
+Time: 2025-10-19 12:55:06
+
+Record #36
+Order ID: 14333
+Transaction Type: DEPOSIT
+Phone Number: Missqueenme
+Amount: 1,300.00
+Bank Charges: -
+Balance: 264230.77
+Time: 2025-10-19 12:51:46
+
+Record #37
+Order ID: 14332
+Transaction Type: DEPOSIT
+Phone Number: Hima gaha
+Amount: 200.00
+Bank Charges: -
+Balance: 262930.77
+Time: 2025-10-19 12:26:27
+
+Record #38
+Order ID: 14331
+Transaction Type: DEPOSIT
+Phone Number: Bhandari
+Amount: 300.00
+Bank Charges: -
+Balance: 262730.77
+Time: 2025-10-19 12:25:36
+
+Record #39
+Order ID: 14327
+Transaction Type: DEPOSIT
+Phone Number: BinuBaba22
+Amount: 600.00
+Bank Charges: -
+Balance: 265440.77
+Time: 2025-10-19 11:54:02
+
+Record #40
+Order ID: 14326
+Transaction Type: DEPOSIT
+Phone Number: Anand8888
+Amount: 300.00
+Bank Charges: -
+Balance: 264840.77
+Time: 2025-10-19 11:50:47
+
+Record #41
+Order ID: 14325
 Transaction Type: CASH_IN
 Phone Number: -
 Amount: 500.00
 Bank Charges: -
-Balance: 113187.58
-Time: 2025-09-30 02:02:53
+Balance: 264540.77
+Time: 2025-10-19 11:38:42
 
-Record #85
-Order ID: 11828
+Record #42
+Order ID: 14324
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 2,000.00
+Bank Charges: -
+Balance: 264040.77
+Time: 2025-10-19 11:13:00
+
+Record #43
+Order ID: 14322
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 290.00
+Bank Charges: -
+Balance: 262040.77
+Time: 2025-10-19 11:04:08
+
+Record #44
+Order ID: 14321
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 1,000.00
+Bank Charges: -
+Balance: 261750.77
+Time: 2025-10-19 10:55:01
+
+Record #45
+Order ID: 14320
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 280.00
+Bank Charges: -
+Balance: 260750.77
+Time: 2025-10-19 10:51:17
+
+Record #46
+Order ID: 14319
+Transaction Type: MANUAL_DEPOSIT
+Phone Number: Anand8888
+Amount: 500.00
+Bank Charges: -
+Balance: 260470.77
+Time: 2025-10-19 10:41:54
+
+Record #47
+Order ID: 14318
+Transaction Type: DEPOSIT
+Phone Number: Razdan1976
+Amount: 1,000.00
+Bank Charges: -
+Balance: 259970.77
+Time: 2025-10-19 10:34:31
+
+Record #48
+Order ID: 14317
+Transaction Type: DEPOSIT
+Phone Number: Jit Bahadur1732
+Amount: 1,000.00
+Bank Charges: -
+Balance: 258970.77
+Time: 2025-10-19 10:34:20
+
+Record #49
+Order ID: 14316
+Transaction Type: DEPOSIT
+Phone Number: Mkhadka12
+Amount: 900.00
+Bank Charges: -
+Balance: 257970.77
+Time: 2025-10-19 10:25:12
+
+Record #50
+Order ID: 14315
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 500.00
+Bank Charges: -
+Balance: 257070.77
+Time: 2025-10-19 10:21:17
+
+Record #51
+Order ID: 14314
+Transaction Type: MANUAL_DEPOSIT
+Phone Number: Anand8888
+Amount: 300.00
+Bank Charges: -
+Balance: 256570.77
+Time: 2025-10-19 10:07:52
+
+Record #52
+Order ID: 14312
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 200.00
+Bank Charges: -
+Balance: 256270.77
+Time: 2025-10-19 10:02:33
+
+Record #53
+Order ID: 14311
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 1,800.00
+Bank Charges: -
+Balance: 256070.77
+Time: 2025-10-19 09:59:58
+
+Record #54
+Order ID: 14310
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 500.00
+Bank Charges: -
+Balance: 254270.77
+Time: 2025-10-19 09:53:29
+
+Record #55
+Order ID: 14309
+Transaction Type: DEPOSIT
+Phone Number: Suman chapagain
+Amount: 490.00
+Bank Charges: -
+Balance: 253770.77
+Time: 2025-10-19 09:51:26
+
+Record #56
+Order ID: 14308
+Transaction Type: MANUAL_DEPOSIT
+Phone Number: Anand8888
+Amount: 850.00
+Bank Charges: -
+Balance: 253280.77
+Time: 2025-10-19 09:47:16
+
+Record #57
+Order ID: 14307
+Transaction Type: DEPOSIT
+Phone Number: Suman chapagain
+Amount: 480.00
+Bank Charges: -
+Balance: 252430.77
+Time: 2025-10-19 09:37:21
+
+Record #58
+Order ID: 14305
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 1,000.00
+Bank Charges: -
+Balance: 252950.77
+Time: 2025-10-19 08:43:59
+
+Record #59
+Order ID: 14304
+Transaction Type: DEPOSIT
+Phone Number: Akashcdy
+Amount: 800.00
+Bank Charges: -
+Balance: 251950.77
+Time: 2025-10-19 08:26:23
+
+Record #60
+Order ID: 14303
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 1,500.00
+Bank Charges: -
+Balance: 251150.77
+Time: 2025-10-19 08:14:38
+
+Record #61
+Order ID: 14302
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 300.00
+Bank Charges: -
+Balance: 249650.77
+Time: 2025-10-19 08:10:52
+
+Record #62
+Order ID: 14301
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 500.00
+Bank Charges: -
+Balance: 249350.77
+Time: 2025-10-19 08:10:01
+
+Record #63
+Order ID: 14300
 Transaction Type: CASH_IN
 Phone Number: -
 Amount: 700.00
 Bank Charges: -
-Balance: 112687.58
-Time: 2025-09-30 01:37:41
+Balance: 248850.77
+Time: 2025-10-19 08:09:53
 
-Record #86
-Order ID: 11827
+Record #64
+Order ID: 14295
 Transaction Type: CASH_IN
 Phone Number: -
 Amount: 1,000.00
 Bank Charges: -
-Balance: 111987.58
-Time: 2025-09-30 01:31:30
+Balance: 249160.77
+Time: 2025-10-19 07:40:59
 
-Record #87
-Order ID: 11826
+Record #65
+Order ID: 14294
+Transaction Type: DEPOSIT
+Phone Number: Amrul Haque
+Amount: 1,000.00
+Bank Charges: -
+Balance: 248160.77
+Time: 2025-10-19 07:27:01
+
+Record #66
+Order ID: 14293
 Transaction Type: CASH_IN
 Phone Number: -
-Amount: 500.00
+Amount: 200.00
 Bank Charges: -
-Balance: 110987.58
-Time: 2025-09-30 01:19:08
+Balance: 247160.77
+Time: 2025-10-19 07:14:23
 
-Record #88
-Order ID: 11825
+Record #67
+Order ID: 14292
 Transaction Type: CASH_IN
 Phone Number: -
-Amount: 500.00
+Amount: 2,000.00
 Bank Charges: -
-Balance: 110487.58
-Time: 2025-09-30 01:09:23
+Balance: 246960.77
+Time: 2025-10-19 07:01:43
 
-Record #89
-Order ID: 11824
-Transaction Type: CASH_IN
-Phone Number: -
-Amount: 650.00
+Record #68
+Order ID: 14291
+Transaction Type: DEPOSIT
+Phone Number: Anita Shrestha
+Amount: 2,000.00
 Bank Charges: -
-Balance: 109987.58
-Time: 2025-09-30 00:55:04
+Balance: 244960.77
+Time: 2025-10-19 07:01:17
 
-Record #90
-Order ID: 11823
-Transaction Type: CASH_IN
-Phone Number: -
-Amount: 500.00
-Bank Charges: -
-Balance: 109337.58
-Time: 2025-09-30 00:51:48
-
-Record #91
-Order ID: 11822
+Record #69
+Order ID: 14290
 Transaction Type: CASH_IN
 Phone Number: -
 Amount: 1,000.00
 Bank Charges: -
-Balance: 108837.58
-Time: 2025-09-30 00:33:26
+Balance: 242960.77
+Time: 2025-10-19 06:44:02
 
-Record #92
-Order ID: 11821
+Record #70
+Order ID: 14289
 Transaction Type: CASH_IN
 Phone Number: -
 Amount: 1,000.00
 Bank Charges: -
-Balance: 107837.58
-Time: 2025-09-30 00:28:23
+Balance: 241960.77
+Time: 2025-10-19 06:40:18
 
->> Total Amount for Laxmi_bank_Pawan kumar khatri_20250921: Rs 80,625.00
+Record #71
+Order ID: 14288
+Transaction Type: DEPOSIT
+Phone Number: Anita Shrestha
+Amount: 1,000.00
+Bank Charges: -
+Balance: 240960.77
+Time: 2025-10-19 06:35:25
 
-==== Esewa_bank_Shankar Yadav_20250612 (6 records) | Total Amount: Rs 14,900.00 ====
+Record #72
+Order ID: 14287
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 500.00
+Bank Charges: -
+Balance: 239960.77
+Time: 2025-10-19 05:36:35
+
+Record #73
+Order ID: 14286
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 5,000.00
+Bank Charges: -
+Balance: 239460.77
+Time: 2025-10-19 01:03:36
+
+Record #74
+Order ID: 14284
+Transaction Type: CASH_IN
+Phone Number: -
+Amount: 300.00
+Bank Charges: -
+Balance: 235970.77
+Time: 2025-10-19 00:24:16
+
+>> Total Amount for Laxmi_bank_Pawan kumar khatri_20250921: Rs 99,690.00
+
+==== Esewa_bank_Shankar Yadav_20250612 (12 records) | Total Amount: Rs 9,400.00 ====
 
 Record #1
-Order ID: 11929
+Order ID: 14521
 Transaction Type: DEPOSIT
-Phone Number: Suman chapagain
-Amount: 510.00
+Phone Number: Suresh34
+Amount: 200.00
 Bank Charges: -
-Balance: 33844.06
-Time: 2025-09-30 19:35:29
+Balance: 40409.06
+Time: 2025-10-20 14:19:29
 
 Record #2
-Order ID: 11922
+Order ID: 14517
 Transaction Type: DEPOSIT
-Phone Number: Gangaramchry
-Amount: 12,000.00
+Phone Number: Hili5555
+Amount: 200.00
 Bank Charges: -
-Balance: 33334.06
-Time: 2025-09-30 19:20:18
+Balance: 42209.06
+Time: 2025-10-20 13:22:07
 
 Record #3
-Order ID: 11907
+Order ID: 14501
 Transaction Type: DEPOSIT
-Phone Number: Suman chapagain
+Phone Number: Jenitamagar
 Amount: 500.00
 Bank Charges: -
-Balance: 21334.06
-Time: 2025-09-30 17:52:48
+Balance: 42009.06
+Time: 2025-10-20 12:23:59
 
 Record #4
-Order ID: 11901
-Transaction Type: DEPOSIT
-Phone Number: Tenzin1990
-Amount: 500.00
+Order ID: 14499
+Transaction Type: ADJUSTMENTADD
+Phone Number: -
+Amount: 1,000.00
 Bank Charges: -
-Balance: 20834.06
-Time: 2025-09-30 17:29:13
+Balance: 41509.06
+Time: 2025-10-20 12:08:00
 
 Record #5
-Order ID: 11899
-Transaction Type: ADJUSTMENTADD
-Phone Number: -
-Amount: 890.00
+Order ID: 14496
+Transaction Type: DEPOSIT
+Phone Number: Anand8888
+Amount: 300.00
 Bank Charges: -
-Balance: 20334.06
-Time: 2025-09-30 17:17:26
+Balance: 40509.06
+Time: 2025-10-20 12:03:19
 
 Record #6
-Order ID: 11872
-Transaction Type: ADJUSTMENTADD
-Phone Number: -
+Order ID: 14482
+Transaction Type: DEPOSIT
+Phone Number: Sudip4455
 Amount: 500.00
 Bank Charges: -
-Balance: 19444.06
-Time: 2025-09-30 13:19:27
+Balance: 40209.06
+Time: 2025-10-20 10:07:41
 
->> Total Amount for Esewa_bank_Shankar Yadav_20250612: Rs 14,900.00
+Record #7
+Order ID: 14481
+Transaction Type: DEPOSIT
+Phone Number: Jenitamagar
+Amount: 600.00
+Bank Charges: -
+Balance: 39709.06
+Time: 2025-10-20 10:02:34
+
+Record #8
+Order ID: 14459
+Transaction Type: DEPOSIT
+Phone Number: Bikeshsahani
+Amount: 1,000.00
+Bank Charges: -
+Balance: 39109.06
+Time: 2025-10-20 06:52:12
+
+Record #9
+Order ID: 14384
+Transaction Type: DEPOSIT
+Phone Number: Bokaboka
+Amount: 1,100.00
+Bank Charges: -
+Balance: 38109.06
+Time: 2025-10-19 19:15:03
+
+Record #10
+Order ID: 14382
+Transaction Type: DEPOSIT
+Phone Number: Himal bista
+Amount: 3,000.00
+Bank Charges: -
+Balance: 37009.06
+Time: 2025-10-19 19:00:13
+
+Record #11
+Order ID: 14370
+Transaction Type: DEPOSIT
+Phone Number: Rokeydon
+Amount: 500.00
+Bank Charges: -
+Balance: 34009.06
+Time: 2025-10-19 17:39:47
+
+Record #12
+Order ID: 14329
+Transaction Type: DEPOSIT
+Phone Number: Rokeydon
+Amount: 500.00
+Bank Charges: -
+Balance: 33509.06
+Time: 2025-10-19 12:21:12
+
+>> Total Amount for Esewa_bank_Shankar Yadav_20250612: Rs 9,400.00
 ================================================================================
                               WITHDRAWALS
 ================================================================================
 
-==== Laxmi_bank_Pawan kumar khatri_20250921 (14 records) | Total Amount: Rs 65,098.00 ====
+==== Kumari Bank BAIJANATH YADAV_20251019 (24 records) | Total Amount: Rs 60,000.00 ====
 
 Record #1
-Order ID: 11925
+Order ID: 14530
 Transaction Type: CASH_OUT
 Phone Number: -
-Amount: 5,000.00
+Amount: 5,500.00
 Bank Charges: -
-Balance: 113688.58
-Time: 2025-09-30 19:30:22
+Balance: 190922.47
+Time: 2025-10-20 15:27:52
 
 Record #2
-Order ID: 11919
+Order ID: 14528
+Transaction Type: WITHDRAWAL
+Phone Number: Anita Shrestha
+Amount: 3,000.00
+Bank Charges: 10.00
+Balance: 195422.47
+Time: 2025-10-20 15:07:29
+
+Record #3
+Order ID: 14519
+Transaction Type: WITHDRAWAL
+Phone Number: Sujandon
+Amount: 1,500.00
+Bank Charges: 10.00
+Balance: 195332.47
+Time: 2025-10-20 13:42:48
+
+Record #4
+Order ID: 14513
+Transaction Type: WITHDRAWAL
+Phone Number: Rokeydon
+Amount: 1,000.00
+Bank Charges: 10.00
+Balance: 191842.47
+Time: 2025-10-20 13:05:03
+
+Record #5
+Order ID: 14502
+Transaction Type: CASH_OUT
+Phone Number: -
+Amount: 1,000.00
+Bank Charges: 10.00
+Balance: 187602.47
+Time: 2025-10-20 12:32:16
+
+Record #6
+Order ID: 14498
+Transaction Type: ADJUSTMENTDEDUCT
+Phone Number: -
+Amount: 1,000.00
+Bank Charges: -
+Balance: 188412.47
+Time: 2025-10-20 12:07:35
+
+Record #7
+Order ID: 14487
 Transaction Type: CASH_OUT
 Phone Number: -
 Amount: 4,000.00
 Bank Charges: 10.00
-Balance: 115833.58
-Time: 2025-09-30 19:03:22
-
-Record #3
-Order ID: 11917
-Transaction Type: WITHDRAWAL
-Phone Number: Saurab88
-Amount: 1,100.00
-Bank Charges: 10.00
-Balance: 119643.58
-Time: 2025-09-30 18:41:34
-
-Record #4
-Order ID: 11914
-Transaction Type: WITHDRAWAL
-Phone Number: Sagarthapa
-Amount: 3,000.00
-Bank Charges: 8.00
-Balance: 119453.58
-Time: 2025-09-30 18:26:05
-
-Record #5
-Order ID: 11904
-Transaction Type: WITHDRAWAL
-Phone Number: Nishu111
-Amount: 15,000.00
-Bank Charges: 8.00
-Balance: 111961.58
-Time: 2025-09-30 17:47:33
-
-Record #6
-Order ID: 11898
-Transaction Type: ADJUSTMENTDEDUCT
-Phone Number: -
-Amount: 890.00
-Bank Charges: -
-Balance: 125569.58
-Time: 2025-09-30 17:17:09
-
-Record #7
-Order ID: 11887
-Transaction Type: WITHDRAWAL
-Phone Number: Sujan shah
-Amount: 1,000.00
-Bank Charges: -
-Balance: 118389.58
-Time: 2025-09-30 15:49:33
+Balance: 176712.47
+Time: 2025-10-20 10:47:14
 
 Record #8
-Order ID: 11871
-Transaction Type: ADJUSTMENTDEDUCT
-Phone Number: -
-Amount: 500.00
-Bank Charges: -
-Balance: 103769.58
-Time: 2025-09-30 13:19:16
-
-Record #9
-Order ID: 11868
+Order ID: 14476
 Transaction Type: CASH_OUT
 Phone Number: -
-Amount: 4,008.00
-Bank Charges: -
-Balance: 102769.58
-Time: 2025-09-30 13:16:27
+Amount: 1,000.00
+Bank Charges: 10.00
+Balance: 175422.47
+Time: 2025-10-20 09:51:18
+
+Record #9
+Order ID: 14472
+Transaction Type: CASH_OUT
+Phone Number: -
+Amount: 1,000.00
+Bank Charges: 5.00
+Balance: 175032.47
+Time: 2025-10-20 08:30:33
 
 Record #10
-Order ID: 11867
+Order ID: 14470
+Transaction Type: CASH_OUT
+Phone Number: -
+Amount: 1,400.00
+Bank Charges: -
+Balance: 175837.47
+Time: 2025-10-20 08:14:30
+
+Record #11
+Order ID: 14463
+Transaction Type: CASH_OUT
+Phone Number: -
+Amount: 7,000.00
+Bank Charges: -
+Balance: 169737.47
+Time: 2025-10-20 07:00:24
+
+Record #12
+Order ID: 14447
+Transaction Type: WITHDRAWAL
+Phone Number: Rokeydon
+Amount: 1,000.00
+Bank Charges: 5.00
+Balance: 165947.47
+Time: 2025-10-20 01:50:41
+
+Record #13
+Order ID: 14437
+Transaction Type: WITHDRAWAL
+Phone Number: Anita Shrestha
+Amount: 6,000.00
+Bank Charges: 10.00
+Balance: 145052.47
+Time: 2025-10-19 23:26:18
+
+Record #14
+Order ID: 14434
+Transaction Type: CASH_OUT
+Phone Number: -
+Amount: 1,000.00
+Bank Charges: 10.00
+Balance: 150362.47
+Time: 2025-10-19 23:06:17
+
+Record #15
+Order ID: 14428
+Transaction Type: CASH_OUT
+Phone Number: -
+Amount: 1,500.00
+Bank Charges: 10.00
+Balance: 150112.47
+Time: 2025-10-19 22:38:25
+
+Record #16
+Order ID: 14423
+Transaction Type: CASH_OUT
+Phone Number: -
+Amount: 1,000.00
+Bank Charges: -
+Balance: 149622.47
+Time: 2025-10-19 22:25:39
+
+Record #17
+Order ID: 14421
+Transaction Type: WITHDRAWAL
+Phone Number: Anand8888
+Amount: 5,000.00
+Bank Charges: -
+Balance: 150122.47
+Time: 2025-10-19 22:22:07
+
+Record #18
+Order ID: 14418
+Transaction Type: WITHDRAWAL
+Phone Number: Rokeydon
+Amount: 2,000.00
+Bank Charges: 10.00
+Balance: 153921.47
+Time: 2025-10-19 22:10:03
+
+Record #19
+Order ID: 14412
+Transaction Type: WITHDRAWAL
+Phone Number: Ramesh99
+Amount: 1,000.00
+Bank Charges: 10.00
+Balance: 152431.47
+Time: 2025-10-19 21:46:18
+
+Record #20
+Order ID: 14403
+Transaction Type: WITHDRAWAL
+Phone Number: Anand8888
+Amount: 10,400.00
+Bank Charges: -
+Balance: 146044.47
+Time: 2025-10-19 21:03:23
+
+Record #21
+Order ID: 14396
+Transaction Type: CASH_OUT
+Phone Number: -
+Amount: 1,000.00
+Bank Charges: 10.00
+Balance: 151064.47
+Time: 2025-10-19 20:47:02
+
+Record #22
+Order ID: 14389
+Transaction Type: CASH_OUT
+Phone Number: -
+Amount: 1,500.00
+Bank Charges: 10.00
+Balance: 148814.47
+Time: 2025-10-19 19:29:17
+
+Record #23
+Order ID: 14377
+Transaction Type: ADJUSTMENTDEDUCT
+Phone Number: -
+Amount: 200.00
+Bank Charges: -
+Balance: 139424.47
+Time: 2025-10-19 18:23:18
+
+Record #24
+Order ID: 14375
+Transaction Type: WITHDRAWAL
+Phone Number: Rokeydon
+Amount: 1,000.00
+Bank Charges: 10.00
+Balance: 139424.47
+Time: 2025-10-19 18:20:48
+
+>> Total Amount for Kumari Bank BAIJANATH YADAV_20251019: Rs 60,000.00
+
+==== Laxmi_bank_Pawan kumar khatri_20250921 (12 records) | Total Amount: Rs 27,050.00 ====
+
+Record #1
+Order ID: 14368
+Transaction Type: WITHDRAWAL
+Phone Number: Bhim bdr malla
+Amount: 2,550.00
+Bank Charges: 4.00
+Balance: 297476.77
+Time: 2025-10-19 17:28:40
+
+Record #2
+Order ID: 14359
+Transaction Type: CASH_OUT
+Phone Number: -
+Amount: 4,000.00
+Bank Charges: -
+Balance: 289130.77
+Time: 2025-10-19 16:03:46
+
+Record #3
+Order ID: 14347
+Transaction Type: CASH_OUT
+Phone Number: -
+Amount: 1,000.00
+Bank Charges: -
+Balance: 270140.77
+Time: 2025-10-19 14:30:54
+
+Record #4
+Order ID: 14346
+Transaction Type: WITHDRAWAL
+Phone Number: Dpkarki55
+Amount: 1,000.00
+Bank Charges: -
+Balance: 271140.77
+Time: 2025-10-19 14:26:18
+
+Record #5
+Order ID: 14344
+Transaction Type: CASH_OUT
+Phone Number: -
+Amount: 9,000.00
+Bank Charges: -
+Balance: 267140.77
+Time: 2025-10-19 14:17:28
+
+Record #6
+Order ID: 14342
+Transaction Type: WITHDRAWAL
+Phone Number: Amankumar
+Amount: 1,500.00
+Bank Charges: -
+Balance: 273140.77
+Time: 2025-10-19 13:57:17
+
+Record #7
+Order ID: 14341
+Transaction Type: CASH_OUT
+Phone Number: -
+Amount: 1,500.00
+Bank Charges: -
+Balance: 274640.77
+Time: 2025-10-19 13:50:05
+
+Record #8
+Order ID: 14330
 Transaction Type: CASH_OUT
 Phone Number: -
 Amount: 2,000.00
 Bank Charges: 10.00
-Balance: 106777.58
-Time: 2025-09-30 12:51:32
+Balance: 262430.77
+Time: 2025-10-19 12:23:14
+
+Record #9
+Order ID: 14328
+Transaction Type: CASH_OUT
+Phone Number: -
+Amount: 1,000.00
+Bank Charges: -
+Balance: 264440.77
+Time: 2025-10-19 12:08:07
+
+Record #10
+Order ID: 14306
+Transaction Type: CASH_OUT
+Phone Number: -
+Amount: 1,000.00
+Bank Charges: -
+Balance: 251950.77
+Time: 2025-10-19 08:56:42
 
 Record #11
-Order ID: 11859
-Transaction Type: CASH_OUT
-Phone Number: -
+Order ID: 14297
+Transaction Type: WITHDRAWAL
+Phone Number: Rokeydon
 Amount: 1,000.00
 Bank Charges: 10.00
-Balance: 103107.58
-Time: 2025-09-30 11:45:02
+Balance: 248150.77
+Time: 2025-10-19 07:46:19
 
 Record #12
-Order ID: 11854
+Order ID: 14285
 Transaction Type: CASH_OUT
 Phone Number: -
-Amount: 12,000.00
+Amount: 1,500.00
+Bank Charges: 10.00
+Balance: 234460.77
+Time: 2025-10-19 00:40:46
+
+>> Total Amount for Laxmi_bank_Pawan kumar khatri_20250921: Rs 27,050.00
+
+==== Esewa_bank_Shankar Yadav_20250612 (1 record) | Total Amount: Rs 2,000.00 ====
+
+Record #1
+Order ID: 14518
+Transaction Type: WITHDRAWAL
+Phone Number: Dipak sing thing
+Amount: 2,000.00
 Bank Charges: -
-Balance: 100317.58
-Time: 2025-09-30 09:20:14
+Balance: 40209.06
+Time: 2025-10-20 13:30:14
 
-Record #13
-Order ID: 11848
-Transaction Type: CASH_OUT
-Phone Number: -
-Amount: 14,600.00
-Bank Charges: 10.00
-Balance: 107117.58
-Time: 2025-09-30 07:31:31
-
-Record #14
-Order ID: 11834
-Transaction Type: CASH_OUT
-Phone Number: -
-Amount: 1,000.00
-Bank Charges: 10.00
-Balance: 114677.58
-Time: 2025-09-30 03:24:55
-
->> Total Amount for Laxmi_bank_Pawan kumar khatri_20250921: Rs 65,098.00
+>> Total Amount for Esewa_bank_Shankar Yadav_20250612: Rs 2,000.00
 
 =========================== GRAND TOTAL for All Gateways ===========================
 
-  DEPOSITS Records: 98
-  WITHDRAWALS Records: 14
+  DEPOSITS Records: 202
+  WITHDRAWALS Records: 37
 
-==== pg Laxmi_bank_Pawan kumar khatri_20250921_09/30/2025 ====
+==== pg Kumari Bank BAIJANATH YADAV_20251019_10/20/2025 ====
 
-  DEPOSITS Records: 92
-  DEPOSITS Amount: 80,625.00
+  DEPOSITS Records: 116
+  DEPOSITS Amount: 255,062.47
 
-  WITHDRAWALS Records: 14
-  WITHDRAWALS Amount: 65,098.00
+  WITHDRAWALS Records: 24
+  WITHDRAWALS Amount: 60,000.00
 
-==== pg Esewa_bank_Shankar Yadav_20250612_09/30/2025 ====
+==== pg Laxmi_bank_Pawan kumar khatri_20250921_10/20/2025 ====
 
-  DEPOSITS Records: 6
-  DEPOSITS Amount: 14,900.00
+  DEPOSITS Records: 74
+  DEPOSITS Amount: 99,690.00
 
-  WITHDRAWALS Records: 0
-  WITHDRAWALS Amount: 0.00
+  WITHDRAWALS Records: 12
+  WITHDRAWALS Amount: 27,050.00
+
+==== pg Esewa_bank_Shankar Yadav_20250612_10/20/2025 ====
+
+  DEPOSITS Records: 12
+  DEPOSITS Amount: 9,400.00
+
+  WITHDRAWALS Records: 1
+  WITHDRAWALS Amount: 2,000.00
 

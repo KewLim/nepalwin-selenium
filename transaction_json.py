@@ -249,19 +249,19 @@ def extract_transaction_data_with_date_filter(driver, start_date, end_date, wait
                 # Filter transaction type first
                 txn_type = cols[6].text.strip() if len(cols) > 6 else ""
                 print(f"[DEBUG] Row {idx + 1}: Found transaction type '{txn_type}'")
-                
-                if txn_type.upper() not in ("DEPOSIT", "PENDING_DEPOSIT", "MANUAL_DEPOSIT", "WITHDRAWAL", "MANUAL_WITHDRAWAL", "ADJUSTMENTADD", "ADJUSTMENTDEDUCT", "CASH_IN", "CASH_OUT"):
+
+                if txn_type.upper() not in ("DEPOSIT", "WITHDRAWAL", "MANUAL_DEPOSIT", "MANUAL_WITHDRAWAL"):
                     print(f"[DEBUG] Row {idx + 1}: Skipping '{txn_type}' - not in allowed list")
                     continue
-                
+
                 print(f"[INFO] Row {idx + 1}: Collecting '{txn_type}' transaction")
                 
 
-                
+
                 # Parse amount - different column based on transaction type
-                if txn_type.upper() in ("WITHDRAWAL", "MANUAL_WITHDRAWAL", "ADJUSTMENTDEDUCT", "CASH_OUT"):
+                if txn_type.upper() in ("WITHDRAWAL", "MANUAL_WITHDRAWAL"):
                     amount_text = cols[8].text.strip().replace("Rs", "").replace(",", "").strip()
-                else:  # DEPOSIT, PENDING_DEPOSIT, MANUAL_DEPOSIT, ADJUSTMENTADD, CASH_IN
+                else:  # DEPOSIT, MANUAL_DEPOSIT
                     amount_text = cols[7].text.strip().replace("Rs", "").replace(",", "").strip()
                 try:
                     amount = float(amount_text) if amount_text else 0.0
@@ -299,142 +299,167 @@ def extract_transaction_data_with_date_filter(driver, start_date, end_date, wait
 
 
 def print_grouped_results(gateway_groups):
+    import json
+
     print(f"[DEBUG] print_grouped_results called with {len(gateway_groups)} gateway groups")
     for gateway, records in gateway_groups.items():
         print(f"[DEBUG] Gateway '{gateway}' has {len(records)} records")
 
-    grand_total = 0
-    grand_tax_total = 0
+    # Collect all records from all gateways
+    all_records = []
+    for gateway, records in gateway_groups.items():
+        all_records.extend(records)
 
-    with open("selenium_project/selenium-transaction_history.txt", "w", encoding="utf-8") as f:
-        # Separate deposits and withdrawals
-        deposit_groups = defaultdict(list)
-        withdrawal_groups = defaultdict(list)
-        
-        for gateway, records in gateway_groups.items():
-            for record in records:
-                txn_type = record.get("Transaction Type", "").upper()
-                print(f"[DEBUG] Record transaction type: '{txn_type}' from record: {record.get('Transaction Type', 'MISSING')}")
-                if txn_type in ("DEPOSIT", "PENDING_DEPOSIT", "MANUAL_DEPOSIT", "ADJUSTMENTADD", "CASH_IN"):
-                    deposit_groups[gateway].append(record)
-                    print(f"[DEBUG] Added to deposits: {txn_type}")
-                elif txn_type in ("WITHDRAWAL", "MANUAL_WITHDRAWAL", "ADJUSTMENTDEDUCT", "CASH_OUT"):
-                    withdrawal_groups[gateway].append(record)
-                    print(f"[DEBUG] Added to withdrawals: {txn_type}")
-                else:
-                    print(f"[DEBUG] Transaction type '{txn_type}' not recognized for grouping")
-        
-        # Helper function to process a group of transactions
-        def process_transaction_group(groups, section_title):
-            nonlocal grand_total
-            if not groups:
-                return
-                
-            f.write("="*80 + "\n")
-            f.write(f"                              {section_title}\n")
-            f.write("="*80 + "\n")
-            print(f"\033[92m{'='*80}\033[0m")
-            print(f"\033[92m                              {section_title}\033[0m")
-            print(f"\033[92m{'='*80}\033[0m")
-            
-            for gateway, records in groups.items():
-                total_amount = sum(record["Amount"] if isinstance(record["Amount"], (int, float)) else float(record["Amount"].replace(",", "")) for record in records)
-                grand_total += total_amount 
+    # Group all transactions by Login ID (player)
+    player_groups = defaultdict(list)
 
-                header = f"\n==== {gateway} ({len(records)} record{'s' if len(records) != 1 else ''}) | Total Amount: Rs {total_amount:,.2f} ====\n"
-                print(f"\033[92m{header}\033[0m")
-                f.write(header)
+    for record in all_records:
+        login_id = record["Phone Number"]
+        player_groups[login_id].append(record)
 
-                # Sort records by time (latest first) with error handling
-                def safe_parse_time(record):
-                    try:
-                        if record["Time"] and record["Time"].strip():
-                            return datetime.strptime(record["Time"], "%Y-%m-%d %H:%M:%S")
-                        else:
-                            return datetime.min  # Put records with no time at the end
-                    except ValueError:
-                        print(f"[WARNING] Invalid time format: '{record['Time']}'")
-                        return datetime.min
+    # Helper function to parse time safely
+    def safe_parse_time(record):
+        try:
+            if record["Time"] and record["Time"].strip():
+                return datetime.strptime(record["Time"], "%Y-%m-%d %H:%M:%S")
+            else:
+                return datetime.min
+        except ValueError:
+            return datetime.min
 
-                sorted_records = sorted(records, key=safe_parse_time, reverse=True)
+    # Analyze each player's transaction pattern
+    json_output = []
+    for login_id, transactions in player_groups.items():
+        # Sort transactions by time (oldest first for pattern analysis)
+        sorted_transactions = sorted(transactions, key=safe_parse_time)
 
-                for i, record in enumerate(sorted_records, 1):
-                    entry = (
-                        f"\nRecord #{i}\n"
-                        f"Order ID: {record['Order ID']}\n"
-                        f"Transaction Type: {record.get('Transaction Type', 'Unknown')}\n"
-                        f"Phone Number: {record['Phone Number']}\n"
-                        f"Amount: {record['Amount']:,.2f}\n"
-                        f"Bank Charges: {record.get('Bank Tax', 'N/A')}\n"
-                        f"Balance: {record.get('Balance', 'N/A')}\n"
-                        f"Time: {record['Time']}\n"
-                    )
-                    print(f"\033[94m{entry}\033[0m")
-                    f.write(entry)
+        # Calculate totals and counts
+        total_in = 0
+        total_out = 0
+        deposit_count = 0
+        withdrawal_count = 0
 
-                footer = f"\n>> Total Amount for {gateway}: Rs {total_amount:,.2f}\n"
-                print(f"\033[93m{footer}\033[0m")
-                f.write(footer)
-        
-        # Process deposits and withdrawals separately
-        print(f"[DEBUG] Final groups: Deposits={sum(len(r) for r in deposit_groups.values())}, Withdrawals={sum(len(r) for r in withdrawal_groups.values())}")
-        process_transaction_group(deposit_groups, "DEPOSITS")
-        process_transaction_group(withdrawal_groups, "WITHDRAWALS")
+        for txn in sorted_transactions:
+            txn_type = txn.get("Transaction Type", "").upper()
+            if txn_type in ("DEPOSIT", "MANUAL_DEPOSIT"):
+                total_in += float(txn["Amount"])
+                deposit_count += 1
+            elif txn_type in ("WITHDRAWAL", "MANUAL_WITHDRAWAL"):
+                total_out += float(txn["Amount"])
+                withdrawal_count += 1
 
-        total_records = sum(len(records) for records in gateway_groups.values())
+        winloss = total_in - total_out
+        total_amount = total_in + total_out
 
-        # ✅ Only once at the end
-        deposit_count = sum(len(records) for records in deposit_groups.values())
-        withdrawal_count = sum(len(records) for records in withdrawal_groups.values())
-        
-        # Create grand footer with gateway-specific breakdown
-        f.write("\n")
-        
-        # Add grand total summary at the beginning (green header)
-        grand_total_header = f"=========================== GRAND TOTAL for All Gateways ===========================\n\n"
-        print(f"\033[92m{grand_total_header}\033[0m", end="")
-        f.write(grand_total_header)
-        
-        # Print grand total with green numbers
-        print(f"\033[95m  DEPOSITS Records: \033[92m{deposit_count}\033[95m\n\033[0m", end="")
-        print(f"\033[95m  WITHDRAWALS Records: \033[92m{withdrawal_count}\033[95m\n\n\033[0m", end="")
-        f.write(f"  DEPOSITS Records: {deposit_count}\n")
-        f.write(f"  WITHDRAWALS Records: {withdrawal_count}\n\n")
-        
-        # Iterate through each gateway and create summary
-        for gateway, records in gateway_groups.items():
-            # Count deposits and withdrawals for this gateway
-            gateway_deposits = len([r for r in records if r.get("Transaction Type", "").upper() in ("DEPOSIT", "PENDING_DEPOSIT", "MANUAL_DEPOSIT", "ADJUSTMENTADD", "CASH_IN")])
-            gateway_withdrawals = len([r for r in records if r.get("Transaction Type", "").upper() in ("WITHDRAWAL", "MANUAL_WITHDRAWAL", "ADJUSTMENTDEDUCT", "CASH_OUT")])
+        # Calculate bonus based on deposit count (cumulative)
+        bonus_amount = 0
+        if deposit_count >= 5:
+            bonus_amount += 50
+        if deposit_count >= 10:
+            bonus_amount += 100
+        if deposit_count >= 15:
+            bonus_amount += 150
+        if deposit_count >= 20:
+            bonus_amount += 200
+        if deposit_count >= 30:
+            bonus_amount += 500
 
-            # Calculate amounts for this gateway
-            deposit_amount = sum(r["Amount"] for r in records if r.get("Transaction Type", "").upper() in ("DEPOSIT", "PENDING_DEPOSIT", "MANUAL_DEPOSIT", "ADJUSTMENTADD", "CASH_IN"))
-            withdrawal_amount = sum(r["Amount"] for r in records if r.get("Transaction Type", "").upper() in ("WITHDRAWAL", "MANUAL_WITHDRAWAL", "ADJUSTMENTDEDUCT", "CASH_OUT"))
-            
-            # Extract date from the first record's time
-            try:
-                if records[0]["Time"] and records[0]["Time"].strip():
-                    transaction_date = datetime.strptime(records[0]["Time"], "%Y-%m-%d %H:%M:%S").strftime("%m/%d/%Y")
-                else:
-                    transaction_date = "Unknown"
-            except (ValueError, IndexError):
-                transaction_date = "Unknown"
-            
-            # Create gateway header (green)
-            gateway_header = f"==== pg {gateway}_{transaction_date} ====\n\n"
-            print(f"\033[92m{gateway_header}\033[0m", end="")
-            f.write(gateway_header)
-            
-            # Create gateway summary (purple text, green numbers)
-            print(f"\033[95m  DEPOSITS Records: \033[92m{gateway_deposits}\033[95m\n\033[0m", end="")
-            print(f"\033[95m  DEPOSITS Amount: \033[92m{deposit_amount:,.2f}\033[95m\n\n\033[0m", end="")
-            print(f"\033[95m  WITHDRAWALS Records: \033[92m{gateway_withdrawals}\033[95m\n\033[0m", end="")
-            print(f"\033[95m  WITHDRAWALS Amount: \033[92m{withdrawal_amount:,.2f}\033[95m\n\n\033[0m", end="")
-            
-            f.write(f"  DEPOSITS Records: {gateway_deposits}\n")
-            f.write(f"  DEPOSITS Amount: {deposit_amount:,.2f}\n\n")
-            f.write(f"  WITHDRAWALS Records: {gateway_withdrawals}\n")
-            f.write(f"  WITHDRAWALS Amount: {withdrawal_amount:,.2f}\n\n")
+        # Calculate bonus based on total deposit amount (Total In) (cumulative)
+        depo_amount_bonus = 0
+        if total_in >= 500:
+            depo_amount_bonus += 18
+        if total_in >= 1000:
+            depo_amount_bonus += 28
+        if total_in >= 3000:
+            depo_amount_bonus += 38
+        if total_in >= 5000:
+            depo_amount_bonus += 58
+        if total_in >= 10000:
+            depo_amount_bonus += 108
+
+        # Check eligibility: deposit followed by withdrawal > threshold before next deposit
+        eligible = False
+        i = 0
+        while i < len(sorted_transactions):
+            txn = sorted_transactions[i]
+            txn_type = txn.get("Transaction Type", "").upper()
+
+            # Look for a deposit
+            if txn_type in ("DEPOSIT", "MANUAL_DEPOSIT"):
+                deposit_amount = float(txn["Amount"])
+
+                # Look ahead for withdrawals before next deposit
+                withdrawals_sum = 0
+                j = i + 1
+
+                while j < len(sorted_transactions):
+                    next_txn = sorted_transactions[j]
+                    next_type = next_txn.get("Transaction Type", "").upper()
+
+                    if next_type in ("DEPOSIT", "MANUAL_DEPOSIT"):
+                        # Found next deposit, stop looking
+                        break
+                    elif next_type in ("WITHDRAWAL", "MANUAL_WITHDRAWAL"):
+                        withdrawals_sum += float(next_txn["Amount"])
+
+                    j += 1
+
+                # Check if withdrawal sum > 1000 (and deposit >= 500 as example)
+                if deposit_amount >= 500 and withdrawals_sum > 1000:
+                    eligible = True
+                    break
+
+            i += 1
+
+        # Calculate total bonus and turnover
+        depo_wd_bonus = 68 if eligible else 0
+        total_bonus = depo_wd_bonus + depo_amount_bonus + bonus_amount
+        turnover = total_bonus * 2  # Turnover is always 2x of Total Bonus
+
+        player_record = {
+            "Login ID": login_id,
+            "Amount": f"{total_amount:.2f}",
+            "Total In": f"{total_in:.2f}",
+            "Deposit Count": deposit_count,
+            "Total Out": f"{total_out:.2f}",
+            "Withdrawal Count": withdrawal_count,
+            "winloss": f"{winloss:.2f}",
+            "Depo/WD Bonus": depo_wd_bonus,
+            "Depo Amount Bonus": depo_amount_bonus,
+            "Depo Count Bonus": bonus_amount,
+            "Total Bonus": total_bonus,
+            "Turnover": turnover,
+            "_total_bonus_numeric": total_bonus  # Temporary field for sorting
+        }
+        json_output.append(player_record)
+
+    # Sort by Total Bonus (descending - big to small)
+    json_output.sort(key=lambda x: x["_total_bonus_numeric"], reverse=True)
+
+    # Remove temporary sorting field
+    for record in json_output:
+        del record["_total_bonus_numeric"]
+
+    # Write JSON to file
+    with open("selenium_project/json_transaction_output.json", "w", encoding="utf-8") as f:
+        json.dump(json_output, f, indent=2, ensure_ascii=False)
+
+    # Print summary to console
+    total_deposits = sum(1 for record in all_records if record.get("Transaction Type", "").upper() in ("DEPOSIT", "MANUAL_DEPOSIT"))
+    total_withdrawals = sum(1 for record in all_records if record.get("Transaction Type", "").upper() in ("WITHDRAWAL", "MANUAL_WITHDRAWAL"))
+    eligible_count = sum(1 for player in json_output if player["Total Bonus"] > 0)
+    total_bonus_sum = sum(player["Total Bonus"] for player in json_output)
+
+    print(f"\033[92m{'='*80}\033[0m")
+    print(f"\033[92m                    JSON OUTPUT GENERATED (PLAYER-BASED)\033[0m")
+    print(f"\033[92m{'='*80}\033[0m")
+    print(f"\033[95m  Unique Players: \033[92m{len(player_groups)}\033[0m")
+    print(f"\033[95m  Eligible Players: \033[92m{eligible_count}\033[0m")
+    print(f"\033[95m  Eligible Bonus: \033[92m{total_bonus_sum} (Total)\033[0m")
+    print(f"\033[95m  Total Deposit Transactions: \033[92m{total_deposits}\033[0m")
+    print(f"\033[95m  Total Withdrawal Transactions: \033[92m{total_withdrawals}\033[0m")
+    print(f"\033[95m  Output File: \033[92mselenium_project/json_transaction_output.json\033[0m")
+    print(f"\033[92m{'='*80}\033[0m")
 
 
 
@@ -642,9 +667,6 @@ def main():
     time.sleep(5)
     driver.quit()
     cleanup_terminal()
-
-    # Show post-crawl menu
-    show_post_crawl_menu()
 
 if __name__ == "__main__":
     # Set up signal handlers for stopping

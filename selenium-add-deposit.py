@@ -498,9 +498,22 @@ def get_start_order_ids():
 
     start_order_ids = {}
 
+    # Open log file for recording gateway configuration
+    log_file_path = "selenium_project/gateway_config_log.txt"
+    config_log = open(log_file_path, 'w', encoding='utf-8')
+    config_log.write("="*70 + "\n")
+    config_log.write("           GATEWAY CONFIGURATION LOG\n")
+    config_log.write("="*70 + "\n")
+    config_log.write(f"Date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+    config_log.write("="*70 + "\n\n")
+
     for gateway in sorted(available_gateways):
         print(f"\n\033[1;35m{gateway}\033[0m")
         print("-" * len(gateway))
+
+        # Log gateway name to file
+        config_log.write(f"{gateway}\n")
+        config_log.write("-" * len(gateway) + "\n")
 
         # Ask if user wants to skip this entire gateway
         import sys
@@ -511,22 +524,35 @@ def get_start_order_ids():
             print(f"[DEBUG] User input: '{skip_gateway}' (length: {len(skip_gateway)})")
             print(f"[DEBUG] Input bytes: {[ord(c) for c in skip_gateway]}")
 
+            # Log to file
+            config_log.write(f"   Proceed entire gateway? (ENTER/n): {skip_gateway if skip_gateway else ''}\n")
+            config_log.write(f"[DEBUG] User input: '{skip_gateway}' (length: {len(skip_gateway)})\n")
+            config_log.write(f"[DEBUG] Input bytes: {[ord(c) for c in skip_gateway]}\n")
+
             if skip_gateway in ['n', 'no']:
                 print(f"     ⏭️  Skipping {gateway} entirely")
+                config_log.write(f"     ⏭️  Skipping {gateway} entirely\n\n")
+                start_order_ids[gateway] = {'deposit': 'SKIP', 'withdrawal': 'SKIP'}
+                enhanced_print(f"[SKIP LOG] Gateway: {gateway} - All transactions set to SKIP")
                 continue
             elif skip_gateway == '':
                 print(f"     ✅  Proceeding with {gateway}")
+                config_log.write(f"     ✅  Proceeding with {gateway}\n")
             else:
                 print(f"     ❓  Unknown input '{skip_gateway}', proceeding with {gateway}")
+                config_log.write(f"     ❓  Unknown input '{skip_gateway}', proceeding with {gateway}\n")
 
         except (KeyboardInterrupt, EOFError):
             print("\n[INFO] Input interrupted, exiting...")
+            config_log.close()
             sys.exit(0)
         # If empty input (just Enter), continue processing this gateway
 
         # Get deposit start ID
         while True:
             deposit_start = input(f"\033[1;32m   Start Order ID for DEPOSITS (press Enter to proceed all / 'skip' to skip deposits): \033[0m").strip()
+            config_log.write(f"   Start Order ID for DEPOSITS (press Enter to proceed all / 'skip' to skip deposits): {deposit_start}\n")
+
             if not deposit_start:
                 break
             if deposit_start.lower() == 'skip':
@@ -534,6 +560,8 @@ def get_start_order_ids():
                     start_order_ids[gateway] = {}
                 start_order_ids[gateway]['deposit'] = 'SKIP'
                 print(f"     ⏭️  Will skip all DEPOSITS for {gateway}")
+                config_log.write(f"     ⏭️  Will skip all DEPOSITS for {gateway}\n")
+                enhanced_print(f"[SKIP LOG] Gateway: {gateway} - DEPOSITS set to SKIP")
                 break
             try:
                 int(deposit_start)  # Validate it's a number
@@ -541,13 +569,17 @@ def get_start_order_ids():
                     start_order_ids[gateway] = {}
                 start_order_ids[gateway]['deposit'] = deposit_start
                 print(f"     ✅ Will start processing deposits from Order ID: {deposit_start}")
+                config_log.write(f"     ✅ Will start processing deposits from Order ID: {deposit_start}\n")
                 break
             except ValueError:
                 print("     ❌ Please enter a valid number, 'skip', or press Enter to proceed all")
+                config_log.write("     ❌ Please enter a valid number, 'skip', or press Enter to proceed all\n")
 
         # Get withdrawal start ID
         while True:
             withdrawal_start = input(f"\033[1;33m   Start Order ID for WITHDRAWALS (press Enter to proceed all / 'skip' to skip withdrawals): \033[0m").strip()
+            config_log.write(f"   Start Order ID for WITHDRAWALS (press Enter to proceed all / 'skip' to skip withdrawals): {withdrawal_start}\n")
+
             if not withdrawal_start:
                 break
             if withdrawal_start.lower() == 'skip':
@@ -555,6 +587,8 @@ def get_start_order_ids():
                     start_order_ids[gateway] = {}
                 start_order_ids[gateway]['withdrawal'] = 'SKIP'
                 print(f"     ⏭️  Will skip all WITHDRAWALS for {gateway}")
+                config_log.write(f"     ⏭️  Will skip all WITHDRAWALS for {gateway}\n")
+                enhanced_print(f"[SKIP LOG] Gateway: {gateway} - WITHDRAWALS set to SKIP")
                 break
             try:
                 int(withdrawal_start)  # Validate it's a number
@@ -562,9 +596,18 @@ def get_start_order_ids():
                     start_order_ids[gateway] = {}
                 start_order_ids[gateway]['withdrawal'] = withdrawal_start
                 print(f"     ✅ Will start processing withdrawals from Order ID: {withdrawal_start}")
+                config_log.write(f"     ✅ Will start processing withdrawals from Order ID: {withdrawal_start}\n")
                 break
             except ValueError:
                 print("     ❌ Please enter a valid number, 'skip', or press Enter to proceed all")
+                config_log.write("     ❌ Please enter a valid number, 'skip', or press Enter to proceed all\n")
+
+        config_log.write("\n")
+
+    # Close the log file
+    config_log.write("="*70 + "\n")
+    config_log.write("           CONFIGURATION SUMMARY\n")
+    config_log.write("="*70 + "\n")
 
     if start_order_ids:
         print("\n" + "="*70)
@@ -572,19 +615,29 @@ def get_start_order_ids():
         print("="*70)
         for gateway, config in start_order_ids.items():
             print(f"🏦 {gateway}:")
+            config_log.write(f"{gateway}:\n")
             if 'deposit' in config:
                 if config['deposit'] == 'SKIP':
                     print(f"   💰 DEPOSITS: \033[1;31mSKIPPED\033[0m")
+                    config_log.write(f"   DEPOSITS: SKIPPED\n")
                 else:
                     print(f"   💰 DEPOSITS starting from: {config['deposit']}")
+                    config_log.write(f"   DEPOSITS starting from: {config['deposit']}\n")
             if 'withdrawal' in config:
                 if config['withdrawal'] == 'SKIP':
                     print(f"   💸 WITHDRAWALS: \033[1;31mSKIPPED\033[0m")
+                    config_log.write(f"   WITHDRAWALS: SKIPPED\n")
                 else:
                     print(f"   💸 WITHDRAWALS starting from: {config['withdrawal']}")
+                    config_log.write(f"   WITHDRAWALS starting from: {config['withdrawal']}\n")
         print("="*70)
+        config_log.write("="*70 + "\n")
     else:
         print("\n✅ No start order IDs configured. Will process all transactions.")
+        config_log.write("\nNo start order IDs configured. Will process all transactions.\n")
+
+    config_log.close()
+    enhanced_print(f"\n[INFO] Gateway configuration saved to: {log_file_path}")
 
     return start_order_ids
 
@@ -704,7 +757,8 @@ def gateway_setup_movement(gateway_name):
         "Esewa_bank_Shankar Yadav_20250612": "ESEWA SHANKAR YADAV",
         "Laxmi_bank_Baijianath_20250407": "LAXMI BANK BAIJANATH YADAV",
         "Laxmi_bank_Subash Sunar_20250806": "LAXMI BANK SUBASH SUNAR",
-        "Laxmi_bank_Pawan kumar khatri_20250921": "LAXMI BANK PAWAN KUMAR KHATRI"
+        "Laxmi_bank_Pawan kumar khatri_20250921": "LAXMI BANK PAWAN KUMAR KHATRI",
+        "Kumari Bank BAIJANATH YADAV_20251019": "Kumari Bank BIJAY YADAV_20251019"
     }
 
     if gateway_name in gateway_map:
@@ -1381,7 +1435,7 @@ def parse_and_execute(filename, start_order_ids=None):
     gateway_balances = {}  # Will store latest balance for each gateway
 
     supported_gateways = {
-        "Laxmi_bank_Baijianath_20250407", "Esewa_bank_Shankar Yadav_20250612", "Laxmi_bank_Subash Sunar_20250806", "Laxmi_bank_Pawan kumar khatri_20250921"
+        "Laxmi_bank_Baijianath_20250407", "Esewa_bank_Shankar Yadav_20250612", "Laxmi_bank_Subash Sunar_20250806", "Laxmi_bank_Pawan kumar khatri_20250921", "Kumari Bank BAIJANATH YADAV_20251019"
     }
 
     # Temporary variables for one record
@@ -1474,18 +1528,27 @@ def parse_and_execute(filename, start_order_ids=None):
                     # Check if we should skip this record based on start order ID
                     should_process = True
                     if start_order_ids and current_gateway in start_order_ids:
-                        start_id = start_order_ids[current_gateway].get(current_transaction_type.lower())
+                        # Determine transaction category based on actual transaction type
+                        if transaction_type.upper() in ("WITHDRAWAL", "MANUAL_WITHDRAWAL", "ADJUSTMENTDEDUCT", "CASH_OUT"):
+                            txn_category = 'withdrawal'
+                        else:
+                            txn_category = 'deposit'
+
+                        start_id = start_order_ids[current_gateway].get(txn_category)
                         if start_id:
                             if start_id == 'SKIP':
-                                enhanced_print(f"[SKIP] Transaction type {current_transaction_type} is set to SKIP for {current_gateway}")
+                                enhanced_print(f"[SKIP LOG] Gateway: {current_gateway} - Order ID: {order_id} - Type: {transaction_type} - Reason: Transaction category '{txn_category}' set to SKIP")
                                 should_process = False
                             else:
                                 try:
                                     record_id = int(order_id)
                                     start_id_int = int(start_id)
+                                    # Process records with ID >= start_id (skip those with lower IDs)
                                     if record_id < start_id_int:
-                                        enhanced_print(f"[SKIP] Order ID {order_id} is before start ID {start_id} for {current_gateway} {current_transaction_type}")
+                                        enhanced_print(f"[SKIP LOG] Gateway: {current_gateway} - Order ID: {order_id} - Type: {transaction_type} - Reason: Order ID {record_id} is less than start ID {start_id}")
                                         should_process = False
+                                    else:
+                                        enhanced_print(f"[PROCESS LOG] Gateway: {current_gateway} - Order ID: {order_id} - Type: {transaction_type} - Will process (ID >= start ID {start_id})")
                                 except ValueError:
                                     enhanced_print(f"[WARNING] Could not compare Order ID {order_id} with start ID {start_id}")
 
@@ -1540,7 +1603,7 @@ def print_gateway_balance_summary(gateway_balances):
     for gateway, balance in gateway_balances.items():
         if balance is not None:
             enhanced_print(f"🏦 {gateway}")
-            enhanced_print(f"   💰 Final Balance: \033[1;32mNPR {balance:,.2f}\033[0m")
+            enhanced_print(f"   💰 Final Balance: \033[1;32mNPR {balance:.2f}\033[0m")
             enhanced_print("-" * 60)
             total_balance += balance
         else:
