@@ -33,7 +33,9 @@
       "Bash(pip --version)",
       "Bash(where firefox)",
       "Bash(where chrome)",
-      "Bash(reg query:*)"
+      "Bash(reg query:*)",
+      "Bash(git remote get-url:*)",
+      "Bash(git fetch:*)"
     ],
     "deny": [],
     "ask": []
